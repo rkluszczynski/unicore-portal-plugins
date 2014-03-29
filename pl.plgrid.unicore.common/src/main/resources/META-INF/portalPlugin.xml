@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
-    <extensions>		
-    	<ServiceExtension>
+    <extensions>
+        <ServiceExtension>
             <id>gridServiceExplorer</id>
             <interfaceClass>pl.plgrid.unicore.common.GridServiceExplorer</interfaceClass>
             <implementingClass>pl.plgrid.unicore.common.impl.GridServiceExplorerImpl</implementingClass>
@@ -10,12 +10,12 @@
 
         <MessageSourceExtension>
             <id>vaspView</id>
-            <location>pl.edu.icm.grid.unicore.vasp.i18n.VASPMessages</location>
+            <location>pl.plgrid.unicore.vasp.i18n.VASPMessages</location>
         </MessageSourceExtension>
-        
+
         <MessageSourceExtension>
             <id>unicoreSiteResources</id>
-            <location>pl.edu.icm.grid.unicore.vasp.i18n.SiteResourcesMessages</location>
+            <location>pl.plgrid.unicore.vasp.i18n.SiteResourcesMessages</location>
         </MessageSourceExtension>
     </extensions>
 </plugin>

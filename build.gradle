@@ -4,6 +4,7 @@ apply plugin: 'base'
 
 subprojects {
     apply from: rootProject.file('gradle/common.gradle')
+    apply from: rootProject.file('gradle/depends.gradle')
 }
 
 //task mergedJavadoc(type: Javadoc, description: 'Creates Javadoc from all the projects.') {
