@@ -1,0 +1,28 @@
+# SCF input for VASP
+# Note that VASP uses the FIRST occurence of a keyword
+SYSTEM = GaN_GGA_surf_001_4x_sc_1x1x1_H_H_mp
+
+    PREC = Accurate
+   ENCUT = 400.00
+  IBRION = -1
+     NSW = 0
+    ISIF = 2
+    ALGO = Normal (blocked Davidson)
+    NELM = 60
+  NELMIN = 2
+   EDIFF = 1.0e-05
+  EDIFFG = -0.01
+ VOSKOWN = 1
+  NBLOCK = 1
+   ISPIN = 1
+  INIWAV = 1
+  ISTART = 0
+  ICHARG = 2
+   LWAVE = .FALSE.
+  LCHARG = .FALSE.
+ ADDGRID = .FALSE.
+  ISMEAR = 1
+   SIGMA = 0.1
+   LREAL = .FALSE.
+   RWIGS = 1.26 0.75 0.32 0.32
+

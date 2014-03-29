@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+    <extensions>
+        <menuExtension>
+            <id>pl.edu.icm.grid.unicore.vasp.ui</id>
+            <menuPath>navigation:main</menuPath>
+            
+            <name>Run VASP</name>
+            <description>Prepare VASP Simulation</description>
+            <!--<icon>vfsaction/addWorkflow</icon>-->
+            
+            <category>/ApplicationVASP</category>
+            <after>Grid</after>
+            <!--<before></before>-->
+            
+            <commandDescriptor>
+                <commandId>eu.unicore.portal.ui.views.switchTo</commandId>
+                <parameter>
+                    <key>view.class</key>
+                    <value class="string">pl.edu.icm.grid.unicore.vasp.MainPortalView
+                    </value>
+                </parameter>
+            </commandDescriptor>
+        </menuExtension>
+        
+                                                                        		
+        <MessageSourceExtension>
+            <id>vaspView</id>
+            <location>pl.edu.icm.grid.unicore.vasp.i18n.VASPMessages</location>
+        </MessageSourceExtension>
+    </extensions>
+</plugin>

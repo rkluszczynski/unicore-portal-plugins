@@ -1,0 +1,4 @@
+
+dependencies {
+    compile project(':pl.plgrid.unicore.common')
+}

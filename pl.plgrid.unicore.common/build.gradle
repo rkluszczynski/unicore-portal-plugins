@@ -1,0 +1,14 @@
+apply from: rootProject.file('gradle/publish.gradle')
+
+def unicorePortalVersion = '1.0.0'
+def uasClientVersion = '1.7.0'
+def workflowClientVersion = '2.5.0-SNAPSHOT'
+
+dependencies {
+    compile "eu.unicore.portal:eu.unicore.portal.grid.core:${unicorePortalVersion}"
+    compile "eu.unicore.portal:eu.unicore.portal.ui:${unicorePortalVersion}"
+    compile "eu.unicore.portal:eu.unicore.portal.grid.ui:${unicorePortalVersion}"
+
+    compile "eu.unicore:uas-client:${uasClientVersion}"
+    compile "eu.unicore.workflow:common:${workflowClientVersion}"
+}
