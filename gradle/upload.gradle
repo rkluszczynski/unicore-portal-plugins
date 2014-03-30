@@ -1,0 +1,73 @@
+import groovy.swing.SwingBuilder
+
+configurations {
+    sshAntTask
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    sshAntTask 'org.apache.ant:ant-jsch:1.7.1', 'jsch:jsch:0.1.29'
+}
+
+
+def collectPasswordFromUser() {
+    def passwordString = ''
+    if (System.console() == null) {
+        new SwingBuilder().edt {
+            dialog(modal: true, // Otherwise the build will continue running before you closed the dialog
+                    title: 'Enter upload', // Dialog title
+                    alwaysOnTop: true, // pretty much what the name says
+                    resizable: false, // Don't allow the user to resize the dialog
+                    locationRelativeTo: null, // Place dialog in center of the screen
+                    pack: true, // We need to pack the dialog (so it will take the size of it's children)
+                    show: true // Let's show it
+            ) {
+                vbox { // Put everything below each other
+                    label(text: "Please enter key passphrase:")
+                    input = passwordField()
+                    button(defaultButton: true, text: 'OK', actionPerformed: {
+                        passwordString = input.password; // Set pass variable to value of input field
+                        dispose(); // Close dialog
+                    })
+                } // vbox end
+            } // dialog end
+        } // edt end
+    } else {
+        passwordString = System.console().readPassword("\nPlease enter key passphrase: ")
+        passwordString = new String(passwordString)
+    }
+
+    if (passwordString.size() <= 0) {
+        throw new InvalidUserDataException("You must enter a upload to proceed.")
+    }
+    return passwordString;
+}
+
+task uploadPlugins {
+    description = 'Update files on remote server.'
+    def hostname = 'unicore.studmat.umk.pl'
+    def username = 'klusi'
+    def targetDir = '.'
+
+    ant.taskdef(name: 'scp',
+            classname: 'org.apache.tools.ant.taskdefs.optional.ssh.Scp',
+            classpath: configurations.sshAntTask.asPath)
+    gradle.taskGraph.whenReady { taskGraph ->
+        if (taskGraph.hasTask(':uploadPlugins')) {
+            def passwdString = collectPasswordFromUser()
+            def scpString = "${username}@${hostname}:${targetDir}"
+            println "Uploading to: ${scpString}"
+            ant.scp(todir: scpString as String,
+                    password: passwdString as String,
+                    trust: 'true',
+                    verbose: 'true') {
+                fileset(dir: rootProject.file('.')) {
+                    filename(name: 'pl.plgrid.unicore.*/build/libs/pl.plgrid.unicore.*.jar')
+                }
+            }
+        }
+    }
+}

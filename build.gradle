@@ -7,6 +7,8 @@ subprojects {
     apply from: rootProject.file('gradle/depends.gradle')
 }
 
+apply from: rootProject.file('gradle/upload.gradle')
+
 //task mergedJavadoc(type: Javadoc, description: 'Creates Javadoc from all the projects.') {
 //    title = 'All modules'
 //    destinationDir = new File(project.buildDir, 'merged-javadoc')
