@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 import org.unigrids.services.atomic.types.StatusType;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
-import pl.plgrid.unicore.common.i18n.UIComponentsI18N;
+import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.services.TargetSystemService;
 import pl.plgrid.unicore.common.ui.JobsTableViewer;
 
@@ -40,7 +40,7 @@ public class JobsTableViewerWorker extends BackgroundWorker {
     private final Table table;
 
     public JobsTableViewerWorker(Table table, TargetSystemService targetSystemService) {
-        super(GlobalState.getMessage(UIComponentsI18N.ID, "jobsTableViewer.jobs.getList"));
+        super(GlobalState.getMessage(CommonComponentsI18N.ID, "jobsTableViewer.jobs.getList"));
         this.table = table;
         this.targetSystemService = targetSystemService;
     }

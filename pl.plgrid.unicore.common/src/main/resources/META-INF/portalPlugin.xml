@@ -9,13 +9,13 @@
 
 
         <MessageSourceExtension>
-            <id>vaspView</id>
-            <location>pl.plgrid.unicore.vasp.i18n.VASPMessages</location>
+            <id>uiCommonComponents</id>
+            <location>pl.plgrid.unicore.common.i18n.CommonComponentsMessages</location>
         </MessageSourceExtension>
 
         <MessageSourceExtension>
             <id>unicoreSiteResources</id>
-            <location>pl.plgrid.unicore.vasp.i18n.SiteResourcesMessages</location>
+            <location>pl.plgrid.unicore.common.i18n.SiteResourcesMessages</location>
         </MessageSourceExtension>
     </extensions>
 </plugin>

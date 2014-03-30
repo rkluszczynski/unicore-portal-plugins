@@ -1,6 +1,6 @@
 apply from: rootProject.file('gradle/publish.gradle')
 
-def unicorePortalVersion = '1.1.0-SNAPSHOT'
+def unicorePortalVersion = '1.0.0'
 def uasClientVersion = '1.7.0'
 def workflowClientVersion = '2.5.0-SNAPSHOT'
 
