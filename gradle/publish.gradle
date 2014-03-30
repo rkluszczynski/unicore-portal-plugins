@@ -1,8 +1,5 @@
 apply plugin: 'maven-publish'
 
-group = 'pl.plgrid.unicore'
-version = '1.1.0-SNAPSHOT'
-
 publishing {
     repositories.maven {
         url 'file://D:/WorkPlace/maven-repository/'

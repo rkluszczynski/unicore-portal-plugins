@@ -18,7 +18,7 @@ def collectPasswordFromUser() {
     if (System.console() == null) {
         new SwingBuilder().edt {
             dialog(modal: true, // Otherwise the build will continue running before you closed the dialog
-                    title: 'Enter upload', // Dialog title
+                    title: 'Enter upload password', // Dialog title
                     alwaysOnTop: true, // pretty much what the name says
                     resizable: false, // Don't allow the user to resize the dialog
                     locationRelativeTo: null, // Place dialog in center of the screen
@@ -36,18 +36,19 @@ def collectPasswordFromUser() {
             } // dialog end
         } // edt end
     } else {
-        passwordString = System.console().readPassword("\nPlease enter key passphrase: ")
+        passwordString = System.console().readPassword("\nPlease enter password: ")
         passwordString = new String(passwordString)
     }
 
     if (passwordString.size() <= 0) {
-        throw new InvalidUserDataException("You must enter a upload to proceed.")
+        throw new InvalidUserDataException("You must enter a password to upload.")
     }
     return passwordString;
 }
 
+
 task uploadPlugins {
-    description = 'Update files on remote server.'
+    description = 'Update files to remote server.'
     def hostname = 'unicore.studmat.umk.pl'
     def username = 'klusi'
     def targetDir = '.'

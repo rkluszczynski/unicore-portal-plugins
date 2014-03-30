@@ -5,6 +5,7 @@ apply plugin: 'base'
 subprojects {
     apply from: rootProject.file('gradle/common.gradle')
     apply from: rootProject.file('gradle/depends.gradle')
+    apply from: rootProject.file('gradle/versions.gradle')
 }
 
 apply from: rootProject.file('gradle/upload.gradle')
