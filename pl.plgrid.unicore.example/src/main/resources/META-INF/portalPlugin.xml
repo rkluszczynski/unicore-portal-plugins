@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+    <extensions>
+        <menuExtension>
+            <id>pl.plgrid.unicore.example.ui</id>
+            <menuPath>navigation:main</menuPath>
+
+            <name>Example View</name>
+            <description>Show Example UNICORE Portal Panel</description>
+
+            <category>/applicationExample</category>
+            <after>Grid</after>
+
+            <commandDescriptor>
+                <commandId>eu.unicore.portal.ui.views.switchTo</commandId>
+                <parameter>
+                    <key>view.class</key>
+                    <value class="string">pl.plgrid.unicore.example.ExampleView</value>
+                </parameter>
+            </commandDescriptor>
+        </menuExtension>
+
+        <MessageSourceExtension>
+            <id>pl.plgrid.unicore.example.messages</id>
+            <location>pl.plgrid.unicore.example.i18n.ExampleMessages</location>
+        </MessageSourceExtension>
+    </extensions>
+</plugin>
