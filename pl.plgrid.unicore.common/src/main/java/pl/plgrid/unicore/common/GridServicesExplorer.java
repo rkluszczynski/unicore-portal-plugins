@@ -5,7 +5,7 @@ import pl.plgrid.unicore.common.services.StorageFactoryService;
 import pl.plgrid.unicore.common.services.TargetSystemService;
 
 
-public interface GridServiceExplorer {
+public interface GridServicesExplorer {
     TargetSystemService getTargetSystemService();
 
     ServiceOrchestratorService getServiceOrchestratorService();

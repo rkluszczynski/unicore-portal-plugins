@@ -3,8 +3,8 @@
     <extensions>
         <ServiceExtension>
             <id>gridServiceExplorer</id>
-            <interfaceClass>pl.plgrid.unicore.common.GridServiceExplorer</interfaceClass>
-            <implementingClass>pl.plgrid.unicore.common.impl.GridServiceExplorerImpl</implementingClass>
+            <interfaceClass>pl.plgrid.unicore.common.GridServicesExplorer</interfaceClass>
+            <implementingClass>pl.plgrid.unicore.common.impl.GridServicesExplorerImpl</implementingClass>
         </ServiceExtension>
 
 

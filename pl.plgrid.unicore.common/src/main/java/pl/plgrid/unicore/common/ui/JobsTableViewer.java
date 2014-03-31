@@ -12,7 +12,7 @@ import eu.unicore.portal.core.threads.BackgroundWorker;
 import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
-import pl.plgrid.unicore.common.GridServiceExplorer;
+import pl.plgrid.unicore.common.GridServicesExplorer;
 import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.services.TargetSystemService;
 import pl.plgrid.unicore.common.ui.workers.JobsTableViewerWorker;
@@ -32,8 +32,8 @@ public class JobsTableViewer extends VerticalLayout implements
         super();
         initializeComponents();
 
-        GridServiceExplorer gridExplorer
-                = Session.getCurrent().getServiceRegistry().getService(GridServiceExplorer.class);
+        GridServicesExplorer gridExplorer
+                = Session.getCurrent().getServiceRegistry().getService(GridServicesExplorer.class);
         targetSystemService = gridExplorer.getTargetSystemService();
         reloadJobsList();
     }
