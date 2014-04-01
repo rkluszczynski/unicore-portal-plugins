@@ -1,25 +1,6 @@
 package pl.plgrid.unicore.vasp.session;
 
-import java.net.MalformedURLException;
-import java.util.List;
-import java.util.Random;
-
-import javax.security.auth.x500.X500Principal;
-import javax.xml.namespace.QName;
-
-import eu.unicore.portal.core.GlobalState;
-import eu.unicore.portal.core.PortalConfiguration;
-import eu.unicore.portal.core.Session;
-import eu.unicore.security.wsutil.client.UnicoreWSClientFactory;
-import eu.unicore.util.httpclient.IClientConfiguration;
-import org.apache.log4j.Logger;
-import org.chemomentum.common.ws.IResourceBroker;
-import org.chemomentum.common.ws.IServiceOrchestrator;
-import org.unigrids.x2006.x04.services.tsf.CreateTSRDocument;
-import org.w3.x2005.x08.addressing.EndpointReferenceType;
-
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
-
 import de.fzj.unicore.uas.StorageFactory;
 import de.fzj.unicore.uas.TargetSystemFactory;
 import de.fzj.unicore.uas.client.StorageClient;
@@ -28,9 +9,23 @@ import de.fzj.unicore.uas.client.TSFClient;
 import de.fzj.unicore.uas.client.TSSClient;
 import de.fzj.unicore.wsrflite.xmlbeans.WSUtilities;
 import de.fzj.unicore.wsrflite.xmlbeans.client.RegistryClient;
+import eu.unicore.portal.core.GlobalState;
+import eu.unicore.portal.core.PortalConfiguration;
+import eu.unicore.portal.core.Session;
+import eu.unicore.security.wsutil.client.UnicoreWSClientFactory;
+import eu.unicore.util.httpclient.IClientConfiguration;
+import org.apache.log4j.Logger;
+import org.chemomentum.common.ws.IServiceOrchestrator;
+import org.unigrids.x2006.x04.services.tsf.CreateTSRDocument;
+import org.w3.x2005.x08.addressing.EndpointReferenceType;
+
+import javax.security.auth.x500.X500Principal;
+import javax.xml.namespace.QName;
+import java.net.MalformedURLException;
+import java.util.List;
+import java.util.Random;
 
 /**
- *
  * @author rkluszczynski
  */
 public class ServiceClientsFactory {
@@ -48,11 +43,12 @@ public class ServiceClientsFactory {
                 .getProperties()
                 .getProperty(
                         PortalConfiguration.CORE_PREFIX
-                        + PortalConfiguration.REGISTRIES), null);
+                                + PortalConfiguration.REGISTRIES
+                ), null);
     }
 
     public ServiceClientsFactory(String registryURL,
-            IClientConfiguration clientConfiguration) {
+                                 IClientConfiguration clientConfiguration) {
         this.clientConfiguration = clientConfiguration == null ? PortalClientSessionUtils
                 .getCurrentSessionClientConfiguration() : clientConfiguration;
         this.registryClient = createRegistryClient(registryURL);
@@ -137,11 +133,11 @@ public class ServiceClientsFactory {
                 IServiceOrchestrator.PORT);
     }
 
-    public IResourceBroker getResourceBrokerClient() {
-        return initializeServiceClient(IResourceBroker.class,
-                IResourceBroker.PORT);
-    }
-
+    //    public IResourceBroker getResourceBrokerClient() {
+//        return initializeServiceClient(IResourceBroker.class,
+//                IResourceBroker.PORT);
+//    }
+//
     protected <T> T initializeServiceClient(Class<T> clazz, QName port) {
         List<EndpointReferenceType> accessibleServicesList = Lists
                 .newArrayList();

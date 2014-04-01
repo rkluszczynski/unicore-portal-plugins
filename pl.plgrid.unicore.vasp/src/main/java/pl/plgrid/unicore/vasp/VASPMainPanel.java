@@ -8,18 +8,15 @@ import eu.unicore.portal.ui.PortalApplication;
 import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
 import org.ggf.schemas.jsdl.x2005.x11.jsdl.JobDefinitionDocument;
-import org.unigrids.services.atomic.types.AvailableResourceType;
-import org.unigrids.services.atomic.types.AvailableResourceTypeType;
+import pl.plgrid.unicore.common.ui.AvailableResourcesPanel;
 import pl.plgrid.unicore.common.ui.JobsTableViewer;
 import pl.plgrid.unicore.vasp.input.ExampleInputData;
-import pl.plgrid.unicore.vasp.input.GenericInputFilePanel;
 import pl.plgrid.unicore.vasp.session.UserSessionGridState;
+import pl.plgrid.unicore.vasp.ui.GenericInputFilePanel;
 import pl.plgrid.unicore.vasp.utils.JobDefinitionUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  *
@@ -123,25 +120,31 @@ public class VASPMainPanel extends VerticalLayout {
         showResourcesButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                userGridState
-                        .gatherAllAvailableResources(new UserSessionGridState.UIResourcesUpdater() {
+                Window w = new Window("Available Resources");
+                PortalApplication.getCurrent().addWindow(w);
+                w.setContent(new AvailableResourcesPanel());
+                w.center();
 
-                            @Override
-                            public void updateUI(
-                                    ConcurrentMap<String, ConcurrentHashMap<AvailableResourceTypeType.Enum, ArrayList<AvailableResourceType>>> m,
-                                    boolean isFinished) {
-                                        if (!isFinished) {
-                                            return;
-                                        }
-                                        AvailableResourcePanel aResourcePanel = new AvailableResourcePanel();
-                                        aResourcePanel.setResources(m);
+//                userGridState
+//                        .gatherAllAvailableResources(new UserSessionGridState.UIResourcesUpdater() {
+//
+//                            @Override
+//                            public void updateUI(
+//                                    ConcurrentMap<String, ConcurrentHashMap<AvailableResourceTypeType.Enum, ArrayList<AvailableResourceType>>> m,
+//                                    boolean isFinished) {
+//                                        if (!isFinished) {
+//                                            return;
+//                                        }
+//                                        AvailableResourcePanel aResourcePanel = new AvailableResourcePanel();
+//                                        aResourcePanel.setResources(m);
+//
+//                                        Window w = new Window("Available Resources");
+//                                        PortalApplication.getCurrent().addWindow(w);
+//                                        w.setContent(aResourcePanel);
+//                                        w.center();
+//                                    }
+//                        });
 
-                                        Window w = new Window("Available Resources");
-                                        PortalApplication.getCurrent().addWindow(w);
-                                        w.setContent(aResourcePanel);
-                                        w.center();
-                                    }
-                        });
             }
         });
 

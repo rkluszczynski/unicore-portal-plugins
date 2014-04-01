@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.vasp.input;
+package pl.plgrid.unicore.vasp.ui;
 
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
@@ -8,10 +8,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import eu.unicore.portal.ui.PortalApplication;
 import eu.unicore.portal.ui.Styles;
 import org.unigrids.services.atomic.types.ProtocolType;
-import pl.plgrid.unicore.vasp.ui.FileInStorageChooser;
 
 /**
- *
  * @author rkluszczynski
  */
 @SuppressWarnings("serial")

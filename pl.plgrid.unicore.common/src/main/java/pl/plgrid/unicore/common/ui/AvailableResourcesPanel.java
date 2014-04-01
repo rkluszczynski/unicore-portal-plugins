@@ -2,8 +2,10 @@ package pl.plgrid.unicore.common.ui;
 
 import com.vaadin.ui.*;
 import eu.unicore.portal.core.GlobalState;
+import eu.unicore.portal.core.threads.BackgroundWorker;
 import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
+import pl.plgrid.unicore.common.ui.workers.AvailableResourcesPanelWorker;
 
 
 public class AvailableResourcesPanel extends Panel {
@@ -44,6 +46,9 @@ public class AvailableResourcesPanel extends Panel {
         setImmediate(true);
         setHeight(INITIAL_HEIGHT, Unit.PIXELS);
         setWidth(INITIAL_WIDTH, Unit.PIXELS);
+
+        BackgroundWorker worker = new AvailableResourcesPanelWorker(table);
+        worker.schedule();
     }
 
     private String getMessage(String messageKey) {

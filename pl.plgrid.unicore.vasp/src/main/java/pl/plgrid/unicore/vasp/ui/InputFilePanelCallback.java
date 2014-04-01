@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.vasp.input;
+package pl.plgrid.unicore.vasp.ui;
 
 import com.vaadin.ui.TextField;
 import eu.unicore.portal.grid.core.nodes.Node;
@@ -6,7 +6,6 @@ import eu.unicore.portal.grid.ui.browser.StorageChooser;
 import org.apache.log4j.Logger;
 
 /**
- *
  * @author rkluszczynski
  */
 public class InputFilePanelCallback implements
