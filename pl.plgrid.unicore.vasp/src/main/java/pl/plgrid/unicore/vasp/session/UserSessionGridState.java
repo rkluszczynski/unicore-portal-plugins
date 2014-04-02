@@ -15,6 +15,7 @@ import org.unigrids.services.atomic.types.AvailableResourceTypeType.Enum;
 import org.unigrids.services.atomic.types.ProtocolType;
 import org.unigrids.x2006.x04.services.tss.JobReferenceDocument;
 import org.unigrids.x2006.x04.services.tss.TargetSystemPropertiesDocument;
+import pl.plgrid.unicore.common.utils.SecurityHelper;
 import pl.plgrid.unicore.vasp.client.ServiceOrchestratorPortalClient;
 
 import java.io.ByteArrayInputStream;
@@ -27,7 +28,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
- *
  * @author rkluszczynski
  */
 public class UserSessionGridState {
@@ -54,7 +54,7 @@ public class UserSessionGridState {
     }
 
     public String importFileToGrid(StorageClient storageClient, String filename, String content,
-            String workAssignmentID) throws Exception {
+                                   String workAssignmentID) throws Exception {
         InputStream source = new ByteArrayInputStream(content.getBytes());
         storageClient.getImport(filename, ProtocolType.BFT,
                 ProtocolType.RBYTEIO).writeAllData(source);
@@ -90,40 +90,41 @@ public class UserSessionGridState {
         for (final TSSClient tss : tssList) {
             new BackgroundWorker("Getting resources from TSS "
                     + tss.getEPR().getAddress().getStringValue()) {
-                        @Override
-                        protected void work(IProgressMonitor progress) {
-                            try {
-                                TargetSystemPropertiesDocument resourcePropertiesDocument = tss.getResourcePropertiesDocument();
-                                logger.debug(resourcePropertiesDocument);
-                                
-                                for (AvailableResourceType art : tss
+                @Override
+                protected void work(IProgressMonitor progress) {
+                    try {
+                        TargetSystemPropertiesDocument resourcePropertiesDocument = tss.getResourcePropertiesDocument();
+                        logger.debug(resourcePropertiesDocument);
+
+                        for (AvailableResourceType art : tss
                                 .getAvailableResources()) {
-                                    m.putIfAbsent(
-                                            art.getName(),
-                                            new ConcurrentHashMap<org.unigrids.services.atomic.types.AvailableResourceTypeType.Enum, ArrayList<AvailableResourceType>>());
-                                    m.get(art.getName()).putIfAbsent(art.getType(),
-                                            new ArrayList<AvailableResourceType>());
-                                    m.get(art.getName()).get(art.getType()).add(art);
-                                }
-                            } catch (Exception e) {
-                                logger.error(
-                                        "Problem with getting available resources from TSS <"
+                            m.putIfAbsent(
+                                    art.getName(),
+                                    new ConcurrentHashMap<org.unigrids.services.atomic.types.AvailableResourceTypeType.Enum, ArrayList<AvailableResourceType>>());
+                            m.get(art.getName()).putIfAbsent(art.getType(),
+                                    new ArrayList<AvailableResourceType>());
+                            m.get(art.getName()).get(art.getType()).add(art);
+                        }
+                    } catch (Exception e) {
+                        logger.error(
+                                "Problem with getting available resources from TSS <"
                                         + tss.getFriendlyName()
                                         + "> by user <"
                                         + Session.getCurrent().getUser()
-                                        .getUsername() + ">", e);
-                            }
-                            fetchedLatch.countDown();
-                        }
+                                        .getUsername() + ">", e
+                        );
+                    }
+                    fetchedLatch.countDown();
+                }
 
-                        @Override
-                        protected void updateUI() {
-                            super.updateUI();
-                            if (uiResourcesUpdater != null) {
-                                uiResourcesUpdater.updateUI(m, false);
-                            }
-                        }
-                    }.schedule();
+                @Override
+                protected void updateUI() {
+                    super.updateUI();
+                    if (uiResourcesUpdater != null) {
+                        uiResourcesUpdater.updateUI(m, false);
+                    }
+                }
+            }.schedule();
         }
 
         new BackgroundWorker("Gathering all resources") {
@@ -166,23 +167,25 @@ public class UserSessionGridState {
                                 @Override
                                 public EnumerationClient<JobReferenceDocument> apply(
                                         TSSClient tssClient) {
-                                            try {
-                                                return tssClient
+                                    try {
+                                        return tssClient
                                                 .getJobReferenceEnumeration();
-                                            } catch (Exception e) {
-                                                logger.error(
-                                                        "Problem getting enumeration client from TSS <"
+                                    } catch (Exception e) {
+                                        logger.error(
+                                                "Problem getting enumeration client from TSS <"
                                                         + tssClient
                                                         .getFriendlyName()
                                                         + "> by user <"
                                                         + Session.getCurrent()
                                                         .getUser()
                                                         .getUsername()
-                                                        + ">", e);
-                                                return null;
-                                            }
-                                        }
-                            });
+                                                        + ">", e
+                                        );
+                                        return null;
+                                    }
+                                }
+                            }
+                    );
         } catch (Exception e) {
             logger.error("Problem during getting TSS clients", e);
             return;
@@ -195,32 +198,32 @@ public class UserSessionGridState {
             new BackgroundWorker("Getting jobs from "
                     + enumClient.getFriendlyName()) {
 
-                        @Override
-                        protected void work(IProgressMonitor progress) {
-                            for (JobReferenceDocument jrd : enumClient) {
-                                try {
-                                    jobs.add(new JobClient(jrd.getJobReference(),
-                                                    PortalClientSessionUtils.getCurrentSessionClientConfiguration()));
-                                } catch (Exception e) {
-                                    logger.warn("Problem with job reference <"
-                                            + jrd.getJobReference().getAddress()
-                                            .getStringValue()
-                                            + "> during access by user <"
-                                            + Session.getCurrent().getUser()
-                                            .getUsername() + ">", e);
-                                }
-                            }
-                            fetchedLatch.countDown();
+                @Override
+                protected void work(IProgressMonitor progress) {
+                    for (JobReferenceDocument jrd : enumClient) {
+                        try {
+                            jobs.add(new JobClient(jrd.getJobReference(),
+                                    SecurityHelper.getClientConfig()));
+                        } catch (Exception e) {
+                            logger.warn("Problem with job reference <"
+                                    + jrd.getJobReference().getAddress()
+                                    .getStringValue()
+                                    + "> during access by user <"
+                                    + Session.getCurrent().getUser()
+                                    .getUsername() + ">", e);
                         }
+                    }
+                    fetchedLatch.countDown();
+                }
 
-                        @Override
-                        protected void updateUI() {
-                            super.updateUI();
-                            if (uiJobsUpdater != null) {
-                                uiJobsUpdater.updateUI(jobs, false);
-                            }
-                        }
-                    }.schedule();
+                @Override
+                protected void updateUI() {
+                    super.updateUI();
+                    if (uiJobsUpdater != null) {
+                        uiJobsUpdater.updateUI(jobs, false);
+                    }
+                }
+            }.schedule();
         }
 
         new BackgroundWorker("Gathering all jobs") {

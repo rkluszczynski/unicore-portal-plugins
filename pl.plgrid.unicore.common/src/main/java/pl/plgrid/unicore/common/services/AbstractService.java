@@ -8,8 +8,8 @@ import eu.unicore.util.httpclient.IClientConfiguration;
 import org.apache.log4j.Logger;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
+import pl.plgrid.unicore.common.utils.SecurityHelper;
 
-import javax.security.auth.login.CredentialException;
 import javax.security.auth.x500.X500Principal;
 import javax.xml.namespace.QName;
 import java.net.MalformedURLException;
@@ -61,7 +61,7 @@ public class AbstractService {
                 + "> by user: <" + Session.getCurrent().getUser().getUsername()
                 + ">");
         String receiverDn = WSUtilities.extractServerIDFromEPR(serviceEpr);
-        IClientConfiguration clientConfig = getClientConfig();
+        IClientConfiguration clientConfig = SecurityHelper.getClientConfig();
         if (receiverDn != null) {
             clientConfig.getETDSettings().setReceiver(
                     new X500Principal(receiverDn));
@@ -70,16 +70,5 @@ public class AbstractService {
                 .createPlainWSProxy(clazz, serviceEpr
                         .getAddress()
                         .getStringValue());
-    }
-
-    protected IClientConfiguration getClientConfig() {
-        Session session = Session.getCurrent();
-        IClientConfiguration clientConf = null;
-        try {
-            clientConf = session.getUser().getCredentials();
-        } catch (CredentialException e) {
-            throw new IllegalStateException(e);
-        }
-        return clientConf;
     }
 }

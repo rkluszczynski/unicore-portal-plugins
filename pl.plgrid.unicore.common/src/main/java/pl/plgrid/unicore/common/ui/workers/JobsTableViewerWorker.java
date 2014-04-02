@@ -13,7 +13,6 @@ import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.Session;
 import eu.unicore.portal.core.threads.BackgroundWorker;
 import eu.unicore.portal.core.threads.IProgressMonitor;
-import eu.unicore.util.httpclient.IClientConfiguration;
 import org.apache.log4j.Logger;
 import org.unigrids.services.atomic.types.StatusType;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
@@ -21,8 +20,8 @@ import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
 import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.services.TargetSystemService;
 import pl.plgrid.unicore.common.ui.JobsTableViewer;
+import pl.plgrid.unicore.common.utils.SecurityHelper;
 
-import javax.security.auth.login.CredentialException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +110,7 @@ public class JobsTableViewerWorker extends BackgroundWorker {
                                     .getAddress()
                                     .getStringValue()
                                     .split("=")[1]);
-                            JobClient jc = new JobClient(epr, getClientConfig());
+                            JobClient jc = new JobClient(epr, SecurityHelper.getClientConfig());
 
                             // TODO: optimize this overkilling status asking one by one
                             jobsStatusMap.put(
@@ -143,16 +142,5 @@ public class JobsTableViewerWorker extends BackgroundWorker {
                 logger.error("Problem with getting jobs info for table", ex);
             }
         }
-    }
-
-    private IClientConfiguration getClientConfig() {
-        Session session = Session.getCurrent();
-        IClientConfiguration clientConf = null;
-        try {
-            clientConf = session.getUser().getCredentials();
-        } catch (CredentialException e) {
-            throw new IllegalStateException(e);
-        }
-        return clientConf;
     }
 }

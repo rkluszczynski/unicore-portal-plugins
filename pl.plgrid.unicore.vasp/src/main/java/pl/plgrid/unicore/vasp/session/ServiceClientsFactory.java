@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.chemomentum.common.ws.IServiceOrchestrator;
 import org.unigrids.x2006.x04.services.tsf.CreateTSRDocument;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
+import pl.plgrid.unicore.common.utils.SecurityHelper;
 
 import javax.security.auth.x500.X500Principal;
 import javax.xml.namespace.QName;
@@ -49,8 +50,8 @@ public class ServiceClientsFactory {
 
     public ServiceClientsFactory(String registryURL,
                                  IClientConfiguration clientConfiguration) {
-        this.clientConfiguration = clientConfiguration == null ? PortalClientSessionUtils
-                .getCurrentSessionClientConfiguration() : clientConfiguration;
+        this.clientConfiguration = clientConfiguration == null ? SecurityHelper
+                .getClientConfig() : clientConfiguration;
         this.registryClient = createRegistryClient(registryURL);
     }
 
