@@ -1,8 +1,11 @@
 package pl.plgrid.unicore.common;
 
+import de.fzj.unicore.uas.client.StorageClient;
 import pl.plgrid.unicore.common.services.ServiceOrchestratorService;
 import pl.plgrid.unicore.common.services.StorageFactoryService;
 import pl.plgrid.unicore.common.services.TargetSystemService;
+
+import java.util.Collection;
 
 
 public interface GridServicesExplorer {
@@ -11,6 +14,8 @@ public interface GridServicesExplorer {
     ServiceOrchestratorService getServiceOrchestratorService();
 
     StorageFactoryService getStorageFactoryService();
+
+    Collection<StorageClient> getGlobalStorageServices();
 
 //	Collection<ExecutionService> getExecutionServices(NameFilter... filters);
 //

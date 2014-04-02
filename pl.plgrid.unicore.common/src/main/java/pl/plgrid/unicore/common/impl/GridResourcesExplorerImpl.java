@@ -2,15 +2,18 @@ package pl.plgrid.unicore.common.impl;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
+import de.fzj.unicore.uas.client.StorageClient;
 import de.fzj.unicore.uas.client.TSSClient;
 import eu.unicore.portal.core.Session;
 import org.apache.log4j.Logger;
+import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.GridResourcesExplorer;
 import pl.plgrid.unicore.common.GridServicesExplorer;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
 import pl.plgrid.unicore.common.resources.AvailableResource;
 import pl.plgrid.unicore.common.services.TargetSystemService;
 import pl.plgrid.unicore.common.utils.ResourcesHelper;
+import pl.plgrid.unicore.common.utils.SecurityHelper;
 
 import java.util.Collection;
 import java.util.List;
@@ -78,6 +81,26 @@ public class GridResourcesExplorerImpl implements GridResourcesExplorer {
 
     @Override
     public Collection<Object> getStorages() {
+        List<StorageClient> storageClients = Lists.newArrayList();
+
+        for (TSSClient tssClient : tssClients) {
+            try {
+                List<EndpointReferenceType> tssClientStorageEprs = tssClient.getStorages();
+                for (EndpointReferenceType tssClientStorageEpr : tssClientStorageEprs) {
+                    storageClients.add(
+                            new StorageClient(
+                                    tssClientStorageEpr,
+                                    SecurityHelper.getClientConfig()
+                            )
+                    );
+                }
+            } catch (Exception e) {
+                logger.error("Error getting storages from tss client: " + tssClient.getEPR().getAddress().getStringValue());
+            }
+        }
+
+
+
         return null;
     }
 }
