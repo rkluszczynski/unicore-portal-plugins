@@ -1,4 +1,6 @@
 
 dependencies {
     compile project(':pl.plgrid.unicore.common')
+
+    compile 'org.vaadin.addons:tokenfield:7.0.1'
 }

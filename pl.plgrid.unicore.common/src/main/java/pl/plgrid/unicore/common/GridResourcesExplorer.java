@@ -1,6 +1,7 @@
 package pl.plgrid.unicore.common;
 
-import de.fzj.unicore.uas.client.StorageClient;
+import pl.plgrid.unicore.common.entities.AtomicJobEntity;
+import pl.plgrid.unicore.common.entities.StorageEntity;
 import pl.plgrid.unicore.common.resources.AvailableResource;
 
 import java.util.Collection;
@@ -8,16 +9,17 @@ import java.util.Collection;
 
 public interface GridResourcesExplorer {
 
+    //	Collection<AvailableResource> getResources(NameFilter[] resourceFilters, NameFilter[] siteFilters);
     Collection<AvailableResource> getResources();
 
-    Collection<Object> getJobs();
+    Collection<AtomicJobEntity> getJobs();
 
-    Collection<StorageClient> getStorages();
+    Collection<StorageEntity> getStorages();
 
-    Collection<StorageClient> getGlobalStorages();
+    Collection<StorageEntity> getGlobalStorages();
 
-    Collection<StorageClient> getSiteStorages();
+    Collection<StorageEntity> getSiteStorages();
 
-    Collection<StorageClient> getFactoryStorages();
+    Collection<StorageEntity> getFactoryStorages();
 
 }

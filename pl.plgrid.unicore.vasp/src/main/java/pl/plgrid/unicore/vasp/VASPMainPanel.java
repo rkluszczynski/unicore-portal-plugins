@@ -8,6 +8,11 @@ import eu.unicore.portal.ui.PortalApplication;
 import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
 import org.ggf.schemas.jsdl.x2005.x11.jsdl.JobDefinitionDocument;
+import org.vaadin.tokenfield.TokenField;
+import pl.plgrid.unicore.common.GridResourcesExplorer;
+import pl.plgrid.unicore.common.entities.AtomicJobEntity;
+import pl.plgrid.unicore.common.entities.StorageEntity;
+import pl.plgrid.unicore.common.resources.AvailableResource;
 import pl.plgrid.unicore.common.ui.AvailableResourcesPanel;
 import pl.plgrid.unicore.common.ui.JobsTableViewer;
 import pl.plgrid.unicore.vasp.input.ExampleInputData;
@@ -16,6 +21,7 @@ import pl.plgrid.unicore.vasp.ui.GenericInputFilePanel;
 import pl.plgrid.unicore.vasp.utils.JobDefinitionUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -148,9 +154,49 @@ public class VASPMainPanel extends VerticalLayout {
             }
         });
 
+        Button testingButt = new Button("testingButt");
+        testingButt.setStyleName(Styles.MARGIN_TOP_BOTTOM_15);
+        testingButt.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                GridResourcesExplorer gridResourcesExplorer = Session
+                        .getCurrent()
+                        .getServiceRegistry()
+                        .getService(GridResourcesExplorer.class);
+
+                logger.info("####  RESOURCES  ####");
+                Collection<AvailableResource> resources = gridResourcesExplorer.getResources();
+                for (AvailableResource resource : resources) {
+                    logger.info(" ==>> " + resource);
+                }
+
+                logger.info("####  STORAGES  ####");
+                Collection<StorageEntity> storages = gridResourcesExplorer.getStorages();
+                for (StorageEntity storage : storages) {
+                    logger.info(" -->> " + storage);
+                }
+
+                logger.info("####  JOBS  ####");
+                Collection<AtomicJobEntity> jobs = gridResourcesExplorer.getJobs();
+                for (AtomicJobEntity job : jobs) {
+                    logger.info(" ~~>> " + job);
+                }
+            }
+        });
+
+
+        TokenField tokenField = new TokenField("QQ");
+        tokenField.addToken("Token1");
+        tokenField.addToken("Token2");
+        tokenField.addToken("Token3");
+//        tokenField.setReadOnly(true);
+        tokenField.setNewTokensAllowed(false);
+
         HorizontalLayout hl = new HorizontalLayout();
         hl.addComponent(submitWA);
         hl.addComponent(showResourcesButton);
+        hl.addComponent(testingButt);
+        hl.addComponent(tokenField);
 
         VerticalLayout vl = new VerticalLayout();        
         vl.setSizeFull();

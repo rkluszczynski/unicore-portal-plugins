@@ -1,9 +1,7 @@
 package pl.plgrid.unicore.common.impl;
 
 import pl.plgrid.unicore.common.GridServicesExplorer;
-import pl.plgrid.unicore.common.services.ServiceOrchestratorService;
-import pl.plgrid.unicore.common.services.StorageFactoryService;
-import pl.plgrid.unicore.common.services.TargetSystemService;
+import pl.plgrid.unicore.common.services.*;
 
 
 public class GridServicesExplorerImpl implements GridServicesExplorer {
@@ -11,11 +9,15 @@ public class GridServicesExplorerImpl implements GridServicesExplorer {
     private final TargetSystemService targetSystemService;
     private final ServiceOrchestratorService serviceOrchestratorService;
     private final StorageFactoryService storageFactoryService;
+    private final GlobalStorageService globalStorageService;
+    private final WorkflowFactoryService workflowFactoryService;
 
     public GridServicesExplorerImpl() {
         targetSystemService = new TargetSystemService();
         serviceOrchestratorService = new ServiceOrchestratorService();
         storageFactoryService = new StorageFactoryService();
+        globalStorageService = new GlobalStorageService();
+        workflowFactoryService = new WorkflowFactoryService();
     }
 
 
@@ -34,4 +36,13 @@ public class GridServicesExplorerImpl implements GridServicesExplorer {
         return storageFactoryService;
     }
 
+    @Override
+    public GlobalStorageService getGlobalStorageService() {
+        return globalStorageService;
+    }
+
+    @Override
+    public WorkflowFactoryService getWorkflowFactoryService() {
+        return workflowFactoryService;
+    }
 }

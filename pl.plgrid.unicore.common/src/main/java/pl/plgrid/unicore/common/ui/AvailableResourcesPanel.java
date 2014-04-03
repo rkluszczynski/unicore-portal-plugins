@@ -9,11 +9,10 @@ import pl.plgrid.unicore.common.ui.workers.AvailableResourcesPanelWorker;
 
 
 public class AvailableResourcesPanel extends Panel {
-
     private static final Logger logger = Logger.getLogger(AvailableResourcesPanel.class);
 
-    public static final int INITIAL_WIDTH = 550;
-    public static final int INITIAL_HEIGHT = 300;
+    public static final int INITIAL_WIDTH = 600;
+    public static final int INITIAL_HEIGHT = 400;
 
     private Table table;
 
@@ -32,7 +31,7 @@ public class AvailableResourcesPanel extends Panel {
 
         table.setSelectable(true);
         table.setSizeFull();
-        table.setImmediate(true);
+//        table.setImmediate(true);
         setContent(table);
 
         VerticalLayout content = new VerticalLayout();
@@ -41,11 +40,12 @@ public class AvailableResourcesPanel extends Panel {
         content.addComponent(table);
         // content.addComponent(footer);
         content.setMargin(true);
+        content.setSizeFull();
 
-        setContent(content);
-        setImmediate(true);
         setHeight(INITIAL_HEIGHT, Unit.PIXELS);
         setWidth(INITIAL_WIDTH, Unit.PIXELS);
+        setContent(content);
+        setImmediate(true);
 
         BackgroundWorker worker = new AvailableResourcesPanelWorker(table);
         worker.schedule();

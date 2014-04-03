@@ -1,25 +1,25 @@
 package pl.plgrid.unicore.common;
 
-import pl.plgrid.unicore.common.services.ServiceOrchestratorService;
-import pl.plgrid.unicore.common.services.StorageFactoryService;
-import pl.plgrid.unicore.common.services.TargetSystemService;
+import pl.plgrid.unicore.common.services.*;
 
 
 public interface GridServicesExplorer {
+
+    //	Collection<ExecutionService> getExecutionServices(NameFilter... filters);
     TargetSystemService getTargetSystemService();
 
+
+    //	Collection<BrokerService> getBrokers();
     ServiceOrchestratorService getServiceOrchestratorService();
 
+
+    //	Collection<StorageClient> getStorageServices();
     StorageFactoryService getStorageFactoryService();
 
+    GlobalStorageService getGlobalStorageService();
 
-//	Collection<ExecutionService> getExecutionServices(NameFilter... filters);
-//
-//	Collection<BrokerService> getBrokers();
-//		
-//	Collection<WorkflowService> getWorkflowServices();
-//	
-//	Collection<StorageClient> getStorageServices();
-//	
-//	Collection<AvailableResource> getResources(NameFilter[] resourceFilters, NameFilter[] siteFilters);	
+
+    //	Collection<WorkflowService> getWorkflowServices();
+    WorkflowFactoryService getWorkflowFactoryService();
+
 }

@@ -1,14 +1,20 @@
 package pl.plgrid.unicore.common.services;
 
+import com.google.gwt.thirdparty.guava.common.base.Function;
+import com.google.gwt.thirdparty.guava.common.collect.Collections2;
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import de.fzj.unicore.uas.StorageManagement;
 import de.fzj.unicore.uas.client.StorageClient;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
+import pl.plgrid.unicore.common.entities.StorageEntity;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
 import pl.plgrid.unicore.common.utils.SecurityHelper;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import static pl.plgrid.unicore.common.entities.StorageEntityType.GLOBAL_STORAGE;
 
 public class GlobalStorageService extends AbstractStorageService {
 
@@ -21,7 +27,6 @@ public class GlobalStorageService extends AbstractStorageService {
         return clients.get(0);
     }
 
-    @Override
     public List<StorageClient> createClients() throws UnavailableGridServiceException {
         return getClients(false);
     }
@@ -43,5 +48,18 @@ public class GlobalStorageService extends AbstractStorageService {
             }
         }
         return globalStorageClients;
+    }
+
+    @Override
+    public Collection<StorageEntity> getStorageEntities() throws UnavailableGridServiceException {
+        List<EndpointReferenceType> accessibleServices = getAccessibleServices(StorageManagement.SMS_PORT);
+        return Collections2.transform(accessibleServices,
+                new Function<EndpointReferenceType, StorageEntity>() {
+                    @Override
+                    public StorageEntity apply(EndpointReferenceType storageEpr) {
+                        return new StorageEntity(storageEpr, GLOBAL_STORAGE);
+                    }
+                }
+        );
     }
 }

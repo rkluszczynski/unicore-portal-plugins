@@ -2,9 +2,15 @@
 <plugin>
     <extensions>
         <ServiceExtension>
-            <id>gridServiceExplorer</id>
+            <id>gridServicesExplorer</id>
             <interfaceClass>pl.plgrid.unicore.common.GridServicesExplorer</interfaceClass>
             <implementingClass>pl.plgrid.unicore.common.impl.GridServicesExplorerImpl</implementingClass>
+        </ServiceExtension>
+
+        <ServiceExtension>
+            <id>gridResourcesExplorer</id>
+            <interfaceClass>pl.plgrid.unicore.common.GridResourcesExplorer</interfaceClass>
+            <implementingClass>pl.plgrid.unicore.common.impl.GridResourcesExplorerImpl</implementingClass>
         </ServiceExtension>
 
 
