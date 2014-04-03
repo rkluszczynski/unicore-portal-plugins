@@ -6,6 +6,7 @@ import de.fzj.unicore.uas.client.StorageFactoryClient;
 import eu.unicore.portal.core.Session;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
+import pl.plgrid.unicore.common.utils.SecurityHelper;
 
 import javax.xml.namespace.QName;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Random;
 
 public class StorageFactoryService extends AbstractService {
 
+    @Override
     public StorageClient createClient() throws UnavailableGridServiceException {
         return getServiceClient(StorageFactory.SMF_PORT);
     }
@@ -34,7 +36,7 @@ public class StorageFactoryService extends AbstractService {
         StorageClient storageClient;
         try {
             StorageFactoryClient sfc = new StorageFactoryClient(
-                    storageFactoryEpr, getClientConfig());
+                    storageFactoryEpr, SecurityHelper.getClientConfig());
             storageClient = sfc.createSMS();
             logger.info("Created SMS: <"
                     + storageClient.getEPR().getAddress().getStringValue()

@@ -7,6 +7,7 @@ import de.fzj.unicore.uas.client.TSSClient;
 import org.unigrids.x2006.x04.services.tsf.CreateTSRDocument;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
+import pl.plgrid.unicore.common.utils.SecurityHelper;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class TargetSystemService extends AbstractService {
 
+    @Override
     public List<TSSClient> createClient() throws UnavailableGridServiceException {
         return getServiceClients(TargetSystemFactory.TSF_PORT);
     }
@@ -26,7 +28,7 @@ public class TargetSystemService extends AbstractService {
         for (EndpointReferenceType accessibleService : accessibleServices) {
             TSFClient tsfClient = null;
             try {
-                tsfClient = new TSFClient(accessibleService, getClientConfig());
+                tsfClient = new TSFClient(accessibleService, SecurityHelper.getClientConfig());
                 TSSClient tssClient = null;
                 if (tsfClient.getAccessibleTargetSystems().isEmpty()) {
                     CreateTSRDocument in = CreateTSRDocument.Factory.newInstance();
@@ -38,7 +40,7 @@ public class TargetSystemService extends AbstractService {
                     // TODO: handle somehow admin privileges
                     for (EndpointReferenceType tssEpr : tsfClient
                             .getAccessibleTargetSystems()) {
-                        tssClients.add(new TSSClient(tssEpr, getClientConfig()));
+                        tssClients.add(new TSSClient(tssEpr, SecurityHelper.getClientConfig()));
                         logger.info("Added user's TSS epr: " + tssEpr.getAddress().getStringValue());
                         break;
                     }

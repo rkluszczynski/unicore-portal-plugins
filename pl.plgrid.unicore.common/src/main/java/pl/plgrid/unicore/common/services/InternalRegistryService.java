@@ -33,8 +33,9 @@ class InternalRegistryService {
         return registryClient;
     }
 
-    void reInitializeClient() {
+    boolean reInitializeClient() {
         initializeRegistryClient();
+        return getRegistryClient() == null;
     }
 
     private void initializeRegistryClient() {

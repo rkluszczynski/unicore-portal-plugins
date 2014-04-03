@@ -6,8 +6,8 @@ import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
 
 
 public class ResourceBrokerService extends AbstractService {
+    @Override
     public IResourceBroker createClient() throws UnavailableGridServiceException {
-        return getServiceClient(IResourceBroker.class,
-                IResourceBroker.PORT);
+        return getServiceClient(IResourceBroker.class, IResourceBroker.PORT);
     }
 }

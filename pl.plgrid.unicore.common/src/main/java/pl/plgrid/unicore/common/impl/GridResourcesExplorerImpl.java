@@ -80,9 +80,19 @@ public class GridResourcesExplorerImpl implements GridResourcesExplorer {
     }
 
     @Override
-    public Collection<Object> getStorages() {
-        List<StorageClient> storageClients = Lists.newArrayList();
+    public Collection<StorageClient> getStorages() {
 
+        return null;
+    }
+
+    @Override
+    public Collection<StorageClient> getGlobalStorages() {
+        return null;
+    }
+
+    @Override
+    public Collection<StorageClient> getSiteStorages() {
+        List<StorageClient> storageClients = Lists.newArrayList();
         for (TSSClient tssClient : tssClients) {
             try {
                 List<EndpointReferenceType> tssClientStorageEprs = tssClient.getStorages();
@@ -98,9 +108,11 @@ public class GridResourcesExplorerImpl implements GridResourcesExplorer {
                 logger.error("Error getting storages from tss client: " + tssClient.getEPR().getAddress().getStringValue());
             }
         }
+        return storageClients;
+    }
 
-
-
+    @Override
+    public Collection<StorageClient> getFactoryStorages() {
         return null;
     }
 }
