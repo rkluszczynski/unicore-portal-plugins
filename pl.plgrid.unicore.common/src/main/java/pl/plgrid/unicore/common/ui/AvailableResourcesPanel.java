@@ -1,6 +1,7 @@
 package pl.plgrid.unicore.common.ui;
 
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.threads.BackgroundWorker;
 import org.apache.log4j.Logger;
@@ -8,7 +9,7 @@ import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.ui.workers.AvailableResourcesPanelWorker;
 
 
-public class AvailableResourcesPanel extends Panel {
+public class AvailableResourcesPanel extends CustomComponent {
     private static final Logger logger = Logger.getLogger(AvailableResourcesPanel.class);
 
     public static final int INITIAL_WIDTH = 600;
@@ -32,20 +33,25 @@ public class AvailableResourcesPanel extends Panel {
         table.setSelectable(true);
         table.setSizeFull();
 //        table.setImmediate(true);
-        setContent(table);
 
-        VerticalLayout content = new VerticalLayout();
-        // content.addComponent(menuBar);
-        // content.addComponent(header);
-        content.addComponent(table);
-        // content.addComponent(footer);
-        content.setMargin(true);
-        content.setSizeFull();
+        Button okButton = new Button(getMessage("buttonOk"));
+        okButton.setStyleName(Reindeer.BUTTON_SMALL);
+        Button cancelButton = new Button(getMessage("buttonCancel"));
+        cancelButton.setStyleName(Reindeer.BUTTON_SMALL);
+        HorizontalLayout horizontalButtonsLayout = new HorizontalLayout();
+        horizontalButtonsLayout.addComponent(okButton);
+        horizontalButtonsLayout.addComponent(cancelButton);
+        horizontalButtonsLayout.setSpacing(true);
 
-        setHeight(INITIAL_HEIGHT, Unit.PIXELS);
-        setWidth(INITIAL_WIDTH, Unit.PIXELS);
-        setContent(content);
-        setImmediate(true);
+        GridLayout gridLayout = new GridLayout(1, 2);
+        gridLayout.addComponent(table, 0, 0);
+        gridLayout.addComponent(horizontalButtonsLayout, 0, 1);
+        gridLayout.setRowExpandRatio(0, 1.f);
+        gridLayout.setSizeFull();
+        gridLayout.setMargin(true);
+
+        setCompositionRoot(gridLayout);
+        setSizeFull();
 
         BackgroundWorker worker = new AvailableResourcesPanelWorker(table);
         worker.schedule();

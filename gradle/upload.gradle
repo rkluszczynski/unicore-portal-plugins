@@ -15,10 +15,11 @@ dependencies {
 
 def collectPasswordFromUser() {
     def passwordString = ''
+    def enterLabelString = 'Please enter password: '
     if (System.console() == null) {
         new SwingBuilder().edt {
             dialog(modal: true, // Otherwise the build will continue running before you closed the dialog
-                    title: 'Enter upload password', // Dialog title
+                    title: 'Enter password', // Dialog title
                     alwaysOnTop: true, // pretty much what the name says
                     resizable: false, // Don't allow the user to resize the dialog
                     locationRelativeTo: null, // Place dialog in center of the screen
@@ -26,7 +27,7 @@ def collectPasswordFromUser() {
                     show: true // Let's show it
             ) {
                 vbox { // Put everything below each other
-                    label(text: "Please enter key passphrase:")
+                    label(text: enterLabelString)
                     input = passwordField()
                     button(defaultButton: true, text: 'OK', actionPerformed: {
                         passwordString = input.password; // Set pass variable to value of input field
@@ -36,7 +37,7 @@ def collectPasswordFromUser() {
             } // dialog end
         } // edt end
     } else {
-        passwordString = System.console().readPassword("\nPlease enter password: ")
+        passwordString = System.console().readPassword("\n${enterLabelString}")
         passwordString = new String(passwordString)
     }
 

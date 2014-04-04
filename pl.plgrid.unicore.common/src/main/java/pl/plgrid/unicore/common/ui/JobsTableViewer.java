@@ -2,14 +2,11 @@ package pl.plgrid.unicore.common.ui;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
+import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.Session;
 import eu.unicore.portal.core.threads.BackgroundWorker;
-import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.GridServicesExplorer;
@@ -18,15 +15,15 @@ import pl.plgrid.unicore.common.services.TargetSystemService;
 import pl.plgrid.unicore.common.ui.workers.JobsTableViewerWorker;
 
 
-public class JobsTableViewer extends VerticalLayout implements
+public class JobsTableViewer extends CustomComponent implements
         ValueChangeListener {
 
     private static final Logger logger = Logger.getLogger(JobsTableViewer.class);
 
     private final TargetSystemService targetSystemService;
-    private Table table;
-    private final Button showJobDirButton = new Button("Show Job's Dir");
+
     private final Label footerLabel = new Label("Selected: -");
+    private Table table;
 
     public JobsTableViewer() {
         super();
@@ -69,12 +66,39 @@ public class JobsTableViewer extends VerticalLayout implements
 
         table.addValueChangeListener(this);
 
-        showJobDirButton.setStyleName(Styles.MARGIN_TOP_BOTTOM_15);
+        Button refreshJobsListButton = new Button(getMessage("jobs.refreshList"));
+        refreshJobsListButton.setStyleName(Reindeer.BUTTON_SMALL);
+        refreshJobsListButton.addClickListener(new RefreshJobsListButtonListener());
+
+        Button showJobDirButton = new Button(getMessage("jobs.openDir"));
+        showJobDirButton.setStyleName(Reindeer.BUTTON_SMALL);
         showJobDirButton.addClickListener(new ShowJobDirButtonListener());
 
-        addComponent(showJobDirButton);
-        addComponent(table);
-        addComponent(footerLabel);
+        footerLabel.setStyleName(Reindeer.LABEL_SMALL);
+        HorizontalLayout horizontalLayout = new HorizontalLayout(
+                refreshJobsListButton, showJobDirButton, footerLabel
+        );
+//        horizontalLayout.setMargin(true);
+        horizontalLayout.setSpacing(true);
+//        horizontalLayout.setSizeFull();
+//        horizontalLayout.setHeight(100, Unit.PIXELS);
+
+
+        GridLayout gridLayout = new GridLayout(1, 2);
+        gridLayout.addComponent(horizontalLayout, 0, 0);
+        gridLayout.addComponent(table, 0, 1);
+        gridLayout.setRowExpandRatio(1, 1.f);
+        gridLayout.setSizeFull();
+
+//        VerticalLayout verticalLayout = new VerticalLayout(
+//                horizontalLayout, table
+//        );
+//        verticalLayout.setExpandRatio(horizontalLayout, 1);
+//        verticalLayout.setExpandRatio(table, 100);
+//        verticalLayout.setSizeFull();
+
+        setCompositionRoot(gridLayout);
+        setSizeFull();
     }
 
     private String getMessage(String messageKey) {
@@ -105,5 +129,12 @@ public class JobsTableViewer extends VerticalLayout implements
             }
         }
 
+    }
+
+    private class RefreshJobsListButtonListener implements Button.ClickListener {
+        @Override
+        public void buttonClick(Button.ClickEvent event) {
+            reloadJobsList();
+        }
     }
 }
