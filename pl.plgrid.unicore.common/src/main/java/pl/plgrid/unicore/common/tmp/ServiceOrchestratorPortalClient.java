@@ -1,5 +1,6 @@
-package pl.plgrid.unicore.vasp.client;
+package pl.plgrid.unicore.common.tmp;
 
+import eu.unicore.portal.core.Session;
 import org.chemomentum.common.ws.IServiceOrchestrator;
 import org.chemomentum.workassignment.xmlbeans.SubmitWorkAssignmentRequestDocument;
 import org.chemomentum.workassignment.xmlbeans.SubmitWorkAssignmentResponseDocument;
@@ -8,27 +9,33 @@ import org.chemomentum.workassignment.xmlbeans.WorkDocument.Work;
 import org.ggf.schemas.jsdl.x2005.x11.jsdl.JobDefinitionDocument;
 import org.ggf.schemas.jsdl.x2005.x11.jsdl.JobDefinitionType;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
-import pl.plgrid.unicore.vasp.utils.JobDefinitionUtil;
+import pl.plgrid.unicore.common.GridServicesExplorer;
+import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
 
 
 /**
- *
  * @author rkluszczynski
  */
 public class ServiceOrchestratorPortalClient {
 
     private IServiceOrchestrator soClient;
 
-    public ServiceOrchestratorPortalClient(IServiceOrchestrator soClient) {
+    public ServiceOrchestratorPortalClient() {
         super();
-        this.soClient = soClient;
+
+        GridServicesExplorer gridServicesExplorer = Session.getCurrent().getServiceRegistry().getService(GridServicesExplorer.class);
+        try {
+            this.soClient = gridServicesExplorer.getServiceOrchestratorService().createClient();
+        } catch (UnavailableGridServiceException e) {
+            e.printStackTrace();
+        }
     }
 
-	// ???:
+    // ???:
     //public ArrayList<String> getApplications();
-	// ???:
+    // ???:
     //public ArrayList<String> getApplicationVersions(String applicationName);
-	// ???:
+    // ???:
     //public ArrayList<ResourceProperties> getUserGridResources();
     public String submitWorkAssignment(
             JobDefinitionDocument jobDefinitionDocument,

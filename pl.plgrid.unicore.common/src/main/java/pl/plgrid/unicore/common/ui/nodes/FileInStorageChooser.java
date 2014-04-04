@@ -1,10 +1,9 @@
-package pl.plgrid.unicore.vasp.ui;
+package pl.plgrid.unicore.common.ui.nodes;
 
 import eu.unicore.portal.grid.core.nodes.u6.FileNode;
 import eu.unicore.portal.grid.ui.browser.StorageChooser;
 
 /**
- *
  * @author rkluszczynski
  */
 @SuppressWarnings("serial")

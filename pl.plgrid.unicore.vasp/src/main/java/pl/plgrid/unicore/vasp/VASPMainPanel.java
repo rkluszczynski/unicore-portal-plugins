@@ -1,27 +1,29 @@
 package pl.plgrid.unicore.vasp;
 
+import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.vaadin.ui.*;
 import de.fzj.unicore.uas.client.StorageClient;
 import de.fzj.unicore.wsrflite.xmlbeans.WSUtilities;
+import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.Session;
 import eu.unicore.portal.ui.PortalApplication;
 import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
 import org.ggf.schemas.jsdl.x2005.x11.jsdl.JobDefinitionDocument;
 import org.vaadin.tokenfield.TokenField;
-import pl.plgrid.unicore.common.GridResourcesExplorer;
-import pl.plgrid.unicore.common.entities.AtomicJobEntity;
-import pl.plgrid.unicore.common.entities.StorageEntity;
-import pl.plgrid.unicore.common.resources.AvailableResource;
+import pl.plgrid.unicore.common.GridServicesExplorer;
+import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
+import pl.plgrid.unicore.common.tmp.JobDefinitionUtil;
+import pl.plgrid.unicore.common.tmp.ServiceOrchestratorPortalClient;
 import pl.plgrid.unicore.common.ui.AvailableResourcesPanel;
 import pl.plgrid.unicore.common.ui.JobsTableViewer;
+import pl.plgrid.unicore.common.ui.TokenPanel;
+import pl.plgrid.unicore.common.ui.files.GenericInputFilePanel;
+import pl.plgrid.unicore.common.utils.FileDataHelper;
+import pl.plgrid.unicore.vasp.i18n.VASPViewI18N;
 import pl.plgrid.unicore.vasp.input.ExampleInputData;
-import pl.plgrid.unicore.vasp.session.UserSessionGridState;
-import pl.plgrid.unicore.vasp.ui.GenericInputFilePanel;
-import pl.plgrid.unicore.vasp.utils.JobDefinitionUtil;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -32,7 +34,6 @@ public class VASPMainPanel extends VerticalLayout {
 
     private static final Logger logger = Logger.getLogger(VASPMainPanel.class);
 
-    private final UserSessionGridState userGridState;
     private final String tabSheetTitles[] = {"INCAR", "KPOINTS", "POSCAR", "POTCAR"};
     
     private GenericInputFilePanel[] gifPanels;
@@ -41,7 +42,6 @@ public class VASPMainPanel extends VerticalLayout {
         super();
 
         logger.info("Creating VASP view for user: " + Session.getCurrent().getUser().getUsername());
-        userGridState = new UserSessionGridState();
         createMainViewComponents();
     }
 
@@ -78,9 +78,17 @@ public class VASPMainPanel extends VerticalLayout {
             public void buttonClick(Button.ClickEvent event) {
                 String msg = "(empty)";
                 String workAssignmentID = WSUtilities.newUniqueID();
-                StorageClient storageClient = userGridState
-                        .getServiceClientsFactory()
-                        .getStorageFactoryClientSMS();
+
+                GridServicesExplorer gridServicesExplorer = Session.getCurrent().getServiceRegistry().getService(GridServicesExplorer.class);
+                StorageClient storageClient = null;
+                try {
+                    storageClient = gridServicesExplorer
+                            .getStorageFactoryService()
+                            .createClient();
+                } catch (UnavailableGridServiceException e) {
+                    logger.error("ERROR", e);
+                    e.printStackTrace();
+                }
 
                 String filename = "";
                 ArrayList<String> importLocations = new ArrayList<String>();
@@ -89,11 +97,11 @@ public class VASPMainPanel extends VerticalLayout {
                         filename = tabSheetTitles[i];
                         String fileUri;
                         if (! gifPanels[i].isGridLocation()) {
-                            fileUri = userGridState.importFileToGrid(
-                                    storageClient, 
-                                    filename, 
-                                    gifPanels[i].getFileContent(),
-                                    workAssignmentID);                
+                            fileUri = FileDataHelper.importFileToGrid(
+                                    storageClient,
+                                    filename,
+                                    gifPanels[i].getFileContent()
+                            );
                             logger.info("File from tab <" + tabSheetTitles[i]
                                     + "> saved at location: <" + fileUri + ">");
                         }
@@ -111,7 +119,8 @@ public class VASPMainPanel extends VerticalLayout {
                 JobDefinitionDocument job = JobDefinitionUtil
                         .createVASPJobDocument(importLocations);
                 logger.info(job.toString());
-                msg = userGridState.getSoPortalClient().submitWorkAssignment(
+
+                msg = new ServiceOrchestratorPortalClient().submitWorkAssignment(
                         job, workAssignmentID, storageClient.getEPR());
                 
                 // TODO: handle missing application or version in SO
@@ -130,60 +139,8 @@ public class VASPMainPanel extends VerticalLayout {
                 PortalApplication.getCurrent().addWindow(w);
                 w.setContent(new AvailableResourcesPanel());
                 w.center();
-
-//                userGridState
-//                        .gatherAllAvailableResources(new UserSessionGridState.UIResourcesUpdater() {
-//
-//                            @Override
-//                            public void updateUI(
-//                                    ConcurrentMap<String, ConcurrentHashMap<AvailableResourceTypeType.Enum, ArrayList<AvailableResourceType>>> m,
-//                                    boolean isFinished) {
-//                                        if (!isFinished) {
-//                                            return;
-//                                        }
-//                                        AvailableResourcePanel aResourcePanel = new AvailableResourcePanel();
-//                                        aResourcePanel.setResources(m);
-//
-//                                        Window w = new Window("Available Resources");
-//                                        PortalApplication.getCurrent().addWindow(w);
-//                                        w.setContent(aResourcePanel);
-//                                        w.center();
-//                                    }
-//                        });
-
             }
         });
-
-        Button testingButt = new Button("testingButt");
-        testingButt.setStyleName(Styles.MARGIN_TOP_BOTTOM_15);
-        testingButt.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                GridResourcesExplorer gridResourcesExplorer = Session
-                        .getCurrent()
-                        .getServiceRegistry()
-                        .getService(GridResourcesExplorer.class);
-
-                logger.info("####  RESOURCES  ####");
-                Collection<AvailableResource> resources = gridResourcesExplorer.getResources();
-                for (AvailableResource resource : resources) {
-                    logger.info(" ==>> " + resource);
-                }
-
-                logger.info("####  STORAGES  ####");
-                Collection<StorageEntity> storages = gridResourcesExplorer.getStorages();
-                for (StorageEntity storage : storages) {
-                    logger.info(" -->> " + storage);
-                }
-
-                logger.info("####  JOBS  ####");
-                Collection<AtomicJobEntity> jobs = gridResourcesExplorer.getJobs();
-                for (AtomicJobEntity job : jobs) {
-                    logger.info(" ~~>> " + job);
-                }
-            }
-        });
-
 
         TokenField tokenField = new TokenField("QQ");
         tokenField.addToken("Token1");
@@ -192,11 +149,15 @@ public class VASPMainPanel extends VerticalLayout {
 //        tokenField.setReadOnly(true);
         tokenField.setNewTokensAllowed(false);
 
+        TokenPanel tokenPanel = new TokenPanel(
+                Lists.newArrayList("A", "BB", "CCC")
+        );
+
         HorizontalLayout hl = new HorizontalLayout();
         hl.addComponent(submitWA);
         hl.addComponent(showResourcesButton);
-        hl.addComponent(testingButt);
         hl.addComponent(tokenField);
+        hl.addComponent(tokenPanel);
 
         VerticalLayout vl = new VerticalLayout();        
         vl.setSizeFull();
@@ -225,5 +186,9 @@ public class VASPMainPanel extends VerticalLayout {
             tabSheet.addTab(gifPanels[i], tabSheetTitles[i]);
         }
         return tabSheet;
+    }
+
+    private String getMessage(String messageKey) {
+        return GlobalState.getMessage(VASPViewI18N.ID, "vasp.main." + messageKey);
     }
 }

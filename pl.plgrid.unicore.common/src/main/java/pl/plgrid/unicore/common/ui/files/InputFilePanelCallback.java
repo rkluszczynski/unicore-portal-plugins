@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.vasp.ui;
+package pl.plgrid.unicore.common.ui.files;
 
 import com.vaadin.ui.TextField;
 import eu.unicore.portal.grid.core.nodes.Node;

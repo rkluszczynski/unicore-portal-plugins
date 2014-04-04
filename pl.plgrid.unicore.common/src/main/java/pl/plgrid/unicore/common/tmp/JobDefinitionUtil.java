@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.vasp.utils;
+package pl.plgrid.unicore.common.tmp;
 
 import de.fzj.unicore.wsrflite.xmlbeans.WSUtilities;
 import eu.unicore.jsdl.extensions.IgnoreFailureDocument;
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author rkluszczynski
  */
 public class JobDefinitionUtil {
@@ -20,7 +19,7 @@ public class JobDefinitionUtil {
 
     public static final String VASP_GRID_JOBNAME = "VASP_Job_submitted_by_Portal";
 
-    
+
     static public JobDefinitionDocument simpleDateJobDocument() {
         JobDescriptionType jobDesc = JobDescriptionType.Factory.newInstance();
 

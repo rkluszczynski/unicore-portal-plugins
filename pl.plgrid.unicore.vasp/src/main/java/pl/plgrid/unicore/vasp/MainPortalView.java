@@ -7,7 +7,6 @@ import eu.unicore.portal.ui.views.AbstractView;
 import pl.plgrid.unicore.vasp.i18n.VASPViewI18N;
 
 /**
- *
  * @author rkluszczynski
  */
 @SuppressWarnings("serial")
@@ -17,7 +16,7 @@ public class MainPortalView extends AbstractView {
     VASPMainPanel vaspMainPanel;
 
     public MainPortalView() {
-        setTitle(GlobalState.getMessage(VASPViewI18N.ID, "vaspView.title")); //$NON-NLS-1$
+        setTitle(getMessage("title"));
 
         createMainViewComponents();
         addComponent(mainPage);
@@ -43,7 +42,7 @@ public class MainPortalView extends AbstractView {
         mainPage.setWidth(100f, Unit.PERCENTAGE);
         mainPage.setHeight(100f, Unit.PERCENTAGE);
 
-        int browserWindowHeight = Page.getCurrent().getBrowserWindowHeight();        
+        int browserWindowHeight = Page.getCurrent().getBrowserWindowHeight();
         vaspMainPanel = new VASPMainPanel();
         vaspMainPanel.setHeight(browserWindowHeight, Unit.PIXELS);
         mainPage.addComponent(vaspMainPanel);
@@ -55,5 +54,9 @@ public class MainPortalView extends AbstractView {
 
     private void freeComponentsDuringUnvisibility() {
         vaspMainPanel.setVisible(false);
+    }
+
+    private String getMessage(String messageKey) {
+        return GlobalState.getMessage(VASPViewI18N.ID, "vasp.view." + messageKey);
     }
 }
