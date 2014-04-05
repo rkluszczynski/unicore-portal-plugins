@@ -6,19 +6,23 @@ import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.Session;
 import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
+import pl.plgrid.unicore.common.model.AtomicJobModel;
 import pl.plgrid.unicore.common.ui.JobsTableViewer;
 import pl.plgrid.unicore.vasp.i18n.VASPViewI18N;
 import pl.plgrid.unicore.vasp.input.SubmissionPanel;
 
 /**
- *
  * @author rkluszczynski
  */
 public class VASPMainPanel extends VerticalLayout {
     private static final Logger logger = Logger.getLogger(VASPMainPanel.class);
 
+    private AtomicJobModel vaspJobModel;
+
+
     public VASPMainPanel() {
         super();
+        this.vaspJobModel = new AtomicJobModel();
 
         logger.info("Creating VASP view for user: " + Session.getCurrent().getUser().getUsername());
         createMainViewComponents();
@@ -36,7 +40,7 @@ public class VASPMainPanel extends VerticalLayout {
     private void createMainViewComponents() {
         VerticalSplitPanel splitPanel = new VerticalSplitPanel(
                 new JobsTableViewer(),
-                new SubmissionPanel()
+                new SubmissionPanel(vaspJobModel)
         );
 //        splitPanel.setCaption(getMessage("title"));
         splitPanel.setSplitPosition(20, Unit.PERCENTAGE);

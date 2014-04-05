@@ -4,6 +4,7 @@ import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import de.fzj.unicore.wsrflite.xfire.WSRFClientFactory;
 import de.fzj.unicore.wsrflite.xmlbeans.WSUtilities;
 import eu.unicore.portal.core.Session;
+import eu.unicore.security.wsutil.client.UnicoreWSClientFactory;
 import eu.unicore.util.httpclient.IClientConfiguration;
 import org.apache.log4j.Logger;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
@@ -71,13 +72,13 @@ abstract class AbstractService {
             clientConfig.getETDSettings().setReceiver(
                     new X500Principal(receiverDn));
         }
-//        return new UnicoreWSClientFactory(clientConfig)
-//                .createPlainWSProxy(clazz, serviceEpr
-//                        .getAddress()
-//                        .getStringValue());
+        return new UnicoreWSClientFactory(clientConfig)
+                .createPlainWSProxy(clazz, serviceEpr
+                        .getAddress()
+                        .getStringValue());
         // TODO: think of retry feature (included in WSRFClientFactory)
-        return wsrfClientFactory.createPlainWSProxy(clazz, serviceEpr
-                .getAddress()
-                .getStringValue());
+//        return wsrfClientFactory.createPlainWSProxy(clazz, serviceEpr
+//                .getAddress()
+//                .getStringValue());
     }
 }

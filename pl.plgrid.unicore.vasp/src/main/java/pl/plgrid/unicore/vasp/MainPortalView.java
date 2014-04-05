@@ -11,9 +11,8 @@ import pl.plgrid.unicore.vasp.i18n.VASPViewI18N;
  */
 @SuppressWarnings("serial")
 public class MainPortalView extends AbstractView {
-
     private GridLayout mainPage;
-    VASPMainPanel vaspMainPanel;
+    private VASPMainPanel vaspMainPanel;
 
     public MainPortalView() {
         setTitle(getMessage("title"));
@@ -27,7 +26,7 @@ public class MainPortalView extends AbstractView {
         super.setVisible(visible);
         if (visible == false) {
             if (vaspMainPanel != null) {
-                freeComponentsDuringUnvisibility();
+                freeComponentsDuringInvisibility();
             }
         } else {
             refreshComponentsForUserVisibility();
@@ -38,13 +37,13 @@ public class MainPortalView extends AbstractView {
         if (mainPage != null) {
             return;
         }
-        mainPage = new GridLayout(1, 1);
-        mainPage.setWidth(100f, Unit.PERCENTAGE);
-        mainPage.setHeight(100f, Unit.PERCENTAGE);
-
         int browserWindowHeight = Page.getCurrent().getBrowserWindowHeight();
         vaspMainPanel = new VASPMainPanel();
         vaspMainPanel.setHeight(browserWindowHeight, Unit.PIXELS);
+
+        mainPage = new GridLayout(1, 1);
+        mainPage.setWidth(100f, Unit.PERCENTAGE);
+        mainPage.setHeight(100f, Unit.PERCENTAGE);
         mainPage.addComponent(vaspMainPanel);
     }
 
@@ -52,7 +51,7 @@ public class MainPortalView extends AbstractView {
         vaspMainPanel.setVisible(true);
     }
 
-    private void freeComponentsDuringUnvisibility() {
+    private void freeComponentsDuringInvisibility() {
         vaspMainPanel.setVisible(false);
     }
 

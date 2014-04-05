@@ -1,21 +1,14 @@
 package pl.plgrid.unicore.vasp.input;
 
 import com.vaadin.ui.*;
-import de.fzj.unicore.uas.client.StorageClient;
-import de.fzj.unicore.wsrflite.xmlbeans.WSUtilities;
-import eu.unicore.portal.core.Session;
+import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
-import org.ggf.schemas.jsdl.x2005.x11.jsdl.JobDefinitionDocument;
-import pl.plgrid.unicore.common.GridServicesExplorer;
-import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
-import pl.plgrid.unicore.common.tmp.JobDefinitionUtil;
-import pl.plgrid.unicore.common.tmp.ServiceOrchestratorPortalClient;
+import pl.plgrid.unicore.common.model.AtomicJobModel;
 import pl.plgrid.unicore.common.ui.ResourcesChooserPanel;
 import pl.plgrid.unicore.common.ui.files.GenericInputFilePanel;
-import pl.plgrid.unicore.common.utils.FileDataHelper;
+import pl.plgrid.unicore.common.utils.ClassPathResource;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -24,93 +17,54 @@ import java.util.Date;
 public class SubmissionPanel extends CustomComponent {
     private static final Logger logger = Logger.getLogger(SubmissionPanel.class);
 
-    private GenericInputFilePanel[] gifPanels;
     private final String tabSheetTitles[] = {"INCAR", "KPOINTS", "POSCAR", "POTCAR"};
+    private GenericInputFilePanel[] gifPanels;
 
 
-    public SubmissionPanel() {
-        TabSheet tabSheet = createVASPFilesTabPanel(tabSheetTitles);
-        tabSheet.setSizeFull();
-
+    // TODO: maybe also without atomicJobModel
+    public SubmissionPanel(AtomicJobModel atomicJobModel) {
         HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
         splitPanel.setSplitPosition(60, Unit.PERCENTAGE);
+
+        TabSheet tabSheet = createVASPFilesTabPanel(tabSheetTitles);
         splitPanel.setFirstComponent(tabSheet);
 
-        VerticalLayout verticalLayout = createBelowComponents();
-        splitPanel.setSecondComponent(verticalLayout);
+        AbstractLayout rightPanel = createUserManagementPanel(atomicJobModel);
+        splitPanel.setSecondComponent(rightPanel);
 
         setCompositionRoot(splitPanel);
         setSizeFull();
     }
 
 
-    private VerticalLayout createBelowComponents() {
-        Button submitWA = new Button("Submit VASP Job");
-        submitWA.setStyleName(Styles.MARGIN_TOP_BOTTOM_15);
-        submitWA.addClickListener(new Button.ClickListener() {
-            private static final long serialVersionUID = 1L;
+    private AbstractLayout createUserManagementPanel(AtomicJobModel atomicJobModel) {
+        GridLayout gridLayout = new GridLayout(1, 3);
 
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                String msg = "(empty)";
-                String workAssignmentID = WSUtilities.newUniqueID();
+        Button submitWorkAssignmentButton = new Button("Submit VASP Job");
+        submitWorkAssignmentButton.setStyleName(Styles.MARGIN_TOP_BOTTOM_15);
+        submitWorkAssignmentButton.addClickListener(
+                new SubmitWorkAssignmentListener(
+                        gifPanels,
+                        tabSheetTitles
+                )
+        );
+        gridLayout.addComponent(submitWorkAssignmentButton, 0, 0);
+        gridLayout.setComponentAlignment(submitWorkAssignmentButton, Alignment.MIDDLE_CENTER);
 
-                GridServicesExplorer gridServicesExplorer = Session.getCurrent().getServiceRegistry().getService(GridServicesExplorer.class);
-                StorageClient storageClient = null;
-                try {
-                    storageClient = gridServicesExplorer
-                            .getStorageFactoryService()
-                            .createClient();
-                } catch (UnavailableGridServiceException e) {
-                    logger.error("ERROR", e);
-                    e.printStackTrace();
-                }
+        ResourcesChooserPanel resourcesChooserPanel = new ResourcesChooserPanel(atomicJobModel);
+        gridLayout.addComponent(resourcesChooserPanel, 0, 1);
+        gridLayout.setComponentAlignment(resourcesChooserPanel, Alignment.TOP_CENTER);
+        gridLayout.setRowExpandRatio(1, 1.f);
 
-                String filename = "";
-                ArrayList<String> importLocations = new ArrayList<String>();
-                try {
-                    for (int i = 0; i < tabSheetTitles.length; ++i) {
-                        filename = tabSheetTitles[i];
-                        String fileUri;
-                        if (!gifPanels[i].isGridLocation()) {
-                            fileUri = FileDataHelper.importFileToGrid(
-                                    storageClient,
-                                    filename,
-                                    gifPanels[i].getFileContent()
-                            );
-                            logger.info("File from tab <" + tabSheetTitles[i]
-                                    + "> saved at location: <" + fileUri + ">");
-                        } else {
-                            fileUri = gifPanels[i].getFileLocation();
-                            logger.info("File from tab <" + tabSheetTitles[i]
-                                    + "> used from location: <" + fileUri + ">");
-                        }
-                        importLocations.add(fileUri);
-                    }
-                } catch (Exception e) {
-                    logger.error("Problem during upload of file <" + filename
-                            + "> to SMS!", e);
-                }
-                JobDefinitionDocument job = JobDefinitionUtil
-                        .createVASPJobDocument(importLocations);
-                logger.info(job.toString());
+        ClassPathResource pathResource = new ClassPathResource("vasp-logo-alpha.png");
+//        ClassResource pathResource = new ClassResource("vasp-logo-alpha.png");
+        Image logoImage = new Image("", pathResource);
+        gridLayout.addComponent(logoImage, 0, 2);
+        gridLayout.setComponentAlignment(logoImage, Alignment.MIDDLE_CENTER);
+        gridLayout.setRowExpandRatio(2, 1.f);
 
-                msg = new ServiceOrchestratorPortalClient().submitWorkAssignment(
-                        job, workAssignmentID, storageClient.getEPR());
-
-                // TODO: handle missing application or version in SO
-
-                Notification.show("Submitting VASP job...", msg,
-                        Notification.Type.TRAY_NOTIFICATION);
-            }
-        });
-
-
-        VerticalLayout vl = new VerticalLayout();
-        vl.addComponent(submitWA);
-        vl.addComponent(new ResourcesChooserPanel());
-        vl.setSizeFull();
-        return vl;
+        gridLayout.setSizeFull();
+        return gridLayout;
     }
 
 
@@ -126,10 +80,11 @@ public class SubmissionPanel extends CustomComponent {
         }
 
         TabSheet tabSheet = new TabSheet();
-        tabSheet.setSizeFull();
+        tabSheet.setStyleName(Reindeer.TABSHEET_MINIMAL);
         for (int i = 0; i < tabSheetTitles.length; ++i) {
             tabSheet.addTab(gifPanels[i], tabSheetTitles[i]);
         }
+        tabSheet.setSizeFull();
         return tabSheet;
     }
 }

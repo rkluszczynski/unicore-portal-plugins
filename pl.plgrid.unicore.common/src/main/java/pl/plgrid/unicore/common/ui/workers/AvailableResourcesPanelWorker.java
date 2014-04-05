@@ -11,6 +11,7 @@ import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.resources.AvailableBooleanResource;
 import pl.plgrid.unicore.common.resources.AvailableEnumResource;
 import pl.plgrid.unicore.common.resources.AvailableResource;
+import pl.plgrid.unicore.common.ui.AvailableResourcesWindowPanel;
 
 import java.util.Collection;
 
@@ -18,23 +19,24 @@ public class AvailableResourcesPanelWorker extends BackgroundWorker {
     private static final Logger logger = Logger.getLogger(AvailableResourcesPanelWorker.class);
 
     private GridResourcesExplorer gridResourcesExplorer;
-    private Table table;
+    private AvailableResourcesWindowPanel windowPanel;
+    private final Collection<AvailableResource> availableResources;
 
-    private Collection<AvailableResource> availableResources;
-
-
-    public AvailableResourcesPanelWorker(Table table) {
+    public AvailableResourcesPanelWorker(AvailableResourcesWindowPanel windowPanel,
+                                         Collection<AvailableResource> availableResources) {
         super(GlobalState.getMessage(CommonComponentsI18N.ID, "resourcesPanel.worker.name"));
         gridResourcesExplorer = Session
                 .getCurrent()
                 .getServiceRegistry()
                 .getService(GridResourcesExplorer.class);
-        this.table = table;
+        this.windowPanel = windowPanel;
+        this.availableResources = availableResources;
     }
 
     @Override
     protected void work(IProgressMonitor iProgressMonitor) {
-        availableResources = gridResourcesExplorer.getResources();
+        availableResources.clear();
+        availableResources.addAll(gridResourcesExplorer.getResources());
     }
 
     @Override
@@ -44,21 +46,23 @@ public class AvailableResourcesPanelWorker extends BackgroundWorker {
         for (AvailableResource availableResource : availableResources) {
 
             String resourceName = availableResource.getName();
+            String resourceDescription = availableResource.getDescription();
             String resourceDefaultValue = availableResource.getDefaultValue();
-            String resourceTypeString = availableResource.getClass().toString();
 
             Component component;
             if (availableResource instanceof AvailableEnumResource) {
                 AvailableEnumResource enumResource = (AvailableEnumResource) availableResource;
                 ComboBox comboBox = new ComboBox("x", enumResource.getAllowed());
-                comboBox.setValue(enumResource.getDefaultValue());
+                comboBox.setValue(resourceDefaultValue);
                 component = comboBox;
             } else if (availableResource instanceof AvailableBooleanResource) {
                 CheckBox checkBox = new CheckBox("x");
-                checkBox.setValue(Boolean.valueOf(availableResource.getDefaultValue()));
+                checkBox.setValue(Boolean.valueOf(resourceDefaultValue));
                 component = checkBox;
             } else {
-                component = new TextField(availableResource.getDefaultValue());
+                TextField textField = new TextField("x");
+                textField.setValue(resourceDefaultValue);
+                component = textField;
             }
             // TODO: prepare ui component for IntTextField and DoubleTextField
 
@@ -66,17 +70,21 @@ public class AvailableResourcesPanelWorker extends BackgroundWorker {
                     new Object[]{
                             new CheckBox(),
                             resourceName,
-                            resourceDefaultValue,
-                            resourceTypeString,
+                            resourceDescription,
                             component
                     }
                     , null
             );
         }
+        windowPanel.setCaption(getMessage("title.ready"));
     }
 
 
     private Table getTable() {
-        return table;
+        return windowPanel.getTable();
+    }
+
+    private String getMessage(String messageKey) {
+        return GlobalState.getMessage(CommonComponentsI18N.ID, "resourcesPanel." + messageKey);
     }
 }

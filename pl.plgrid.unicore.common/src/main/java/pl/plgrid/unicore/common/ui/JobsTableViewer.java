@@ -23,7 +23,7 @@ public class JobsTableViewer extends CustomComponent implements
     private final TargetSystemService targetSystemService;
 
     private final Label footerLabel = new Label("Selected: -");
-    private Table table;
+    private final Table table = new Table();
 
     public JobsTableViewer() {
         super();
@@ -46,14 +46,15 @@ public class JobsTableViewer extends CustomComponent implements
     }
 
     private void initializeComponents() {
-        String tableTitle = getMessage("tableTitle");
+        Notification.show("", getMessage("tableTitle") + " ("
+                        + Session.getCurrent().getUser().getUsername() + ")",
+                Notification.Type.TRAY_NOTIFICATION
+        );
+
         String jobStatusColumnTitle = getMessage("column.statusTitle");
         String jobNameColumnTitle = getMessage("column.nameTitle");
         String jobURIColumnTitle = getMessage("column.uriTitle");
         String jobDirURIColumnTitle = getMessage("column.uriDirTitle");
-
-        table = new Table(tableTitle + " ("
-                + Session.getCurrent().getUser().getUsername() + ")");
 
         table.addContainerProperty(jobStatusColumnTitle, String.class, null);
         table.addContainerProperty(jobNameColumnTitle, String.class, null);
