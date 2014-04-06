@@ -17,11 +17,13 @@ import java.util.Date;
  */
 public class SubmissionPanel extends CustomComponent {
 
+    // TODO: try to design api to do it without passing brokerJobModel (?)
 
-    // TODO: maybe also without brokerJobModel
     public SubmissionPanel(BrokerJobModel brokerJobModel) {
         HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
         splitPanel.setSplitPosition(60, Unit.PERCENTAGE);
+        splitPanel.setMinSplitPosition(60, Unit.PERCENTAGE);
+        splitPanel.setMaxSplitPosition(80, Unit.PERCENTAGE);
 
         TabSheet tabSheet = createVASPFilesTabPanel(brokerJobModel);
         splitPanel.setFirstComponent(tabSheet);
