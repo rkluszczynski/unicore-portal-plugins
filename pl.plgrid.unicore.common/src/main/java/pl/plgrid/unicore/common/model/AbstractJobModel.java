@@ -1,49 +1,101 @@
 package pl.plgrid.unicore.common.model;
 
+import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
-import com.google.gwt.thirdparty.guava.common.collect.Sets;
+import de.fzj.unicore.uas.client.StorageClient;
 import de.fzj.unicore.wsrflite.xmlbeans.WSUtilities;
 import eu.unicore.jsdl.extensions.IgnoreFailureDocument;
 import eu.unicore.jsdl.extensions.ResourceRequestDocument;
+import eu.unicore.portal.core.Session;
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlObject;
 import org.ggf.schemas.jsdl.x2005.x11.jsdl.*;
+import pl.plgrid.unicore.common.GridServicesExplorer;
+import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
+import pl.plgrid.unicore.common.ui.model.GridInputFileComponent;
+import pl.plgrid.unicore.common.utils.FileDataHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 abstract class AbstractJobModel {
     private static final Logger logger = Logger.getLogger(AbstractJobModel.class);
 
+    private final String applicationName;
+    private final String applicationVersion;
 
-    protected String applicationName = "";
-    protected String applicationVersion = "";
+    protected StorageClient storageClient;
+    protected String workAssignmentID;
 
-    protected final Map<String, String> parametersMap = Maps.newConcurrentMap();
-
-    public Set<String> getInputFileSet() {
-        return inputFileSet;
-    }
-
-    protected final Set<String> inputFileSet = Sets.newHashSet();
-    protected final Set<String> outputFileSet = Sets.newHashSet();
-
+    protected final Map<String, String> parameterSet = Maps.newConcurrentMap();
     protected final Map<String, String> resourceSet = Maps.newConcurrentMap();
+    protected final Map<String, GridInputFileComponent> inputFileSet = Maps.newConcurrentMap();
+    protected final Map<String, String> outputFileSet = Maps.newConcurrentMap();
+
+    protected AbstractJobModel(String applicationName, String applicationVersion) {
+        this.applicationName = applicationName;
+        this.applicationVersion = applicationVersion;
+    }
 
 
     public abstract void submit();
 
+
+    public void registerGridInputFileComponent(String filename, GridInputFileComponent component) {
+        inputFileSet.put(filename, component);
+    }
 
     public Map<String, String> getResourceSet() {
         return resourceSet;
     }
 
 
+    private List<DataStagingType> createDataStagingFragment() {
+        List<DataStagingType> dataStagingList = Lists.newArrayList();
+        for (Map.Entry<String, GridInputFileComponent> entry : inputFileSet.entrySet()) {
+            String filename = entry.getKey();
+            GridInputFileComponent.GridInputFileData inputFileData = entry
+                    .getValue()
+                    .getInputFileData();
+
+            DataStagingDocument dsd = DataStagingDocument.Factory.newInstance();
+            DataStagingType d = dsd.addNewDataStaging();
+            d.setFileName(filename);
+            d.setCreationFlag(CreationFlagEnumeration.OVERWRITE);
+
+            if (inputFileData.getType() == GridInputFileComponent.GridInputFileValueType.VALUE_CONTENT) {
+                try {
+                    String fileUri = FileDataHelper.importFileToGrid(
+                            getStorageClient(),
+                            filename,
+                            inputFileData.getData()
+                    );
+                    d.addNewSource().setURI(fileUri);
+                    logger.info("File from tab <" + filename
+                            + "> saved at location: <" + fileUri + ">");
+                } catch (Exception e) {
+                    logger.error("Problem during upload of file <" + filename + "> to SMS!", e);
+                }
+            } else if (inputFileData.getType() == GridInputFileComponent.GridInputFileValueType.VALUE_GRID_PATH) {
+                d.addNewSource().setURI(inputFileData.getData());
+                logger.info("File from tab <" + filename
+                        + "> used from location: <" + inputFileData.getData() + ">");
+            } else {
+                throw new IllegalArgumentException("Unknown GridInputFileData type!");
+            }
+
+            IgnoreFailureDocument ifd = IgnoreFailureDocument.Factory.newInstance();
+            ifd.setIgnoreFailure(false);
+
+            WSUtilities.append(ifd, dsd);
+            dataStagingList.add(d);
+        }
+        return dataStagingList;
+    }
+
+
     public JobDefinitionDocument prepareJobDefinitionDocument(
-            String jobName,
-            Set<String> jobImports
+            String jobName
     ) {
         JobDescriptionType jobDesc = JobDescriptionType.Factory.newInstance();
         ApplicationDocument appDoc = ApplicationDocument.Factory.newInstance();
@@ -54,23 +106,8 @@ abstract class AbstractJobModel {
 
         jobDesc.addNewJobIdentification().setJobName(jobName);
 
-        List<DataStagingType> staging = new ArrayList<DataStagingType>();
-        for (String uri : jobImports) {
-            DataStagingDocument dsd = DataStagingDocument.Factory.newInstance();
-            DataStagingType d = dsd.addNewDataStaging();
-
-            d.addNewSource().setURI(uri);
-            d.setFileName(uri.substring(uri.lastIndexOf("#") + 1));
-
-            d.setCreationFlag(CreationFlagEnumeration.OVERWRITE);
-
-            IgnoreFailureDocument ifd = IgnoreFailureDocument.Factory.newInstance();
-            ifd.setIgnoreFailure(false);
-
-            WSUtilities.append(ifd, dsd);
-            staging.add(d);
-        }
-        jobDesc.setDataStagingArray(staging.toArray(new DataStagingType[staging.size()]));
+        List<DataStagingType> dataStaging = createDataStagingFragment();
+        jobDesc.setDataStagingArray(dataStaging.toArray(new DataStagingType[dataStaging.size()]));
 
         try {
             jobDesc.setResources(makeResources());
@@ -85,13 +122,34 @@ abstract class AbstractJobModel {
 
     }
 
+    private StorageClient getStorageClient() {
+        if (storageClient == null) {
+            synchronized (workAssignmentID) {
+                if (storageClient == null) {
+                    try {
+                        GridServicesExplorer gridServicesExplorer = Session
+                                .getCurrent()
+                                .getServiceRegistry()
+                                .getService(GridServicesExplorer.class);
+                        storageClient = gridServicesExplorer
+                                .getStorageFactoryService()
+                                .createClient();
+                    } catch (UnavailableGridServiceException e) {
+                        logger.error("ERROR", e);
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return storageClient;
+    }
 
     private ResourcesType makeResources() throws Exception {
         ResourcesDocument rd = ResourcesDocument.Factory.newInstance();
         ResourcesType rt = rd.addNewResources();
 
         for (Map.Entry<String, String> entry : resourceSet.entrySet()) {
-            logger.info("makeResources =>  " + entry.getKey() + " = " + entry.getValue());
+            logger.info("[[makeResources]] =>  " + entry.getKey() + " = " + entry.getValue());
 
             String resource = entry.getKey();
             if ("Reservation".equals(resource)) {
@@ -179,5 +237,4 @@ abstract class AbstractJobModel {
         }
         return OperatingSystemTypeEnumeration.Enum.forString(os);
     }
-
 }

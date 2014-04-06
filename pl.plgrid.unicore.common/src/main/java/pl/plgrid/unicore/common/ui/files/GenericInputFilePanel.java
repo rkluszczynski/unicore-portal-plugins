@@ -8,6 +8,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import eu.unicore.portal.ui.PortalApplication;
 import eu.unicore.portal.ui.Styles;
 import org.unigrids.services.atomic.types.ProtocolType;
+import pl.plgrid.unicore.common.ui.model.GridInputFileComponent;
 import pl.plgrid.unicore.common.ui.nodes.FileInStorageChooser;
 
 /**
@@ -15,8 +16,9 @@ import pl.plgrid.unicore.common.ui.nodes.FileInStorageChooser;
  */
 @SuppressWarnings("serial")
 public class GenericInputFilePanel extends VerticalLayout implements
-        Button.ClickListener, LayoutClickListener {
-
+        GridInputFileComponent,
+        Button.ClickListener,
+        LayoutClickListener {
     private static final String LABEL_TOGGLE_TO_FILE_BROWSER = "<u><i>Toggle to File Browser</i></u>";
     private static final String LABEL_TOGGLE_TO_FILE_CONTENT = "<u><i>Toggle to File Content</i></u>";
     private static final String BUTTON_TEXT_BROWSE_GRID = "Browse Grid";
@@ -114,4 +116,19 @@ public class GenericInputFilePanel extends VerticalLayout implements
         return isGridLocation() ? (ProtocolType.BFT + ":" + gridFilePathTextField.getValue()) : null;
     }
 
+
+    @Override
+    public GridInputFileData getInputFileData() {
+        if (isGridLocation()) {
+            return new GridInputFileData(
+                    GridInputFileValueType.VALUE_GRID_PATH,
+                    getFileLocation()
+            );
+        } else {
+            return new GridInputFileData(
+                    GridInputFileValueType.VALUE_CONTENT,
+                    getFileContent()
+            );
+        }
+    }
 }

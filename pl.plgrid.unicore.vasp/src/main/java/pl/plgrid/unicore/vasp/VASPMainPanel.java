@@ -17,15 +17,17 @@ import pl.plgrid.unicore.vasp.input.SubmissionPanel;
 public class VASPMainPanel extends VerticalLayout {
     private static final Logger logger = Logger.getLogger(VASPMainPanel.class);
 
-    private BrokerJobModel vaspJobModel;
+    private static String APPLICATION_NAME = "VASP";
+    private static String APPLICATION_VERSION = "5.2";
 
 
     public VASPMainPanel() {
         super();
-        this.vaspJobModel = new BrokerJobModel();
 
         logger.info("Creating VASP view for user: " + Session.getCurrent().getUser().getUsername());
-        createMainViewComponents();
+        createMainViewComponents(
+                new BrokerJobModel(APPLICATION_NAME, APPLICATION_VERSION)
+        );
     }
 
     @Override
@@ -37,10 +39,10 @@ public class VASPMainPanel extends VerticalLayout {
         }
     }
 
-    private void createMainViewComponents() {
+    private void createMainViewComponents(BrokerJobModel brokerJobModel) {
         VerticalSplitPanel splitPanel = new VerticalSplitPanel(
                 new JobsTableViewer(),
-                new SubmissionPanel(vaspJobModel)
+                new SubmissionPanel(brokerJobModel)
         );
 //        splitPanel.setCaption(getMessage("title"));
         splitPanel.setSplitPosition(20, Unit.PERCENTAGE);
