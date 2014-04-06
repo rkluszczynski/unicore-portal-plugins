@@ -4,7 +4,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
-import pl.plgrid.unicore.common.model.AtomicJobModel;
+import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.ui.ResourcesChooserPanel;
 import pl.plgrid.unicore.common.ui.files.GenericInputFilePanel;
 import pl.plgrid.unicore.common.utils.ClassPathResource;
@@ -21,15 +21,15 @@ public class SubmissionPanel extends CustomComponent {
     private GenericInputFilePanel[] gifPanels;
 
 
-    // TODO: maybe also without atomicJobModel
-    public SubmissionPanel(AtomicJobModel atomicJobModel) {
+    // TODO: maybe also without brokerJobModel
+    public SubmissionPanel(BrokerJobModel brokerJobModel) {
         HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
         splitPanel.setSplitPosition(60, Unit.PERCENTAGE);
 
         TabSheet tabSheet = createVASPFilesTabPanel(tabSheetTitles);
         splitPanel.setFirstComponent(tabSheet);
 
-        AbstractLayout rightPanel = createUserManagementPanel(atomicJobModel);
+        AbstractLayout rightPanel = createUserManagementPanel(brokerJobModel);
         splitPanel.setSecondComponent(rightPanel);
 
         setCompositionRoot(splitPanel);
@@ -37,13 +37,14 @@ public class SubmissionPanel extends CustomComponent {
     }
 
 
-    private AbstractLayout createUserManagementPanel(AtomicJobModel atomicJobModel) {
+    private AbstractLayout createUserManagementPanel(BrokerJobModel brokerJobModel) {
         GridLayout gridLayout = new GridLayout(1, 3);
 
         Button submitWorkAssignmentButton = new Button("Submit VASP Job");
         submitWorkAssignmentButton.setStyleName(Styles.MARGIN_TOP_BOTTOM_15);
         submitWorkAssignmentButton.addClickListener(
                 new SubmitWorkAssignmentListener(
+                        brokerJobModel,
                         gifPanels,
                         tabSheetTitles
                 )
@@ -51,7 +52,7 @@ public class SubmissionPanel extends CustomComponent {
         gridLayout.addComponent(submitWorkAssignmentButton, 0, 0);
         gridLayout.setComponentAlignment(submitWorkAssignmentButton, Alignment.MIDDLE_CENTER);
 
-        ResourcesChooserPanel resourcesChooserPanel = new ResourcesChooserPanel(atomicJobModel);
+        ResourcesChooserPanel resourcesChooserPanel = new ResourcesChooserPanel(brokerJobModel);
         gridLayout.addComponent(resourcesChooserPanel, 0, 1);
         gridLayout.setComponentAlignment(resourcesChooserPanel, Alignment.TOP_CENTER);
         gridLayout.setRowExpandRatio(1, 1.f);

@@ -1,20 +1,17 @@
 package pl.plgrid.unicore.vasp.input;
 
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Notification;
 import de.fzj.unicore.uas.client.StorageClient;
 import de.fzj.unicore.wsrflite.xmlbeans.WSUtilities;
 import eu.unicore.portal.core.Session;
 import org.apache.log4j.Logger;
-import org.ggf.schemas.jsdl.x2005.x11.jsdl.JobDefinitionDocument;
 import pl.plgrid.unicore.common.GridServicesExplorer;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
-import pl.plgrid.unicore.common.tmp.JobDefinitionUtil;
-import pl.plgrid.unicore.common.tmp.ServiceOrchestratorPortalClient;
+import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.ui.files.GenericInputFilePanel;
 import pl.plgrid.unicore.common.utils.FileDataHelper;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by Rafal on 2014-04-05.
@@ -24,16 +21,17 @@ class SubmitWorkAssignmentListener implements Button.ClickListener {
 
     private final GenericInputFilePanel[] gifPanels;
     private final String[] tabSheetTitles;
+    private final BrokerJobModel brokerJobModel;
 
 
-    public SubmitWorkAssignmentListener(GenericInputFilePanel[] gifPanels, String[] tabSheetTitles) {
+    public SubmitWorkAssignmentListener(BrokerJobModel brokerJobModel, GenericInputFilePanel[] gifPanels, String[] tabSheetTitles) {
+        this.brokerJobModel = brokerJobModel;
         this.gifPanels = gifPanels;
         this.tabSheetTitles = tabSheetTitles;
     }
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        String msg = "(empty)";
         String workAssignmentID = WSUtilities.newUniqueID();
 
         GridServicesExplorer gridServicesExplorer = Session.getCurrent().getServiceRegistry().getService(GridServicesExplorer.class);
@@ -48,7 +46,8 @@ class SubmitWorkAssignmentListener implements Button.ClickListener {
         }
 
         String filename = "";
-        ArrayList<String> importLocations = new ArrayList<String>();
+        Set<String> inputFileSet = brokerJobModel.getInputFileSet();
+        inputFileSet.clear();
         try {
             for (int i = 0; i < tabSheetTitles.length; ++i) {
                 filename = tabSheetTitles[i];
@@ -66,22 +65,16 @@ class SubmitWorkAssignmentListener implements Button.ClickListener {
                     logger.info("File from tab <" + tabSheetTitles[i]
                             + "> used from location: <" + fileUri + ">");
                 }
-                importLocations.add(fileUri);
+                inputFileSet.add(fileUri);
             }
         } catch (Exception e) {
             logger.error("Problem during upload of file <" + filename
                     + "> to SMS!", e);
         }
-        JobDefinitionDocument job = JobDefinitionUtil
-                .createVASPJobDocument(importLocations);
-        logger.info(job.toString());
 
-        msg = new ServiceOrchestratorPortalClient().submitWorkAssignment(
-                job, workAssignmentID, storageClient.getEPR());
+        brokerJobModel.setStorageClient(storageClient);
+        brokerJobModel.setWorkAssignmentID(workAssignmentID);
 
-        // TODO: handle missing application or version in SO
-
-        Notification.show("Submitting VASP job...", msg,
-                Notification.Type.TRAY_NOTIFICATION);
+        brokerJobModel.submit();
     }
 }

@@ -5,7 +5,7 @@ import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.ui.PortalApplication;
 import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
-import pl.plgrid.unicore.common.model.AtomicJobModel;
+import pl.plgrid.unicore.common.model.BrokerJobModel;
 
 /**
  * Created by Rafal on 2014-04-04.
@@ -14,7 +14,7 @@ public class ResourcesChooserPanel extends CustomComponent {
 
     private StringTokensPanel stringTokensPanel = new StringTokensPanel();
 
-    public ResourcesChooserPanel(final AtomicJobModel atomicJobModel) {
+    public ResourcesChooserPanel(final BrokerJobModel brokerJobModel) {
         Button showAvailableResourcesWindowButton = new Button(getMessage("showWindow"));
         showAvailableResourcesWindowButton.setStyleName(Reindeer.BUTTON_SMALL);
         showAvailableResourcesWindowButton.addClickListener(new Button.ClickListener() {
@@ -23,7 +23,7 @@ public class ResourcesChooserPanel extends CustomComponent {
                 Window w = new Window(getMessage("windowTitle"));
                 AvailableResourcesWindowPanel resourcesPanel = new AvailableResourcesWindowPanel(
                         w,
-                        atomicJobModel,
+                        brokerJobModel,
                         stringTokensPanel
                 );
                 w.setContent(resourcesPanel);

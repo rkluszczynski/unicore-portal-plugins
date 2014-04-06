@@ -6,7 +6,7 @@ import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.Session;
 import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
-import pl.plgrid.unicore.common.model.AtomicJobModel;
+import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.ui.JobsTableViewer;
 import pl.plgrid.unicore.vasp.i18n.VASPViewI18N;
 import pl.plgrid.unicore.vasp.input.SubmissionPanel;
@@ -17,12 +17,12 @@ import pl.plgrid.unicore.vasp.input.SubmissionPanel;
 public class VASPMainPanel extends VerticalLayout {
     private static final Logger logger = Logger.getLogger(VASPMainPanel.class);
 
-    private AtomicJobModel vaspJobModel;
+    private BrokerJobModel vaspJobModel;
 
 
     public VASPMainPanel() {
         super();
-        this.vaspJobModel = new AtomicJobModel();
+        this.vaspJobModel = new BrokerJobModel();
 
         logger.info("Creating VASP view for user: " + Session.getCurrent().getUser().getUsername());
         createMainViewComponents();

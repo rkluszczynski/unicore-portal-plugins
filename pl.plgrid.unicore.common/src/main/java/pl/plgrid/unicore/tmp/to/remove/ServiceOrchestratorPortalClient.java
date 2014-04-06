@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.common.tmp;
+package pl.plgrid.unicore.tmp.to.remove;
 
 import eu.unicore.portal.core.Session;
 import org.chemomentum.common.ws.IServiceOrchestrator;

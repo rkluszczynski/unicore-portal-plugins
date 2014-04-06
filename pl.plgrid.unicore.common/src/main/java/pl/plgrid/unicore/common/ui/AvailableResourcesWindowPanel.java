@@ -8,7 +8,7 @@ import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.threads.BackgroundWorker;
 import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
-import pl.plgrid.unicore.common.model.AtomicJobModel;
+import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.resources.AvailableResource;
 import pl.plgrid.unicore.common.ui.workers.AvailableResourcesPanelWorker;
 
@@ -33,7 +33,7 @@ public class AvailableResourcesWindowPanel extends CustomComponent {
 
 
     public AvailableResourcesWindowPanel(Window window,
-                                         final AtomicJobModel atomicJobModel,
+                                         final BrokerJobModel brokerJobModel,
                                          final StringTokensPanel stringTokensPanel) {
         super();
         parentWindow = window;
@@ -54,7 +54,7 @@ public class AvailableResourcesWindowPanel extends CustomComponent {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 okButtonClicked = true;
-                refreshAvailableResources(atomicJobModel, stringTokensPanel);
+                refreshAvailableResources(brokerJobModel, stringTokensPanel);
                 parentWindow.close();
             }
         });
@@ -92,8 +92,8 @@ public class AvailableResourcesWindowPanel extends CustomComponent {
         return table;
     }
 
-    void refreshAvailableResources(AtomicJobModel atomicJobModel, StringTokensPanel stringTokensPanel) {
-        Map<String, String> resourceSet = atomicJobModel.getResourceSet();
+    void refreshAvailableResources(BrokerJobModel brokerJobModel, StringTokensPanel stringTokensPanel) {
+        Map<String, String> resourceSet = brokerJobModel.getResourceSet();
 
         for (Iterator i = table.getItemIds().iterator(); i.hasNext(); ) {
             // Get the current item identifier, which is an integer.
