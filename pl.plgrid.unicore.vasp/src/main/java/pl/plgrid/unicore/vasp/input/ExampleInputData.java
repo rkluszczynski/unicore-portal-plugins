@@ -4,11 +4,11 @@ package pl.plgrid.unicore.vasp.input;
  *
  * @author rkluszczynski
  */
-public class ExampleInputData {
-	
-	public static String getINCAR() {
+class ExampleInputData {
+
+    public static String getINCAR() {
 		return "# SCF input for VASP\n" +
-                        "# Note that VASP uses the FIRST occurence of a keyword\n" +
+                "# Note that VASP uses the FIRST occurrence of a keyword\n" +
                         "	  SYSTEM = GaN_GGA_surf_001_4x_sc_1x1x1_H_H_mp\n" +
                         "       PREC = Accurate\n" +
                         "	   ENCUT = 400.00\n" +

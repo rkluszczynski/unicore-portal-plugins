@@ -4,7 +4,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.ui.Styles;
-import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.ui.ResourcesChooserPanel;
 import pl.plgrid.unicore.common.ui.files.GenericInputFilePanel;
@@ -17,7 +16,6 @@ import java.util.Date;
  * Created by Rafal on 2014-04-04.
  */
 public class SubmissionPanel extends CustomComponent {
-    private static final Logger logger = Logger.getLogger(SubmissionPanel.class);
 
 
     // TODO: maybe also without brokerJobModel
@@ -73,8 +71,7 @@ public class SubmissionPanel extends CustomComponent {
 
         gifPanels = new GenericInputFilePanel[tabSheetTitles.length];
         for (int i = 0; i < tabSheetTitles.length; ++i) {
-            String txt = "<init>";
-            txt = (i == 0) ? ExampleInputData.getINCAR()
+            String txt = (i == 0) ? ExampleInputData.getINCAR()
                     : (i == 1) ? ExampleInputData.getKPOINTS()
                     : (i == 2) ? ExampleInputData.getPOSCAR()
                     : new Date().toString(); // ExampleInputData.getPOTCAR();

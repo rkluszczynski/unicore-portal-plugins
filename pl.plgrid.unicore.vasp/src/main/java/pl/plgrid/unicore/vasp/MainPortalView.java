@@ -24,12 +24,12 @@ public class MainPortalView extends AbstractView {
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-        if (visible == false) {
+        if (visible) {
+            refreshComponentsForUserVisibility();
+        } else {
             if (vaspMainPanel != null) {
                 freeComponentsDuringInvisibility();
             }
-        } else {
-            refreshComponentsForUserVisibility();
         }
     }
 
