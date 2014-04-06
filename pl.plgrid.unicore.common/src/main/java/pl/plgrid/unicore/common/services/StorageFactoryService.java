@@ -13,6 +13,7 @@ import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
 import pl.plgrid.unicore.common.utils.SecurityHelper;
 
 import javax.xml.namespace.QName;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -20,6 +21,13 @@ import java.util.Random;
 import static pl.plgrid.unicore.common.entities.StorageEntityType.FACTORY_STORAGE;
 
 public class StorageFactoryService extends AbstractStorageService {
+    private static final int STORAGE_LIFETIME_IN_SECONDS = 24 * 60 * 60;
+    private Calendar storageLifetimeFixedCalendar;
+
+    public StorageFactoryService() {
+        storageLifetimeFixedCalendar = Calendar.getInstance();
+        storageLifetimeFixedCalendar.add(Calendar.SECOND, STORAGE_LIFETIME_IN_SECONDS);
+    }
 
     @Override
     public StorageClient createClient() throws UnavailableGridServiceException {
@@ -44,7 +52,7 @@ public class StorageFactoryService extends AbstractStorageService {
         try {
             StorageFactoryClient sfc = new StorageFactoryClient(
                     storageFactoryEpr, SecurityHelper.getClientConfig());
-            storageClient = sfc.createSMS();
+            storageClient = sfc.createSMS(storageLifetimeFixedCalendar);
             logger.info("Created SMS: <"
                     + storageClient.getEPR().getAddress().getStringValue()
                     + "> by user <"

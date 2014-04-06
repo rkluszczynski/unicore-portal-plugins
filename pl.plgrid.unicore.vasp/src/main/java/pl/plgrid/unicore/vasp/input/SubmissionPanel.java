@@ -13,7 +13,7 @@ import pl.plgrid.unicore.vasp.i18n.VASPViewI18N;
 import java.util.Date;
 
 /**
- * Created by Rafal on 2014-04-04.
+ * @author Rafal
  */
 public class SubmissionPanel extends CustomComponent {
 
@@ -65,22 +65,23 @@ public class SubmissionPanel extends CustomComponent {
     }
 
 
-    private TabSheet createVASPFilesTabPanel(BrokerJobModel brokerJobModel) {
+    private TabSheet createVASPFilesTabPanel(final BrokerJobModel brokerJobModel) {
         String tabSheetTitles[] = {"INCAR", "KPOINTS", "POSCAR", "POTCAR"};
-        GenericInputFilePanel[] gifPanels;
+        GenericInputFilePanel[] gifPanels =
+                new GenericInputFilePanel[tabSheetTitles.length];
 
-        gifPanels = new GenericInputFilePanel[tabSheetTitles.length];
         for (int i = 0; i < tabSheetTitles.length; ++i) {
-            String txt = (i == 0) ? ExampleInputData.getINCAR()
+            String textContent = (i == 0) ? ExampleInputData.getINCAR()
                     : (i == 1) ? ExampleInputData.getKPOINTS()
                     : (i == 2) ? ExampleInputData.getPOSCAR()
                     : new Date().toString(); // ExampleInputData.getPOTCAR();
-            gifPanels[i] = new GenericInputFilePanel(txt);
+            gifPanels[i] = new GenericInputFilePanel(textContent);
         }
 
         TabSheet tabSheet = new TabSheet();
         tabSheet.setStyleName(Reindeer.TABSHEET_MINIMAL);
         for (int i = 0; i < tabSheetTitles.length; ++i) {
+            gifPanels[i].setSpacing(true);
             tabSheet.addTab(gifPanels[i], tabSheetTitles[i]);
 
             brokerJobModel.registerGridInputFileComponent(tabSheetTitles[i], gifPanels[i]);

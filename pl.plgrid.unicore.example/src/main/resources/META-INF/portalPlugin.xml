@@ -20,6 +20,7 @@
             </commandDescriptor>
         </menuExtension>
 
+
         <MessageSourceExtension>
             <id>pl.plgrid.unicore.example.messages</id>
             <location>pl.plgrid.unicore.example.i18n.ExampleMessages</location>

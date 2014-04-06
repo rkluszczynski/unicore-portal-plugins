@@ -15,8 +15,9 @@ public class MainPortalView extends AbstractView {
     private VASPMainPanel vaspMainPanel;
 
     public MainPortalView() {
-        setTitle(getMessage("title"));
-
+        setTitle(
+                GlobalState.getMessage(VASPViewI18N.ID, "vasp.view.title")
+        );
         createMainViewComponents();
         addComponent(mainPage);
     }
@@ -53,9 +54,5 @@ public class MainPortalView extends AbstractView {
 
     private void freeComponentsDuringInvisibility() {
         vaspMainPanel.setVisible(false);
-    }
-
-    private String getMessage(String messageKey) {
-        return GlobalState.getMessage(VASPViewI18N.ID, "vasp.view." + messageKey);
     }
 }

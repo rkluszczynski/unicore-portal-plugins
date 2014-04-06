@@ -1,0 +1,14 @@
+
+Many thanks to thread: http://jdn.pl/node/542
+
+# Polish characters in Unicode
+
+# A - \u0104; a - \u0105
+# C - \u0106; c - \u0107
+# E - \u0118; e - \u0119
+# L - \u0141; l - \u0142
+# N - \u0143; n - \u0144
+# O - \u00d3; o - \u00f3
+# S - \u015a; s - \u015b
+# X - \u0179; x - \u017a
+# Z - \u017b; z - \u017c

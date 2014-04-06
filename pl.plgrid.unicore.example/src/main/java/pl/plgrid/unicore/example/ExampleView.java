@@ -9,7 +9,7 @@ import eu.unicore.portal.core.Session;
 import eu.unicore.portal.core.User;
 import eu.unicore.portal.ui.Styles;
 import eu.unicore.portal.ui.views.AbstractView;
-import pl.plgrid.unicore.example.i18n.ExampleViewI18N;
+import pl.plgrid.unicore.example.i18n.ExampleI18N;
 import pl.plgrid.unicore.example.panel.ExamplePanel;
 
 /**
@@ -17,15 +17,11 @@ import pl.plgrid.unicore.example.panel.ExamplePanel;
  */
 @SuppressWarnings("serial")
 public class ExampleView extends AbstractView {
-
     private GridLayout mainPage;
     private VerticalLayout mainContainer;
 
-    private final User user;
-
     public ExampleView() {
-        setTitle(GlobalState.getMessage(ExampleViewI18N.ID, "plgExampleView.title")); //$NON-NLS-1$
-        user = Session.getCurrent().getUser();
+        setTitle(GlobalState.getMessage(ExampleI18N.ID, "plgExampleView.title")); //$NON-NLS-1$
 
         createMainViewComponents();
         addComponent(mainPage);
@@ -58,10 +54,10 @@ public class ExampleView extends AbstractView {
     }
 
     private void prepareComponentsOnlyForVisibleState() {
+        User user = Session.getCurrent().getUser();
         ExamplePanel examplePanel = new ExamplePanel(user);
 
-        mainContainer.addComponent(new Label("<hr/>", ContentMode.HTML));
+        mainContainer.addComponent(new Label("<hr />", ContentMode.HTML));
         mainContainer.addComponent(examplePanel);
     }
-
 }
