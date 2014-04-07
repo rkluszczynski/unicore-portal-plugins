@@ -13,7 +13,6 @@ import pl.plgrid.unicore.common.resources.AvailableResource;
 import pl.plgrid.unicore.common.ui.workers.AvailableResourcesPanelWorker;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 
@@ -95,9 +94,9 @@ public class AvailableResourcesWindowPanel extends CustomComponent {
     void refreshAvailableResources(BrokerJobModel brokerJobModel, StringTokensPanel stringTokensPanel) {
         Map<String, String> resourceSet = brokerJobModel.getResourceSet();
 
-        for (Iterator i = table.getItemIds().iterator(); i.hasNext(); ) {
+        for (Object o : table.getItemIds()) {
             // Get the current item identifier, which is an integer.
-            int iid = (Integer) i.next();
+            int iid = (Integer) o;
 
             // Now get the actual item from the table.
             Item item = table.getItem(iid);
@@ -123,7 +122,7 @@ public class AvailableResourcesWindowPanel extends CustomComponent {
 
                 logger.info(" ### : " + resourceName + " := " + resourceValue);
 
-                AvailableResource availableResource = findAvailableResource(resourceName);
+//                AvailableResource availableResource = findAvailableResource(resourceName);
                 if (resourceName != null) {
                     // TODO: check validation of resource value
                     resourceSet.put(resourceName, resourceValue);

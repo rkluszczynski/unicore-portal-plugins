@@ -22,6 +22,7 @@ import pl.plgrid.unicore.common.services.TargetSystemService;
 import pl.plgrid.unicore.common.ui.JobsTableViewer;
 import pl.plgrid.unicore.common.utils.SecurityHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,8 @@ TODO: clean this up!!
 */
 public class JobsTableViewerWorker extends BackgroundWorker {
     private static final Logger logger = Logger.getLogger(JobsTableViewer.class);
+
+    public static final String ITEM_ID_JOIN_STRING = "~";
 
     private final TargetSystemService targetSystemService;
     private final Collection<JobClient> jobsClients = Lists.newArrayList();
@@ -83,11 +86,21 @@ public class JobsTableViewerWorker extends BackgroundWorker {
             String jobURI = jc.getEPR().getAddress().getStringValue();
             StatusType.Enum jobStatus = jobsStatusMap.get(jobURI.split("=")[1]);
 
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+            String submissionDateString = simpleDateFormat.format(
+                    jc.getSubmissionTime().getTime()
+            );
+
+
+//            PortalApplication.getCurrent().asyncGUIUpdate();
+
             getTable().addItem(
-                    new Object[]{(jobStatus == null) ? "XXX" :
-                            jobStatus
-                                    .toString(),
-                            jobName, jobURI, dirURI}, null
+                    new Object[]{
+                            (jobStatus == null) ? "( unknown )" : jobStatus.toString(),
+                            jobName,
+                            submissionDateString
+                    },
+                    String.format("%s%s%s", jobURI, ITEM_ID_JOIN_STRING, dirURI)
             );
         }
         getTable().markAsDirtyRecursive();

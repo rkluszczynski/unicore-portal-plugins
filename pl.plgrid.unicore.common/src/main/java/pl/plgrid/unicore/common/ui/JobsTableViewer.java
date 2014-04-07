@@ -45,21 +45,24 @@ public class JobsTableViewer extends CustomComponent implements
         footerLabel.setValue("Selected: " + table.getValue());
     }
 
+
     private void initializeComponents() {
         Notification.show("", getMessage("tableTitle") + " ("
                         + Session.getCurrent().getUser().getUsername() + ")",
                 Notification.Type.TRAY_NOTIFICATION
         );
 
-        String jobStatusColumnTitle = getMessage("column.statusTitle");
-        String jobNameColumnTitle = getMessage("column.nameTitle");
-        String jobURIColumnTitle = getMessage("column.uriTitle");
-        String jobDirURIColumnTitle = getMessage("column.uriDirTitle");
+        String columnStatus = "column.status";
+        String columnJobName = "column.jobName";
+        String columnSubmissionTime = "column.submissionTime";
 
-        table.addContainerProperty(jobStatusColumnTitle, String.class, null);
-        table.addContainerProperty(jobNameColumnTitle, String.class, null);
-        table.addContainerProperty(jobURIColumnTitle, String.class, null);
-        table.addContainerProperty(jobDirURIColumnTitle, String.class, null);
+        table.addContainerProperty(columnStatus, String.class, null);
+        table.addContainerProperty(columnJobName, String.class, null);
+        table.addContainerProperty(columnSubmissionTime, String.class, null);
+
+        table.setColumnHeader(columnStatus, getMessage(String.format("%sTitle", columnStatus)));
+        table.setColumnHeader(columnJobName, getMessage(String.format("%sTitle", columnJobName)));
+        table.setColumnHeader(columnSubmissionTime, getMessage(String.format("%sTitle", columnSubmissionTime)));
 
         table.setSelectable(true);
         table.setImmediate(true);
@@ -111,12 +114,11 @@ public class JobsTableViewer extends CustomComponent implements
         if (selectedRowObject == null) {
             return null;
         }
-        String jobEprValue = (String) table
-                .getContainerProperty(selectedRowObject, "DirURI")
-                .getValue();
-        EndpointReferenceType jobEpr = EndpointReferenceType.Factory
-                .newInstance();
-        jobEpr.addNewAddress().setStringValue(jobEprValue);
+        String selectedRowItemId = (String) selectedRowObject;
+        String jobDirectoryEpr = selectedRowItemId.split(JobsTableViewerWorker.ITEM_ID_JOIN_STRING)[1];
+
+        EndpointReferenceType jobEpr = EndpointReferenceType.Factory.newInstance();
+        jobEpr.addNewAddress().setStringValue(jobDirectoryEpr);
         return jobEpr;
     }
 

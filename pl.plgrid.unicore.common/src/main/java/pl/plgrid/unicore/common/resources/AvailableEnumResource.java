@@ -18,7 +18,7 @@ public class AvailableEnumResource extends AvailableResource {
 
     public AvailableEnumResource(String name, String description, String defaultValue, String[] allowedValues) {
         super(name, description, defaultValue);
-        allowed = new HashSet<String>();
+        allowed = new HashSet<>();
         Collections.addAll(allowed, allowedValues);
     }
 

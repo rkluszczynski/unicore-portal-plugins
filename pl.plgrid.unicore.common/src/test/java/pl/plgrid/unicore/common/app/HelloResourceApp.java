@@ -6,7 +6,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 /**
- * Created by Rafal on 2014-04-05.
+ * @author Rafal
  */
 public class HelloResourceApp extends UI {
     @Override

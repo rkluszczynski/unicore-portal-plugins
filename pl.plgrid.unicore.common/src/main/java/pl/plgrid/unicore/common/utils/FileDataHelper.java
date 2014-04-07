@@ -7,7 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 /**
- * Created by Rafal on 2014-04-04.
+ * @author Rafal
  */
 public class FileDataHelper {
 

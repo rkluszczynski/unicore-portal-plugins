@@ -24,8 +24,8 @@ abstract class AbstractJobModel {
     private final String applicationName;
     private final String applicationVersion;
 
+    protected final String workAssignmentID;
     protected StorageClient storageClient;
-    protected String workAssignmentID;
 
     protected final Map<String, String> parameterSet = Maps.newConcurrentMap();
     protected final Map<String, String> resourceSet = Maps.newConcurrentMap();
@@ -35,6 +35,7 @@ abstract class AbstractJobModel {
     protected AbstractJobModel(String applicationName, String applicationVersion) {
         this.applicationName = applicationName;
         this.applicationVersion = applicationVersion;
+        workAssignmentID = WSUtilities.newUniqueID();
     }
 
 
@@ -152,60 +153,75 @@ abstract class AbstractJobModel {
             logger.info("[[makeResources]] =>  " + entry.getKey() + " = " + entry.getValue());
 
             String resource = entry.getKey();
-            if ("Reservation".equals(resource)) {
-                try {
-                    String reservationID = entry.getValue();
-                    insertReservationID(reservationID, rd);
-                } catch (Exception e) {
-                    logger.error("Error processing reservation id", e);
-                }
-            } else if ("Operating system".equals(resource)) {
-                String os = entry.getValue();//JSONUtil.getString(j,"Operating system");
-                if (os != null) {
-                    OperatingSystemTypeEnumeration.Enum osType = getOSType(os);
-                    if (osType != null) {
-                        rt.addNewOperatingSystem().addNewOperatingSystemType().setOperatingSystemName(osType);
-                    } else {
-                        logger.error("Operating system " + os + " not recognized (not defined in JSDL).", null);
+            switch (resource) {
+                case "Reservation":
+                    try {
+                        String reservationID = entry.getValue();
+                        insertReservationID(reservationID, rd);
+                    } catch (Exception e) {
+                        logger.error("Error processing reservation id", e);
                     }
-                }
-            } else if ("Runtime".equals(resource)) {
-                String runtime = entry.getValue();//j.getString("Runtime");
-                if (runtime != null) {
+                    break;
+                case "Operating system":
+                    String os = entry.getValue();//JSONUtil.getString(j,"Operating system");
+
+                    if (os != null) {
+                        OperatingSystemTypeEnumeration.Enum osType = getOSType(os);
+                        if (osType != null) {
+                            rt.addNewOperatingSystem().addNewOperatingSystemType().setOperatingSystemName(osType);
+                        } else {
+                            logger.error("Operating system " + os + " not recognized (not defined in JSDL).", null);
+                        }
+                    }
+                    break;
+                case "Runtime":
+                    String runtime = entry.getValue();//j.getString("Runtime");
+
+                    if (runtime != null) {
 //                    TODO:
 //                    runtime=String.valueOf(UnitParser.getTimeParser(1).getDoubleValue(runtime));
-                    rt.addNewIndividualCPUTime().addNewExact().setStringValue(runtime);
-                }
-            } else if ("Memory".equals(resource)) {
-                String memory = entry.getValue();//j.getString("Memory");
-                if (memory != null) {
+                        rt.addNewIndividualCPUTime().addNewExact().setStringValue(runtime);
+                    }
+                    break;
+                case "Memory":
+                    String memory = entry.getValue();//j.getString("Memory");
+
+                    if (memory != null) {
 //                    TODO:
 //                    memory=String.valueOf(UnitParser.getCapacitiesParser(1).getDoubleValue(memory));
-                    rt.addNewIndividualPhysicalMemory().addNewExact().setStringValue(memory);
-                }
-            } else if ("CPUs".equals(resource)) {
-                String totalCPUs = entry.getValue();//j.getString("CPUs");
-                if (totalCPUs != null) {
-                    rt.addNewTotalCPUCount().addNewExact().setStringValue(totalCPUs);
-                }
-            } else if ("Nodes".equals(resource)) {
-                String nodes = entry.getValue();//j.getString("Nodes");
-                if (nodes != null) {
-                    rt.addNewTotalResourceCount().addNewExact().setStringValue(nodes);
-                }
-            } else if ("CPUsPerNode".equals(resource)) {
-                String cpus = entry.getValue();//j.getString("CPUsPerNode");
-                if (cpus != null) {
-                    rt.addNewIndividualCPUCount().addNewExact().setStringValue(cpus);
-                }
-            } else {
+                        rt.addNewIndividualPhysicalMemory().addNewExact().setStringValue(memory);
+                    }
+                    break;
+                case "CPUs":
+                    String totalCPUs = entry.getValue();//j.getString("CPUs");
+
+                    if (totalCPUs != null) {
+                        rt.addNewTotalCPUCount().addNewExact().setStringValue(totalCPUs);
+                    }
+                    break;
+                case "Nodes":
+                    String nodes = entry.getValue();//j.getString("Nodes");
+
+                    if (nodes != null) {
+                        rt.addNewTotalResourceCount().addNewExact().setStringValue(nodes);
+                    }
+                    break;
+                case "CPUsPerNode":
+                    String cpus = entry.getValue();//j.getString("CPUsPerNode");
+
+                    if (cpus != null) {
+                        rt.addNewIndividualCPUCount().addNewExact().setStringValue(cpus);
+                    }
+                    break;
+                default:
 //generic resource
-                try {
-                    String req = entry.getValue();//j.getString(resource);
-                    insertResourceRequest(resource, req, rd);
-                } catch (Exception e) {
-                    logger.error("Error processing resource request for <" + resource + ">", e);
-                }
+                    try {
+                        String req = entry.getValue();//j.getString(resource);
+                        insertResourceRequest(resource, req, rd);
+                    } catch (Exception e) {
+                        logger.error("Error processing resource request for <" + resource + ">", e);
+                    }
+                    break;
             }
         }
         return rt;

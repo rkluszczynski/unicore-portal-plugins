@@ -4,7 +4,7 @@ import com.vaadin.server.ClassResource;
 import com.vaadin.server.DownloadStream;
 
 /**
- * Created by Rafal on 2014-04-05.
+ * @author Rafal
  */
 public class ClassPathResource extends ClassResource {
     private String resName;

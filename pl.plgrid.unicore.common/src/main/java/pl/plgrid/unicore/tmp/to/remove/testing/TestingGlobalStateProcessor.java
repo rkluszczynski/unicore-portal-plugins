@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.common.testing;
+package pl.plgrid.unicore.tmp.to.remove.testing;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -31,6 +31,7 @@ public class TestingGlobalStateProcessor {
                     for (Annotation a : f.getAnnotations()) {
                         // Checking for a NullValueValidate annotation
                         if (a.annotationType() == TestingGlobalStateAnnotation.class) {
+                            //noinspection ConstantConditions
                             TestingGlobalStateAnnotation nullVal = (TestingGlobalStateAnnotation) a;
                             System.out.println("Processing the field : " + nullVal.paramName());
 

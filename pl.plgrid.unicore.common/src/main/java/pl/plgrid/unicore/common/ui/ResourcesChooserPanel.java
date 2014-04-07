@@ -8,7 +8,7 @@ import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
 
 /**
- * Created by Rafal on 2014-04-04.
+ * @author Rafal
  */
 public class ResourcesChooserPanel extends CustomComponent {
 

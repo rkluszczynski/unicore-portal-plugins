@@ -1,7 +1,6 @@
 package pl.plgrid.unicore.common.model;
 
 import com.vaadin.ui.Notification;
-import de.fzj.unicore.wsrflite.xmlbeans.WSUtilities;
 import org.apache.log4j.Logger;
 import org.ggf.schemas.jsdl.x2005.x11.jsdl.JobDefinitionDocument;
 import pl.plgrid.unicore.tmp.to.remove.ServiceOrchestratorPortalClient;
@@ -13,7 +12,6 @@ public class BrokerJobModel extends AbstractJobModel {
 
     public BrokerJobModel(String applicationName, String applicationVersion) {
         super(applicationName, applicationVersion);
-        workAssignmentID = WSUtilities.newUniqueID();
     }
 
     @Override

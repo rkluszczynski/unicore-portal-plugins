@@ -1,7 +1,7 @@
 package pl.plgrid.unicore.common.ui.model;
 
 /**
- * Created by Rafal on 2014-04-06.
+ * @author Rafal
  */
 public interface GridInputFileComponent {
 

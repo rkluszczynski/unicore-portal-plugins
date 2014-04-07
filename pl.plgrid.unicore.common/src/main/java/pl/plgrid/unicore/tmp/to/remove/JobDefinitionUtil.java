@@ -1,12 +1,12 @@
 package pl.plgrid.unicore.tmp.to.remove;
 
+import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import de.fzj.unicore.wsrflite.xmlbeans.WSUtilities;
 import eu.unicore.jsdl.extensions.IgnoreFailureDocument;
 import org.chemomentum.broker.xmlbeans.ChooseResourceRequestDocument;
 import org.chemomentum.broker.xmlbeans.ChooseResourceRequestDocument.ChooseResourceRequest;
 import org.ggf.schemas.jsdl.x2005.x11.jsdl.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,7 +56,7 @@ public class JobDefinitionUtil {
 
         jobDesc.addNewJobIdentification().setJobName("Simple-Date-Job-With-Import");
 
-        List<DataStagingType> staging = new ArrayList<DataStagingType>();
+        List<DataStagingType> staging = Lists.newArrayList();
         for (String uri : asList) {
             DataStagingDocument dsd = DataStagingDocument.Factory.newInstance();
             DataStagingType d = dsd.addNewDataStaging();
@@ -90,7 +90,7 @@ public class JobDefinitionUtil {
 
         jobDesc.addNewJobIdentification().setJobName(VASP_GRID_JOBNAME);
 
-        List<DataStagingType> staging = new ArrayList<DataStagingType>();
+        List<DataStagingType> staging = Lists.newArrayList();
         for (String uri : jobImports) {
             DataStagingDocument dsd = DataStagingDocument.Factory.newInstance();
             DataStagingType d = dsd.addNewDataStaging();

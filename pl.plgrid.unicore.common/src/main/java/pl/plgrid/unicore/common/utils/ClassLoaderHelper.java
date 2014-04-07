@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by Rafal on 2014-04-05.
+ * @author Rafal
  */
 public class ClassLoaderHelper {
     private static final Logger logger = Logger.getLogger(ClassLoaderHelper.class);

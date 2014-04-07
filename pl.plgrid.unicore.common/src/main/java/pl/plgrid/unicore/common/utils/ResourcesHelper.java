@@ -24,7 +24,7 @@ public class ResourcesHelper {
         // FIXME: problems with parsing min and max
         List<AvailableResource> availableResources = Lists.newArrayList();
         for (AvailableResourceType availableResourceType : availableResourceArray) {
-            AvailableResource availableResource = null;
+            AvailableResource availableResource;
 
             switch (availableResourceType.getType().intValue()) {
                 case AvailableResourceTypeType.INT_CHOICE:
@@ -69,9 +69,7 @@ public class ResourcesHelper {
                     );
             }
 
-            if (availableResource != null) {
-                availableResources.add(availableResource);
-            }
+            availableResources.add(availableResource);
         }
         return availableResources;
     }

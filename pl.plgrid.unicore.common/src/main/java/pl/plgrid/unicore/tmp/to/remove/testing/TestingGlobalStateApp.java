@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.common.testing;
+package pl.plgrid.unicore.tmp.to.remove.testing;
 
 /**
  * Main class to test the Annotations
@@ -21,7 +21,7 @@ public class TestingGlobalStateApp {
     }
 
     public static void main(String args[]) {
-        TestingGlobalStateApp ae = new TestingGlobalStateApp();
+        new TestingGlobalStateApp();
     }
 }
 

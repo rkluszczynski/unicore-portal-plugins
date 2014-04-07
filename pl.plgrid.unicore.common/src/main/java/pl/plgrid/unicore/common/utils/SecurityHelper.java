@@ -15,7 +15,7 @@ public class SecurityHelper {
     }
 
     public static IClientConfiguration getSessionClientConfig(Session session) {
-        IClientConfiguration clientConfiguration = null;
+        IClientConfiguration clientConfiguration;
         try {
             clientConfiguration = session
                     .getUser()
