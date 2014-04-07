@@ -6,7 +6,7 @@ import eu.unicore.portal.core.Session;
 import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
-import pl.plgrid.unicore.common.ui.JobsTableViewer;
+import pl.plgrid.unicore.common.ui.SimulationsTableViewer;
 import pl.plgrid.unicore.vasp.input.SubmissionPanel;
 
 /**
@@ -39,7 +39,7 @@ class VASPMainPanel extends VerticalLayout {
 
     private void createMainViewComponents(BrokerJobModel brokerJobModel) {
         VerticalSplitPanel splitPanel = new VerticalSplitPanel(
-                new JobsTableViewer(),
+                new SimulationsTableViewer(),
                 new SubmissionPanel(brokerJobModel)
         );
 //        splitPanel.setCaption(getMessage("title"));

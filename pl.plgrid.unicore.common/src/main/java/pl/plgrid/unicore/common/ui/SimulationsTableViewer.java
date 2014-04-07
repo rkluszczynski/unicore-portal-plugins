@@ -1,57 +1,37 @@
 package pl.plgrid.unicore.common.ui;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
+import de.fzj.unicore.uas.client.JobClient;
 import eu.unicore.portal.core.GlobalState;
-import eu.unicore.portal.core.Session;
 import eu.unicore.portal.core.threads.BackgroundWorker;
 import org.apache.log4j.Logger;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
-import pl.plgrid.unicore.common.GridServicesExplorer;
 import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
-import pl.plgrid.unicore.common.services.TargetSystemService;
+import pl.plgrid.unicore.common.ui.model.SimulationViewerData;
 import pl.plgrid.unicore.common.ui.workers.JobsTableViewerWorker;
+import pl.plgrid.unicore.common.utils.SecurityHelper;
 
 
-public class JobsTableViewer extends CustomComponent implements
-        ValueChangeListener {
+public class SimulationsTableViewer extends CustomComponent {
+    private static final Logger logger = Logger.getLogger(SimulationsTableViewer.class);
 
-    private static final Logger logger = Logger.getLogger(JobsTableViewer.class);
-
-    private final TargetSystemService targetSystemService;
-
-    private final Label footerLabel = new Label("Selected: -");
     private final Table table = new Table();
 
-    public JobsTableViewer() {
+    public SimulationsTableViewer() {
         super();
         initializeComponents();
 
-        GridServicesExplorer gridExplorer
-                = Session.getCurrent().getServiceRegistry().getService(GridServicesExplorer.class);
-        targetSystemService = gridExplorer.getTargetSystemService();
         reloadJobsList();
     }
 
     public final void reloadJobsList() {
-        BackgroundWorker w = new JobsTableViewerWorker(table, targetSystemService);
+        BackgroundWorker w = new JobsTableViewerWorker(table);
         w.schedule();
-    }
-
-    @Override
-    public void valueChange(Property.ValueChangeEvent event) {
-        footerLabel.setValue("Selected: " + table.getValue());
     }
 
 
     private void initializeComponents() {
-        Notification.show("", getMessage("tableTitle") + " ("
-                        + Session.getCurrent().getUser().getUsername() + ")",
-                Notification.Type.TRAY_NOTIFICATION
-        );
-
         String columnStatus = "column.status";
         String columnJobName = "column.jobName";
         String columnSubmissionTime = "column.submissionTime";
@@ -68,8 +48,6 @@ public class JobsTableViewer extends CustomComponent implements
         table.setImmediate(true);
         table.setSizeFull();
 
-        table.addValueChangeListener(this);
-
         Button refreshJobsListButton = new Button(getMessage("jobs.refreshList"));
         refreshJobsListButton.setStyleName(Reindeer.BUTTON_SMALL);
         refreshJobsListButton.addClickListener(new RefreshJobsListButtonListener());
@@ -78,15 +56,14 @@ public class JobsTableViewer extends CustomComponent implements
         showJobDirButton.setStyleName(Reindeer.BUTTON_SMALL);
         showJobDirButton.addClickListener(new ShowJobDirButtonListener());
 
-        footerLabel.setStyleName(Reindeer.LABEL_SMALL);
-        HorizontalLayout horizontalLayout = new HorizontalLayout(
-                refreshJobsListButton, showJobDirButton, footerLabel
-        );
-//        horizontalLayout.setMargin(true);
-        horizontalLayout.setSpacing(true);
-//        horizontalLayout.setSizeFull();
-//        horizontalLayout.setHeight(100, Unit.PIXELS);
+        Button destroySimulationButton = new Button(getMessage("jobs.destroy"));
+        destroySimulationButton.setStyleName(Reindeer.BUTTON_SMALL);
+        destroySimulationButton.addClickListener(new DestroySimulationButtonListener());
 
+        HorizontalLayout horizontalLayout = new HorizontalLayout(
+                refreshJobsListButton, showJobDirButton, destroySimulationButton
+        );
+        horizontalLayout.setSpacing(true);
 
         GridLayout gridLayout = new GridLayout(1, 2);
         gridLayout.addComponent(horizontalLayout, 0, 0);
@@ -94,40 +71,52 @@ public class JobsTableViewer extends CustomComponent implements
         gridLayout.setRowExpandRatio(1, 1.f);
         gridLayout.setSizeFull();
 
-//        VerticalLayout verticalLayout = new VerticalLayout(
-//                horizontalLayout, table
-//        );
-//        verticalLayout.setExpandRatio(horizontalLayout, 1);
-//        verticalLayout.setExpandRatio(table, 100);
-//        verticalLayout.setSizeFull();
-
         setCompositionRoot(gridLayout);
         setSizeFull();
     }
 
     private String getMessage(String messageKey) {
-        return GlobalState.getMessage(CommonComponentsI18N.ID, "jobsTableViewer." + messageKey);
+        return GlobalState.getMessage(CommonComponentsI18N.ID, "simulationsTableViewer." + messageKey);
     }
 
-    private EndpointReferenceType getSelectedJobDirectoryEpr() {
+    private SimulationViewerData getSelectedSimulationViewerData() {
         Object selectedRowObject = table.getValue();
         if (selectedRowObject == null) {
             return null;
         }
-        String selectedRowItemId = (String) selectedRowObject;
-        String jobDirectoryEpr = selectedRowItemId.split(JobsTableViewerWorker.ITEM_ID_JOIN_STRING)[1];
+        return (SimulationViewerData) selectedRowObject;
+    }
 
-        EndpointReferenceType jobEpr = EndpointReferenceType.Factory.newInstance();
-        jobEpr.addNewAddress().setStringValue(jobDirectoryEpr);
-        return jobEpr;
+    private class DestroySimulationButtonListener implements Button.ClickListener {
+        @Override
+        public void buttonClick(Button.ClickEvent event) {
+            SimulationViewerData simulationViewerData = getSelectedSimulationViewerData();
+            if (simulationViewerData != null) {
+                EndpointReferenceType simulationEpr = simulationViewerData
+                        .getSimulationEpr();
+                try {
+                    new JobClient(simulationEpr, SecurityHelper.getClientConfig())
+                            .destroy();
+                    reloadJobsList();
+                } catch (Exception e) {
+                    String message = String.format("Unable to destroy job: %s",
+                            (simulationEpr == null) ? "<Epr not retrieved>" : simulationEpr.getAddress().getStringValue());
+                    logger.warn(message, e);
+                    Notification.show(message, Notification.Type.WARNING_MESSAGE);
+                }
+            }
+        }
     }
 
     private class ShowJobDirButtonListener implements Button.ClickListener {
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            EndpointReferenceType selectedJobEpr = getSelectedJobDirectoryEpr();
-            if (selectedJobEpr != null) {
-                JobDirectoryViewer jdv = new JobDirectoryViewer(selectedJobEpr);
+            SimulationViewerData simulationViewerData = getSelectedSimulationViewerData();
+            if (simulationViewerData != null) {
+                GridDirectoryViewer jdv = new GridDirectoryViewer(
+                        simulationViewerData
+                                .getDirectoryEpr()
+                );
                 jdv.showWindow();
             }
         }
