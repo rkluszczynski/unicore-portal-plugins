@@ -5,7 +5,6 @@ import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-import eu.unicore.portal.ui.PortalApplication;
 import eu.unicore.portal.ui.Styles;
 import org.unigrids.services.atomic.types.ProtocolType;
 import pl.plgrid.unicore.common.ui.model.GridInputFileComponent;
@@ -85,7 +84,9 @@ public class GenericInputFilePanel extends VerticalLayout implements
                     )
             );
             fileChooser.addStyleName(Styles.OVERLAY_1);
-            PortalApplication.getCurrent().addWindow(fileChooser);
+            fileChooser.setModal(true);
+//            PortalApplication.getCurrent().addWindow(fileChooser);
+            UI.getCurrent().addWindow(fileChooser);
         }
     }
 

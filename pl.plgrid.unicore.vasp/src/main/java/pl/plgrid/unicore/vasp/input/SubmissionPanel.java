@@ -11,6 +11,7 @@ import pl.plgrid.unicore.common.utils.ClassPathResource;
 import pl.plgrid.unicore.vasp.i18n.VASPViewI18N;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author Rafal
@@ -21,7 +22,7 @@ public class SubmissionPanel extends CustomComponent {
 
     // TODO: try to design api to do it without passing brokerJobModel (?)
 
-    public SubmissionPanel(BrokerJobModel brokerJobModel) {
+    public SubmissionPanel(BrokerJobModel brokerJobModel, Set<String> excludeResourceNames) {
         HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
         splitPanel.setSplitPosition(60, Unit.PERCENTAGE);
         splitPanel.setMinSplitPosition(60, Unit.PERCENTAGE);
@@ -30,7 +31,7 @@ public class SubmissionPanel extends CustomComponent {
         TabSheet tabSheet = createVASPFilesTabPanel(brokerJobModel);
         splitPanel.setFirstComponent(tabSheet);
 
-        AbstractLayout rightPanel = createUserManagementPanel(brokerJobModel);
+        AbstractLayout rightPanel = createUserManagementPanel(brokerJobModel, excludeResourceNames);
         splitPanel.setSecondComponent(rightPanel);
 
         setCompositionRoot(splitPanel);
@@ -38,8 +39,9 @@ public class SubmissionPanel extends CustomComponent {
     }
 
 
-    private AbstractLayout createUserManagementPanel(final BrokerJobModel brokerJobModel) {
+    private AbstractLayout createUserManagementPanel(final BrokerJobModel brokerJobModel, Set<String> excludeResourceNames) {
         GridLayout gridLayout = new GridLayout(1, 4);
+        final ResourcesOnTopPanel resourcesOnTopPanel = new ResourcesOnTopPanel();
 
         int gridLayoutRowNumber = 0;
         Button submitWorkAssignmentButton = new Button(getMessage("submitButton"));
@@ -51,6 +53,9 @@ public class SubmissionPanel extends CustomComponent {
                 if (simulationName == null || simulationName.compareTo("") == 0) {
                     simulationName = "VASP Simulation submitted by U7Portal";
                 }
+                brokerJobModel.getResourceSet().putAll(
+                        resourcesOnTopPanel.getResources()
+                );
                 brokerJobModel.submit(simulationName);
             }
         });
@@ -62,12 +67,17 @@ public class SubmissionPanel extends CustomComponent {
         simulationNameTextField.addStyleName(Styles.MARGIN_TOP_BOTTOM_15);
         FormLayout simulationNameFormLayout = new FormLayout();
         simulationNameFormLayout.setSpacing(true);
+        simulationNameFormLayout.setMargin(true);
         simulationNameFormLayout.addComponent(simulationNameTextField);
         gridLayout.addComponent(simulationNameFormLayout, 0, gridLayoutRowNumber);
         gridLayout.setComponentAlignment(simulationNameFormLayout, Alignment.MIDDLE_LEFT);
 
         ++gridLayoutRowNumber;
-        ResourcesManagementPanel resourcesManagementPanel = new ResourcesManagementPanel(brokerJobModel);
+        ResourcesManagementPanel resourcesManagementPanel = new ResourcesManagementPanel(
+                brokerJobModel,
+                resourcesOnTopPanel,
+                excludeResourceNames
+        );
         gridLayout.addComponent(resourcesManagementPanel, 0, gridLayoutRowNumber);
         gridLayout.setComponentAlignment(resourcesManagementPanel, Alignment.TOP_CENTER);
         gridLayout.setRowExpandRatio(gridLayoutRowNumber, 1.f);

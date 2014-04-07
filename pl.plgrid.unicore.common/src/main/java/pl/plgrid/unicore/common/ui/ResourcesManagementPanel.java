@@ -1,12 +1,13 @@
 package pl.plgrid.unicore.common.ui;
 
-import com.google.gwt.thirdparty.guava.common.collect.Sets;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.ui.PortalApplication;
+import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
+import pl.plgrid.unicore.common.ui.model.ResourceSetComponent;
 
 import java.util.Set;
 
@@ -14,18 +15,26 @@ import java.util.Set;
  * @author Rafal
  */
 public class ResourcesManagementPanel extends CustomComponent {
+    private static final Logger logger = Logger.getLogger(ResourcesManagementPanel.class);
 
     private StringTokensPanel stringTokensPanel = new StringTokensPanel();
 
-    public ResourcesManagementPanel(final BrokerJobModel brokerJobModel) {
-        createComponents(brokerJobModel, Sets.<String>newHashSet());
+    public <T extends Component & ResourceSetComponent> ResourcesManagementPanel(
+            final BrokerJobModel brokerJobModel,
+            T onTopComponent,
+            Set<String> excludeResourceNames
+    ) {
+        createComponents(brokerJobModel, onTopComponent, excludeResourceNames);
     }
 
-    public ResourcesManagementPanel(final BrokerJobModel brokerJobModel, Set<String> basicResources) {
-        createComponents(brokerJobModel, basicResources);
-    }
+    private <T extends Component & ResourceSetComponent> void createComponents(
+            final BrokerJobModel brokerJobModel,
+            T onTopComponent,
+            Set<String> excludeResourceNames
+    ) {
+        final Set<String> excludeResources = excludeResourceNames;
+        excludeResources.addAll(onTopComponent.getResources().keySet());
 
-    private void createComponents(final BrokerJobModel brokerJobModel, Set<String> basicResources) {
         Button showAvailableResourcesWindowButton = new Button(getMessage("showWindow"));
         showAvailableResourcesWindowButton.setStyleName(Reindeer.BUTTON_SMALL);
         showAvailableResourcesWindowButton.addClickListener(new Button.ClickListener() {
@@ -35,23 +44,41 @@ public class ResourcesManagementPanel extends CustomComponent {
                 AvailableResourcesWindowPanel resourcesPanel = new AvailableResourcesWindowPanel(
                         w,
                         brokerJobModel,
-                        stringTokensPanel
+                        stringTokensPanel,
+                        excludeResources
                 );
                 w.setContent(resourcesPanel);
                 w.setHeight(AvailableResourcesWindowPanel.INITIAL_HEIGHT, Unit.PIXELS);
                 w.setWidth(AvailableResourcesWindowPanel.INITIAL_WIDTH, Unit.PIXELS);
+                w.setModal(true);
                 w.center();
+
                 PortalApplication.getCurrent().addWindow(w);
             }
         });
 
-        GridLayout gridLayout = new GridLayout(1, 2);
-        gridLayout.addComponent(showAvailableResourcesWindowButton, 0, 0);
+        int componentRowNumber = -1;
+        GridLayout gridLayout = new GridLayout(1, onTopComponent == null ? 2 : 3);
+
+        if (onTopComponent != null) {
+            ++componentRowNumber;
+            logger.info("ON TOP COMPONENT !!!!!!!!!!!!!!!!!!!!!! " + onTopComponent.getClass().getCanonicalName());
+            gridLayout.addComponent(onTopComponent, 0, componentRowNumber);
+            gridLayout.setComponentAlignment(onTopComponent, Alignment.MIDDLE_LEFT);
+            gridLayout.setRowExpandRatio(componentRowNumber, 1.f);
+        }
+
+        ++componentRowNumber;
+        gridLayout.addComponent(showAvailableResourcesWindowButton, 0, componentRowNumber);
         gridLayout.setComponentAlignment(showAvailableResourcesWindowButton, Alignment.MIDDLE_CENTER);
 
-        gridLayout.addComponent(stringTokensPanel, 0, 1);
+        ++componentRowNumber;
+        gridLayout.addComponent(stringTokensPanel, 0, componentRowNumber);
         gridLayout.setComponentAlignment(stringTokensPanel, Alignment.TOP_LEFT);
-        gridLayout.setRowExpandRatio(1, 1.f);
+        gridLayout.setRowExpandRatio(componentRowNumber, 1.f);
+
+        gridLayout.setMargin(true);
+        gridLayout.setSpacing(true);
         gridLayout.setSizeFull();
 
         setCompositionRoot(gridLayout);

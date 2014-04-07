@@ -1,13 +1,17 @@
 package pl.plgrid.unicore.vasp;
 
+import com.google.gwt.thirdparty.guava.common.collect.Sets;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import eu.unicore.portal.core.Session;
 import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
+import pl.plgrid.unicore.common.resources.StandardResources;
 import pl.plgrid.unicore.common.ui.SimulationsTableViewer;
 import pl.plgrid.unicore.vasp.input.SubmissionPanel;
+
+import java.util.Set;
 
 /**
  * @author rkluszczynski
@@ -38,9 +42,14 @@ class VASPMainPanel extends VerticalLayout {
     }
 
     private void createMainViewComponents(BrokerJobModel brokerJobModel) {
+        Set<String> excludeResourceNames = Sets.<String>newHashSet(
+                StandardResources.cpuArchitecture.name(),
+                StandardResources.osType.name()
+        );
+
         VerticalSplitPanel splitPanel = new VerticalSplitPanel(
                 new SimulationsTableViewer(),
-                new SubmissionPanel(brokerJobModel)
+                new SubmissionPanel(brokerJobModel, excludeResourceNames)
         );
 //        splitPanel.setCaption(getMessage("title"));
         splitPanel.setSplitPosition(20, Unit.PERCENTAGE);

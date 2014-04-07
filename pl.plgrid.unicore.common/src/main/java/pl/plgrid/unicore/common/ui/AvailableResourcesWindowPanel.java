@@ -14,13 +14,14 @@ import pl.plgrid.unicore.common.ui.workers.AvailableResourcesPanelWorker;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 
 public class AvailableResourcesWindowPanel extends CustomComponent {
     private static final Logger logger = Logger.getLogger(AvailableResourcesWindowPanel.class);
 
     public static final int INITIAL_WIDTH = 600;
-    public static final int INITIAL_HEIGHT = 400;
+    public static final int INITIAL_HEIGHT = 450;
 
     private Window parentWindow;
 
@@ -33,7 +34,8 @@ public class AvailableResourcesWindowPanel extends CustomComponent {
 
     public AvailableResourcesWindowPanel(Window window,
                                          final BrokerJobModel brokerJobModel,
-                                         final StringTokensPanel stringTokensPanel) {
+                                         final StringTokensPanel stringTokensPanel,
+                                         final Set<String> excludeResourceNames) {
         super();
         parentWindow = window;
         setCaption(getMessage("title.loading"));
@@ -85,6 +87,7 @@ public class AvailableResourcesWindowPanel extends CustomComponent {
         BackgroundWorker worker = new AvailableResourcesPanelWorker(
                 this,
                 availableResources,
+                excludeResourceNames,
                 brokerJobModel
         );
         worker.schedule();
@@ -132,16 +135,6 @@ public class AvailableResourcesWindowPanel extends CustomComponent {
                     resourceSet.put(resourceName, resourceValue);
                 }
             }
-//            // And now we can get to the actual checkbox object.
-//            Button button = (Button)
-//                    (item.getItemProperty("ismember").getValue());
-//            // If the checkbox is selected.
-//            if ((Boolean)button.getValue() == true) {
-//                // Do something with the selected item; collect the
-//                // first names in a string.
-//                items += item.getItemProperty("First Name")
-//                        .getValue() + " ";
-//            }
         }
         logger.info(" !!! " + resourceSet.toString());
 

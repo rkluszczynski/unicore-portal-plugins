@@ -1,5 +1,7 @@
 package pl.plgrid.unicore.common.ui.workers;
 
+import com.google.gwt.thirdparty.guava.common.base.Predicate;
+import com.google.gwt.thirdparty.guava.common.collect.Collections2;
 import com.vaadin.ui.*;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.Session;
@@ -16,6 +18,7 @@ import pl.plgrid.unicore.common.ui.AvailableResourcesWindowPanel;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 public class AvailableResourcesPanelWorker extends BackgroundWorker {
     private static final Logger logger = Logger.getLogger(AvailableResourcesPanelWorker.class);
@@ -23,10 +26,12 @@ public class AvailableResourcesPanelWorker extends BackgroundWorker {
     private GridResourcesExplorer gridResourcesExplorer;
     private AvailableResourcesWindowPanel windowPanel;
     private Collection<AvailableResource> availableResources;
+    private final Set<String> excludeResourceNames;
     private final BrokerJobModel brokerJobModel;
 
     public AvailableResourcesPanelWorker(AvailableResourcesWindowPanel windowPanel,
                                          Collection<AvailableResource> availableResources,
+                                         Set<String> excludeResourceNames,
                                          BrokerJobModel brokerJobModel) {
         super(GlobalState.getMessage(CommonComponentsI18N.ID, "resourcesPanel.worker.name"));
 
@@ -37,12 +42,20 @@ public class AvailableResourcesPanelWorker extends BackgroundWorker {
         this.windowPanel = windowPanel;
         this.availableResources = availableResources;
         this.brokerJobModel = brokerJobModel;
+        this.excludeResourceNames = excludeResourceNames;
     }
 
     @Override
     protected void work(IProgressMonitor iProgressMonitor) {
         availableResources.clear();
-        availableResources.addAll(gridResourcesExplorer.getResources());
+        availableResources.addAll(
+                Collections2.filter(gridResourcesExplorer.getResources(), new Predicate<AvailableResource>() {
+                    @Override
+                    public boolean apply(AvailableResource availableResource) {
+                        return !excludeResourceNames.contains(availableResource.getName());
+                    }
+                })
+        );
     }
 
     @Override

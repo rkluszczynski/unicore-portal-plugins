@@ -13,7 +13,6 @@ import org.ggf.schemas.jsdl.x2005.x11.jsdl.*;
 import pl.plgrid.unicore.common.GridServicesExplorer;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
 import pl.plgrid.unicore.common.ui.model.GridInputFileComponent;
-import pl.plgrid.unicore.common.ui.model.ResourceComponent;
 import pl.plgrid.unicore.common.utils.FileDataHelper;
 
 import java.util.List;
@@ -30,7 +29,7 @@ abstract class AbstractJobModel {
 
     protected final Map<String, String> parameterSet = Maps.newConcurrentMap();
     protected final Map<String, String> resourceSet = Maps.newConcurrentMap();
-    protected final Map<String, ResourceComponent> resourceComponentMap = Maps.newConcurrentMap();
+    //    protected final Map<String, ResourceSetComponent> resourceComponentMap = Maps.newConcurrentMap();
     protected final Map<String, GridInputFileComponent> inputFileSet = Maps.newConcurrentMap();
     protected final Map<String, String> outputFileSet = Maps.newConcurrentMap();
 
@@ -48,9 +47,9 @@ abstract class AbstractJobModel {
         inputFileSet.put(filename, component);
     }
 
-    public void registerResourceComponent(String resourceName, ResourceComponent component) {
-        resourceComponentMap.put(resourceName, component);
-    }
+//    public void registerResourceComponent(String resourceName, ResourceSetComponent component) {
+//        resourceComponentMap.put(resourceName, component);
+//    }
 
     public Map<String, String> getResourceSet() {
         return resourceSet;
@@ -160,12 +159,12 @@ abstract class AbstractJobModel {
             String resourceValue = entry.getValue();
 
             logger.info("[[makeResources]] =>  " + resourceName + " = " + resourceValue);
-
-            ResourceComponent resourceComponent = resourceComponentMap.get(resourceName);
-            if (resourceComponent != null) {
-                resourceValue = resourceComponent.getResourceValue();
-                logger.info("[[makeResources]] ..  " + resourceName + " = " + resourceValue);
-            }
+//
+//            ResourceSetComponent resourceSetComponent = resourceComponentMap.get(resourceName);
+//            if (resourceSetComponent != null) {
+//                resourceValue = resourceSetComponent.getResourceValue();
+//                logger.info("[[makeResources]] ..  " + resourceName + " = " + resourceValue);
+//            }
 
             if (resourceName.equals("Reservation")) {
                 try {
