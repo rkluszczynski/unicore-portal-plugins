@@ -31,7 +31,6 @@ public class GenericInputFilePanel extends VerticalLayout implements
     private final TextArea fileContentTextArea;
     private final Button gridFileChooserButton;
 
-    protected FileInStorageChooser fileChooser = null;
 
     public GenericInputFilePanel(String content) {
         HorizontalLayout switchRowLayout = new HorizontalLayout();
@@ -80,16 +79,12 @@ public class GenericInputFilePanel extends VerticalLayout implements
     @Override
     public void buttonClick(ClickEvent event) {
         if (event.getButton() == gridFileChooserButton) {
-            if (fileChooser == null) {
-                synchronized (this) {
-                    if (fileChooser == null) {
-                        InputFilePanelCallback callback = new InputFilePanelCallback(
-                                gridFilePathTextField);
-                        fileChooser = new FileInStorageChooser(CAPTION_CHOOSE_GRID_FILE, callback);
-                        fileChooser.addStyleName(Styles.OVERLAY_1);
-                    }
-                }
-            }
+            FileInStorageChooser fileChooser = new FileInStorageChooser(CAPTION_CHOOSE_GRID_FILE,
+                    new InputFilePanelCallback(
+                            gridFilePathTextField
+                    )
+            );
+            fileChooser.addStyleName(Styles.OVERLAY_1);
             PortalApplication.getCurrent().addWindow(fileChooser);
         }
     }
@@ -104,18 +99,19 @@ public class GenericInputFilePanel extends VerticalLayout implements
         }
     }
 
-    public boolean isGridLocation() {
+
+    private boolean isGridLocation() {
         return browseGridFileRowPanel.isVisible();
     }
 
-    public String getFileContent() {
+    private String getFileContent() {
         return isGridLocation() ? null : fileContentTextArea.getValue();
     }
 
-    public String getFileLocation() {
+    private String getFileLocation() {
+        // TODO: fixed protocol type to BFT
         return isGridLocation() ? (ProtocolType.BFT + ":" + gridFilePathTextField.getValue()) : null;
     }
-
 
     @Override
     public GridInputFileData getInputFileData() {

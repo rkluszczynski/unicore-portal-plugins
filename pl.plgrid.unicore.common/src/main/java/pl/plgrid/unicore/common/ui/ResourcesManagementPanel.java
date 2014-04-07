@@ -1,5 +1,6 @@
 package pl.plgrid.unicore.common.ui;
 
+import com.google.gwt.thirdparty.guava.common.collect.Sets;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.core.GlobalState;
@@ -7,14 +8,24 @@ import eu.unicore.portal.ui.PortalApplication;
 import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
 
+import java.util.Set;
+
 /**
  * @author Rafal
  */
-public class ResourcesChooserPanel extends CustomComponent {
+public class ResourcesManagementPanel extends CustomComponent {
 
     private StringTokensPanel stringTokensPanel = new StringTokensPanel();
 
-    public ResourcesChooserPanel(final BrokerJobModel brokerJobModel) {
+    public ResourcesManagementPanel(final BrokerJobModel brokerJobModel) {
+        createComponents(brokerJobModel, Sets.<String>newHashSet());
+    }
+
+    public ResourcesManagementPanel(final BrokerJobModel brokerJobModel, Set<String> basicResources) {
+        createComponents(brokerJobModel, basicResources);
+    }
+
+    private void createComponents(final BrokerJobModel brokerJobModel, Set<String> basicResources) {
         Button showAvailableResourcesWindowButton = new Button(getMessage("showWindow"));
         showAvailableResourcesWindowButton.setStyleName(Reindeer.BUTTON_SMALL);
         showAvailableResourcesWindowButton.addClickListener(new Button.ClickListener() {

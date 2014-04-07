@@ -5,11 +5,11 @@
             <id>pl.plgrid.unicore.vasp.ui</id>
             <menuPath>navigation:main</menuPath>
 
-            <name>Run VASP</name>
-            <description>Prepare VASP Simulation</description>
+            <name>VASP</name>
+            <description>Manage VASP simulations</description>
             <!--<icon>vfsaction/addWorkflow</icon>-->
 
-            <category>/ApplicationVASP</category>
+            <category>/applicationVASP</category>
             <after>Grid</after>
             <!--<before></before>-->
 

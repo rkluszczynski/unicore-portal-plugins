@@ -5,7 +5,7 @@ import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.ui.Styles;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
-import pl.plgrid.unicore.common.ui.ResourcesChooserPanel;
+import pl.plgrid.unicore.common.ui.ResourcesManagementPanel;
 import pl.plgrid.unicore.common.ui.files.GenericInputFilePanel;
 import pl.plgrid.unicore.common.utils.ClassPathResource;
 import pl.plgrid.unicore.vasp.i18n.VASPViewI18N;
@@ -16,6 +16,8 @@ import java.util.Date;
  * @author Rafal
  */
 public class SubmissionPanel extends CustomComponent {
+
+    private TextField simulationNameTextField;
 
     // TODO: try to design api to do it without passing brokerJobModel (?)
 
@@ -37,30 +39,46 @@ public class SubmissionPanel extends CustomComponent {
 
 
     private AbstractLayout createUserManagementPanel(final BrokerJobModel brokerJobModel) {
-        GridLayout gridLayout = new GridLayout(1, 3);
+        GridLayout gridLayout = new GridLayout(1, 4);
 
+        int gridLayoutRowNumber = 0;
         Button submitWorkAssignmentButton = new Button(getMessage("submitButton"));
         submitWorkAssignmentButton.setStyleName(Styles.MARGIN_TOP_BOTTOM_15);
         submitWorkAssignmentButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                brokerJobModel.submit();
+                String simulationName = simulationNameTextField.getValue();
+                if (simulationName == null || simulationName.compareTo("") == 0) {
+                    simulationName = "VASP Simulation submitted by U7Portal";
+                }
+                brokerJobModel.submit(simulationName);
             }
         });
-        gridLayout.addComponent(submitWorkAssignmentButton, 0, 0);
+        gridLayout.addComponent(submitWorkAssignmentButton, 0, gridLayoutRowNumber);
         gridLayout.setComponentAlignment(submitWorkAssignmentButton, Alignment.MIDDLE_CENTER);
 
-        ResourcesChooserPanel resourcesChooserPanel = new ResourcesChooserPanel(brokerJobModel);
-        gridLayout.addComponent(resourcesChooserPanel, 0, 1);
-        gridLayout.setComponentAlignment(resourcesChooserPanel, Alignment.TOP_CENTER);
-        gridLayout.setRowExpandRatio(1, 1.f);
+        ++gridLayoutRowNumber;
+        simulationNameTextField = new TextField(getMessage("simulationNameCaption"));
+        simulationNameTextField.addStyleName(Styles.MARGIN_TOP_BOTTOM_15);
+        FormLayout simulationNameFormLayout = new FormLayout();
+        simulationNameFormLayout.setSpacing(true);
+        simulationNameFormLayout.addComponent(simulationNameTextField);
+        gridLayout.addComponent(simulationNameFormLayout, 0, gridLayoutRowNumber);
+        gridLayout.setComponentAlignment(simulationNameFormLayout, Alignment.MIDDLE_LEFT);
 
+        ++gridLayoutRowNumber;
+        ResourcesManagementPanel resourcesManagementPanel = new ResourcesManagementPanel(brokerJobModel);
+        gridLayout.addComponent(resourcesManagementPanel, 0, gridLayoutRowNumber);
+        gridLayout.setComponentAlignment(resourcesManagementPanel, Alignment.TOP_CENTER);
+        gridLayout.setRowExpandRatio(gridLayoutRowNumber, 1.f);
+
+        ++gridLayoutRowNumber;
         ClassPathResource pathResource = new ClassPathResource("vasp-logo-full.png");
 //        ClassResource pathResource = new ClassResource("vasp-logo-alpha.png");
         Image logoImage = new Image("", pathResource);
-        gridLayout.addComponent(logoImage, 0, 2);
+        gridLayout.addComponent(logoImage, 0, gridLayoutRowNumber);
         gridLayout.setComponentAlignment(logoImage, Alignment.MIDDLE_CENTER);
-        gridLayout.setRowExpandRatio(2, 1.f);
+        gridLayout.setRowExpandRatio(gridLayoutRowNumber, 1.f);
 
         gridLayout.setSizeFull();
         return gridLayout;

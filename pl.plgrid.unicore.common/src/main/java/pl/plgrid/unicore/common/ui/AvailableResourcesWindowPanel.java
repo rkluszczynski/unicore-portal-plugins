@@ -82,8 +82,11 @@ public class AvailableResourcesWindowPanel extends CustomComponent {
         setCompositionRoot(gridLayout);
         setSizeFull();
 
-        BackgroundWorker worker = new AvailableResourcesPanelWorker(this,
-                availableResources);
+        BackgroundWorker worker = new AvailableResourcesPanelWorker(
+                this,
+                availableResources,
+                brokerJobModel
+        );
         worker.schedule();
     }
 
@@ -94,6 +97,7 @@ public class AvailableResourcesWindowPanel extends CustomComponent {
     void refreshAvailableResources(BrokerJobModel brokerJobModel, StringTokensPanel stringTokensPanel) {
         Map<String, String> resourceSet = brokerJobModel.getResourceSet();
 
+        resourceSet.clear();
         for (Object o : table.getItemIds()) {
             // Get the current item identifier, which is an integer.
             int iid = (Integer) o;

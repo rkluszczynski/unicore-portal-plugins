@@ -8,16 +8,14 @@ import pl.plgrid.unicore.tmp.to.remove.ServiceOrchestratorPortalClient;
 public class BrokerJobModel extends AbstractJobModel {
     private static final Logger logger = Logger.getLogger(BrokerJobModel.class);
 
-    private static final String VASP_GRID_JOBNAME = "VASP_Job_submitted_by_Portal";
-
     public BrokerJobModel(String applicationName, String applicationVersion) {
         super(applicationName, applicationVersion);
     }
 
     @Override
-    public void submit() {
+    public void submit(String jobName) {
         JobDefinitionDocument jobDefinitionDocument =
-                prepareJobDefinitionDocument(VASP_GRID_JOBNAME);
+                prepareJobDefinitionDocument(jobName);
 
         logger.info("BROKER JOB: " + jobDefinitionDocument.toString());
 
@@ -28,6 +26,5 @@ public class BrokerJobModel extends AbstractJobModel {
 
         Notification.show("Submitting VASP job...", msg,
                 Notification.Type.TRAY_NOTIFICATION);
-
     }
 }

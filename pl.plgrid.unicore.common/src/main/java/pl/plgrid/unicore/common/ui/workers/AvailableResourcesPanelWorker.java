@@ -8,29 +8,35 @@ import eu.unicore.portal.core.threads.IProgressMonitor;
 import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.GridResourcesExplorer;
 import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
+import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.resources.AvailableBooleanResource;
 import pl.plgrid.unicore.common.resources.AvailableEnumResource;
 import pl.plgrid.unicore.common.resources.AvailableResource;
 import pl.plgrid.unicore.common.ui.AvailableResourcesWindowPanel;
 
 import java.util.Collection;
+import java.util.Map;
 
 public class AvailableResourcesPanelWorker extends BackgroundWorker {
     private static final Logger logger = Logger.getLogger(AvailableResourcesPanelWorker.class);
 
     private GridResourcesExplorer gridResourcesExplorer;
     private AvailableResourcesWindowPanel windowPanel;
-    private final Collection<AvailableResource> availableResources;
+    private Collection<AvailableResource> availableResources;
+    private final BrokerJobModel brokerJobModel;
 
     public AvailableResourcesPanelWorker(AvailableResourcesWindowPanel windowPanel,
-                                         Collection<AvailableResource> availableResources) {
+                                         Collection<AvailableResource> availableResources,
+                                         BrokerJobModel brokerJobModel) {
         super(GlobalState.getMessage(CommonComponentsI18N.ID, "resourcesPanel.worker.name"));
+
         gridResourcesExplorer = Session
                 .getCurrent()
                 .getServiceRegistry()
                 .getService(GridResourcesExplorer.class);
         this.windowPanel = windowPanel;
         this.availableResources = availableResources;
+        this.brokerJobModel = brokerJobModel;
     }
 
     @Override
@@ -44,31 +50,37 @@ public class AvailableResourcesPanelWorker extends BackgroundWorker {
         super.updateUI();
 
         for (AvailableResource availableResource : availableResources) {
-
             String resourceName = availableResource.getName();
             String resourceDescription = availableResource.getDescription();
-            String resourceDefaultValue = availableResource.getDefaultValue();
+
+            String resourceValue = getBrokerJobModelResourceValue(resourceName, brokerJobModel);
+            boolean initialCheckState = false;
+            if (resourceValue == null) {
+                resourceValue = availableResource.getDefaultValue();
+            } else {
+                initialCheckState = true;
+            }
 
             Component component;
             if (availableResource instanceof AvailableEnumResource) {
                 AvailableEnumResource enumResource = (AvailableEnumResource) availableResource;
                 ComboBox comboBox = new ComboBox("x", enumResource.getAllowed());
-                comboBox.setValue(resourceDefaultValue);
+                comboBox.setValue(resourceValue);
                 component = comboBox;
             } else if (availableResource instanceof AvailableBooleanResource) {
                 CheckBox checkBox = new CheckBox("x");
-                checkBox.setValue(Boolean.valueOf(resourceDefaultValue));
+                checkBox.setValue(Boolean.valueOf(resourceValue));
                 component = checkBox;
             } else {
                 TextField textField = new TextField("x");
-                textField.setValue(resourceDefaultValue);
+                textField.setValue(resourceValue);
                 component = textField;
             }
             // TODO: prepare ui component for IntTextField and DoubleTextField
 
             getTable().addItem(
                     new Object[]{
-                            new CheckBox(),
+                            new CheckBox("", initialCheckState),
                             resourceName,
                             resourceDescription,
                             component
@@ -77,6 +89,11 @@ public class AvailableResourcesPanelWorker extends BackgroundWorker {
             );
         }
         windowPanel.setCaption(getMessage("title.ready"));
+    }
+
+    private String getBrokerJobModelResourceValue(String resourceName, BrokerJobModel brokerJobModel) {
+        Map<String, String> resourceSet = brokerJobModel.getResourceSet();
+        return resourceSet.get(resourceName);
     }
 
 
