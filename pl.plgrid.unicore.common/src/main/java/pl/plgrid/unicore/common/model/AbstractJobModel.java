@@ -13,6 +13,7 @@ import org.ggf.schemas.jsdl.x2005.x11.jsdl.*;
 import pl.plgrid.unicore.common.GridServicesExplorer;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
 import pl.plgrid.unicore.common.ui.model.GridInputFileComponent;
+import pl.plgrid.unicore.common.ui.model.ResourceComponent;
 import pl.plgrid.unicore.common.utils.FileDataHelper;
 
 import java.util.List;
@@ -29,6 +30,7 @@ abstract class AbstractJobModel {
 
     protected final Map<String, String> parameterSet = Maps.newConcurrentMap();
     protected final Map<String, String> resourceSet = Maps.newConcurrentMap();
+    protected final Map<String, ResourceComponent> resourceComponentMap = Maps.newConcurrentMap();
     protected final Map<String, GridInputFileComponent> inputFileSet = Maps.newConcurrentMap();
     protected final Map<String, String> outputFileSet = Maps.newConcurrentMap();
 
@@ -44,6 +46,10 @@ abstract class AbstractJobModel {
 
     public void registerGridInputFileComponent(String filename, GridInputFileComponent component) {
         inputFileSet.put(filename, component);
+    }
+
+    public void registerResourceComponent(String resourceName, ResourceComponent component) {
+        resourceComponentMap.put(resourceName, component);
     }
 
     public Map<String, String> getResourceSet() {
@@ -150,19 +156,26 @@ abstract class AbstractJobModel {
         ResourcesType rt = rd.addNewResources();
 
         for (Map.Entry<String, String> entry : resourceSet.entrySet()) {
-            logger.info("[[makeResources]] =>  " + entry.getKey() + " = " + entry.getValue());
+            String resourceName = entry.getKey();
+            String resourceValue = entry.getValue();
 
-            String resource = entry.getKey();
-            if (resource.equals("Reservation")) {
+            logger.info("[[makeResources]] =>  " + resourceName + " = " + resourceValue);
+
+            ResourceComponent resourceComponent = resourceComponentMap.get(resourceName);
+            if (resourceComponent != null) {
+                resourceValue = resourceComponent.getResourceValue();
+                logger.info("[[makeResources]] ..  " + resourceName + " = " + resourceValue);
+            }
+
+            if (resourceName.equals("Reservation")) {
                 try {
-                    String reservationID = entry.getValue();
+                    String reservationID = resourceValue;
                     insertReservationID(reservationID, rd);
                 } catch (Exception e) {
                     logger.error("Error processing reservation id", e);
                 }
-
-            } else if (resource.equals("Operating system")) {
-                String os = entry.getValue();//JSONUtil.getString(j,"Operating system");
+            } else if (resourceName.equals("Operating system")) {
+                String os = resourceValue;//JSONUtil.getString(j,"Operating system");
 
                 if (os != null) {
                     OperatingSystemTypeEnumeration.Enum osType = getOSType(os);
@@ -172,9 +185,8 @@ abstract class AbstractJobModel {
                         logger.error("Operating system " + os + " not recognized (not defined in JSDL).", null);
                     }
                 }
-
-            } else if (resource.equals("Runtime")) {
-                String runtime = entry.getValue();//j.getString("Runtime");
+            } else if (resourceName.equals("Runtime")) {
+                String runtime = resourceValue;//j.getString("Runtime");
 
                 if (runtime != null) {
 //                    TODO:
@@ -182,8 +194,8 @@ abstract class AbstractJobModel {
                     rt.addNewIndividualCPUTime().addNewExact().setStringValue(runtime);
                 }
 
-            } else if (resource.equals("Memory")) {
-                String memory = entry.getValue();//j.getString("Memory");
+            } else if (resourceName.equals("Memory")) {
+                String memory = resourceValue;//j.getString("Memory");
 
                 if (memory != null) {
 //                    TODO:
@@ -191,22 +203,22 @@ abstract class AbstractJobModel {
                     rt.addNewIndividualPhysicalMemory().addNewExact().setStringValue(memory);
                 }
 
-            } else if (resource.equals("CPUs")) {
-                String totalCPUs = entry.getValue();//j.getString("CPUs");
+            } else if (resourceName.equals("CPUs")) {
+                String totalCPUs = resourceValue;//j.getString("CPUs");
 
                 if (totalCPUs != null) {
                     rt.addNewTotalCPUCount().addNewExact().setStringValue(totalCPUs);
                 }
 
-            } else if (resource.equals("Nodes")) {
-                String nodes = entry.getValue();//j.getString("Nodes");
+            } else if (resourceName.equals("Nodes")) {
+                String nodes = resourceValue;//j.getString("Nodes");
 
                 if (nodes != null) {
                     rt.addNewTotalResourceCount().addNewExact().setStringValue(nodes);
                 }
 
-            } else if (resource.equals("CPUsPerNode")) {
-                String cpus = entry.getValue();//j.getString("CPUsPerNode");
+            } else if (resourceName.equals("CPUsPerNode")) {
+                String cpus = resourceValue;//j.getString("CPUsPerNode");
 
                 if (cpus != null) {
                     rt.addNewIndividualCPUCount().addNewExact().setStringValue(cpus);
@@ -214,10 +226,10 @@ abstract class AbstractJobModel {
 
             } else {//generic resource
                 try {
-                    String req = entry.getValue();//j.getString(resource);
-                    insertResourceRequest(resource, req, rd);
+                    String req = resourceValue;//j.getString(resource);
+                    insertResourceRequest(resourceName, req, rd);
                 } catch (Exception e) {
-                    logger.error("Error processing resource request for <" + resource + ">", e);
+                    logger.error("Error processing resource request for <" + resourceName + ">", e);
                 }
 
             }
