@@ -34,6 +34,7 @@ public class ResourcesOnTopPanel extends CustomComponent implements ResourceSetC
         gridLayout.addComponent(projectFormLayout, 0, componentRowNumber);
         gridLayout.setComponentAlignment(projectFormLayout, Alignment.MIDDLE_LEFT);
 
+        gridLayout.setSizeFull();
         return gridLayout;
     }
 
@@ -42,7 +43,9 @@ public class ResourcesOnTopPanel extends CustomComponent implements ResourceSetC
     public Map<String, String> getResources() {
         Map<String, String> resources = Maps.newHashMap();
         String projectTextFieldValue = projectTextField.getValue();
-        resources.put("Project", projectTextFieldValue == null ? "" : projectTextFieldValue);
+        if (projectTextFieldValue != null && !projectTextFieldValue.equals("")) {
+            resources.put("Project", projectTextFieldValue);
+        }
         return resources;
     }
 }

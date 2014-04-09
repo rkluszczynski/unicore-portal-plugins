@@ -1,6 +1,7 @@
 package pl.plgrid.unicore.vasp;
 
 import com.google.gwt.thirdparty.guava.common.collect.Sets;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import eu.unicore.portal.core.Session;
@@ -47,9 +48,20 @@ class VASPMainPanel extends VerticalLayout {
                 StandardResources.osType.name()
         );
 
-        VerticalSplitPanel splitPanel = new VerticalSplitPanel(
-                new SimulationsTableViewer(),
+        VerticalLayout simulationsTablePanel = new VerticalLayout(
+                new SimulationsTableViewer()
+        );
+        simulationsTablePanel.setMargin(new MarginInfo(false, false, true, false));
+        simulationsTablePanel.setSizeFull();
+
+        VerticalLayout submissionPanel = new VerticalLayout(
                 new SubmissionPanel(brokerJobModel, excludeResourceNames)
+        );
+        submissionPanel.setMargin(new MarginInfo(true, false, false, false));
+        submissionPanel.setSizeFull();
+
+        VerticalSplitPanel splitPanel = new VerticalSplitPanel(
+                simulationsTablePanel, submissionPanel
         );
 //        splitPanel.setCaption(getMessage("title"));
         splitPanel.setSplitPosition(20, Unit.PERCENTAGE);
@@ -60,5 +72,4 @@ class VASPMainPanel extends VerticalLayout {
         addStyleName(Styles.PADDING_All_10);
         setSizeFull();
     }
-
 }

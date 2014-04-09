@@ -12,6 +12,7 @@ import org.apache.xmlbeans.XmlObject;
 import org.ggf.schemas.jsdl.x2005.x11.jsdl.*;
 import pl.plgrid.unicore.common.GridServicesExplorer;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
+import pl.plgrid.unicore.common.resources.StandardResources;
 import pl.plgrid.unicore.common.ui.model.GridInputFileComponent;
 import pl.plgrid.unicore.common.utils.FileDataHelper;
 
@@ -184,7 +185,7 @@ abstract class AbstractJobModel {
                         logger.error("Operating system " + os + " not recognized (not defined in JSDL).", null);
                     }
                 }
-            } else if (resourceName.equals("Runtime")) {
+            } else if (resourceName.equals("Runtime") || resourceName.equals(StandardResources.individualCPUTime.name())) {
                 String runtime = resourceValue;//j.getString("Runtime");
 
                 if (runtime != null) {
@@ -193,7 +194,7 @@ abstract class AbstractJobModel {
                     rt.addNewIndividualCPUTime().addNewExact().setStringValue(runtime);
                 }
 
-            } else if (resourceName.equals("Memory")) {
+            } else if (resourceName.equals("Memory") || resourceName.equals(StandardResources.individualPhysicalMemory.name())) {
                 String memory = resourceValue;//j.getString("Memory");
 
                 if (memory != null) {
@@ -202,21 +203,21 @@ abstract class AbstractJobModel {
                     rt.addNewIndividualPhysicalMemory().addNewExact().setStringValue(memory);
                 }
 
-            } else if (resourceName.equals("CPUs")) {
+            } else if (resourceName.equals("CPUs") || resourceName.equals(StandardResources.totalNumberOfCPUs.name())) {
                 String totalCPUs = resourceValue;//j.getString("CPUs");
 
                 if (totalCPUs != null) {
                     rt.addNewTotalCPUCount().addNewExact().setStringValue(totalCPUs);
                 }
 
-            } else if (resourceName.equals("Nodes")) {
+            } else if (resourceName.equals("Nodes") || resourceName.equals(StandardResources.totalNumberOfNodes.name())) {
                 String nodes = resourceValue;//j.getString("Nodes");
 
                 if (nodes != null) {
                     rt.addNewTotalResourceCount().addNewExact().setStringValue(nodes);
                 }
 
-            } else if (resourceName.equals("CPUsPerNode")) {
+            } else if (resourceName.equals("CPUsPerNode") || resourceName.equals(StandardResources.individualNumberOfCPUs.name())) {
                 String cpus = resourceValue;//j.getString("CPUsPerNode");
 
                 if (cpus != null) {

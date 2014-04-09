@@ -1,5 +1,6 @@
 package pl.plgrid.unicore.vasp.input;
 
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.core.GlobalState;
@@ -24,12 +25,17 @@ public class SubmissionPanel extends CustomComponent {
 
     public SubmissionPanel(BrokerJobModel brokerJobModel, Set<String> excludeResourceNames) {
         HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
+        splitPanel.addStyleName(Reindeer.SPLITPANEL_SMALL);
         splitPanel.setSplitPosition(60, Unit.PERCENTAGE);
         splitPanel.setMinSplitPosition(60, Unit.PERCENTAGE);
         splitPanel.setMaxSplitPosition(80, Unit.PERCENTAGE);
 
-        TabSheet tabSheet = createVASPFilesTabPanel(brokerJobModel);
-        splitPanel.setFirstComponent(tabSheet);
+        VerticalLayout tabSheetPanel = new VerticalLayout(
+                createVASPFilesTabPanel(brokerJobModel)
+        );
+        tabSheetPanel.setMargin(new MarginInfo(false, true, false, false));
+        tabSheetPanel.setSizeFull();
+        splitPanel.setFirstComponent(tabSheetPanel);
 
         AbstractLayout rightPanel = createUserManagementPanel(brokerJobModel, excludeResourceNames);
         splitPanel.setSecondComponent(rightPanel);
@@ -42,6 +48,7 @@ public class SubmissionPanel extends CustomComponent {
     private AbstractLayout createUserManagementPanel(final BrokerJobModel brokerJobModel, Set<String> excludeResourceNames) {
         GridLayout gridLayout = new GridLayout(1, 4);
         final ResourcesOnTopPanel resourcesOnTopPanel = new ResourcesOnTopPanel();
+//        final ResourcesOnTopPanel resourcesOnTopPanel = null;
 
         int gridLayoutRowNumber = 0;
         Button submitWorkAssignmentButton = new Button(getMessage("submitButton"));
@@ -53,9 +60,11 @@ public class SubmissionPanel extends CustomComponent {
                 if (simulationName == null || simulationName.compareTo("") == 0) {
                     simulationName = "VASP Simulation submitted by U7Portal";
                 }
-                brokerJobModel.getResourceSet().putAll(
-                        resourcesOnTopPanel.getResources()
-                );
+                if (resourcesOnTopPanel != null) {
+                    brokerJobModel.getResourceSet().putAll(
+                            resourcesOnTopPanel.getResources()
+                    );
+                }
                 brokerJobModel.submit(simulationName);
             }
         });
@@ -75,7 +84,8 @@ public class SubmissionPanel extends CustomComponent {
         ++gridLayoutRowNumber;
         ResourcesManagementPanel resourcesManagementPanel = new ResourcesManagementPanel(
                 brokerJobModel,
-                resourcesOnTopPanel,
+//                resourcesOnTopPanel,
+                null,
                 excludeResourceNames
         );
         gridLayout.addComponent(resourcesManagementPanel, 0, gridLayoutRowNumber);

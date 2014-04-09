@@ -33,7 +33,9 @@ public class ResourcesManagementPanel extends CustomComponent {
             Set<String> excludeResourceNames
     ) {
         final Set<String> excludeResources = excludeResourceNames;
-        excludeResources.addAll(onTopComponent.getResources().keySet());
+        if (onTopComponent != null) {
+            excludeResources.addAll(onTopComponent.getResources().keySet());
+        }
 
         Button showAvailableResourcesWindowButton = new Button(getMessage("showWindow"));
         showAvailableResourcesWindowButton.setStyleName(Reindeer.BUTTON_SMALL);
