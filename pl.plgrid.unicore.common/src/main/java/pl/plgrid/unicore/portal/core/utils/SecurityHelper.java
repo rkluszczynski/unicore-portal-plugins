@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.common.utils;
+package pl.plgrid.unicore.portal.core.utils;
 
 import eu.unicore.portal.core.Session;
 import eu.unicore.util.httpclient.IClientConfiguration;
@@ -6,7 +6,9 @@ import eu.unicore.util.httpclient.IClientConfiguration;
 import javax.security.auth.login.CredentialException;
 
 /**
- * @author rkluszczynski
+ * Helper class for handling user security issues in portal.
+ *
+ * @author R.Kluszczynski
  */
 public class SecurityHelper {
 

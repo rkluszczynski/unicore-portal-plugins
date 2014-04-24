@@ -10,7 +10,7 @@ import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.ui.model.SimulationViewerData;
 import pl.plgrid.unicore.common.ui.workers.JobsTableViewerWorker;
-import pl.plgrid.unicore.common.utils.SecurityHelper;
+import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 
 public class SimulationsTableViewer extends CustomComponent {

@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.core.ui.model;
+package pl.plgrid.unicore.portal.core.ui.model;
 
 /**
  * Created by Rafal on 2014-04-17.

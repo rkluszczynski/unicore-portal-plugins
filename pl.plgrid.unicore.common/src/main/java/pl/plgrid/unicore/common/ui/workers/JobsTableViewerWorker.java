@@ -19,7 +19,7 @@ import pl.plgrid.unicore.common.services.TargetSystemService;
 import pl.plgrid.unicore.common.ui.SimulationsTableViewer;
 import pl.plgrid.unicore.common.ui.model.AtomicJobViewerData;
 import pl.plgrid.unicore.common.ui.model.SimulationViewerData;
-import pl.plgrid.unicore.common.utils.SecurityHelper;
+import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 import java.util.List;
 

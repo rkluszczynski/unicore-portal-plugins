@@ -10,7 +10,7 @@ import eu.unicore.portal.core.Session;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.entities.StorageEntity;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
-import pl.plgrid.unicore.common.utils.SecurityHelper;
+import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 import javax.xml.namespace.QName;
 import java.util.Calendar;

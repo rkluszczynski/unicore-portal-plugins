@@ -8,7 +8,7 @@ import eu.unicore.portal.ui.Styles;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.ui.ResourcesManagementPanel;
 import pl.plgrid.unicore.common.ui.files.GenericInputFilePanel;
-import pl.plgrid.unicore.common.utils.ClassPathResource;
+import pl.plgrid.unicore.portal.core.utils.ClassPathResource;
 import pl.plgrid.unicore.vasp.i18n.VASPViewI18N;
 
 import java.util.Date;

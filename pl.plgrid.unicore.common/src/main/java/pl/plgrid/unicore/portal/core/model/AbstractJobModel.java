@@ -1,11 +1,11 @@
-package pl.plgrid.unicore.core.model;
+package pl.plgrid.unicore.portal.core.model;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.vaadin.ui.Component;
-import pl.plgrid.unicore.core.ui.model.InputFilesComponent;
-import pl.plgrid.unicore.core.ui.model.OutputFilesComponent;
-import pl.plgrid.unicore.core.ui.model.ParametersComponent;
-import pl.plgrid.unicore.core.ui.model.ResourcesComponent;
+import pl.plgrid.unicore.portal.core.ui.model.InputFilesComponent;
+import pl.plgrid.unicore.portal.core.ui.model.OutputFilesComponent;
+import pl.plgrid.unicore.portal.core.ui.model.ParametersComponent;
+import pl.plgrid.unicore.portal.core.ui.model.ResourcesComponent;
 
 import java.util.List;
 

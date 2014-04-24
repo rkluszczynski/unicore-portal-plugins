@@ -9,7 +9,7 @@ import eu.unicore.util.httpclient.IClientConfiguration;
 import org.apache.log4j.Logger;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
-import pl.plgrid.unicore.common.utils.SecurityHelper;
+import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 import javax.security.auth.x500.X500Principal;
 import javax.xml.namespace.QName;

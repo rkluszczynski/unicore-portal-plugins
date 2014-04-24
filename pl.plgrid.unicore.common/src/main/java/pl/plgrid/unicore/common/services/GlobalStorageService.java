@@ -8,7 +8,7 @@ import de.fzj.unicore.uas.client.StorageClient;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.entities.StorageEntity;
 import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
-import pl.plgrid.unicore.common.utils.SecurityHelper;
+import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 import java.util.Collection;
 import java.util.Collections;
