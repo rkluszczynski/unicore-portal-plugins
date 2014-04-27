@@ -13,12 +13,12 @@ import org.apache.log4j.Logger;
 import org.unigrids.x2006.x04.services.jms.JobPropertiesDocument;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.GridServicesExplorer;
-import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
-import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.services.TargetSystemService;
 import pl.plgrid.unicore.common.ui.SimulationsTableViewer;
 import pl.plgrid.unicore.common.ui.model.AtomicJobViewerData;
 import pl.plgrid.unicore.common.ui.model.SimulationViewerData;
+import pl.plgrid.unicore.portal.core.exceptions.UnavailableGridServiceException;
+import pl.plgrid.unicore.portal.core.i18n.ComponentsI18N;
 import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 import java.util.List;
@@ -36,7 +36,7 @@ public class JobsTableViewerWorker extends BackgroundWorker {
     private final Table table;
 
     public JobsTableViewerWorker(Table table) {
-        super(GlobalState.getMessage(CommonComponentsI18N.ID, "simulationsTableViewer.jobs.getList"));
+        super(GlobalState.getMessage(ComponentsI18N.ID, "simulationsTableViewer.jobs.getList"));
         this.table = table;
 
         GridServicesExplorer gridExplorer

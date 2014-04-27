@@ -2,7 +2,7 @@ package pl.plgrid.unicore.common.services;
 
 
 import org.chemomentum.common.ws.IServiceOrchestrator;
-import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
+import pl.plgrid.unicore.portal.core.exceptions.UnavailableGridServiceException;
 
 
 public class ServiceOrchestratorService extends AbstractService {

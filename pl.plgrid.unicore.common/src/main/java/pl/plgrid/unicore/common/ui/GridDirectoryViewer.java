@@ -6,7 +6,7 @@ import eu.unicore.portal.grid.core.data.u6.U6DataEndpoint;
 import eu.unicore.portal.ui.PortalApplication;
 import eu.unicore.portal.ui.browser.DataEndpointViewer;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
-import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
+import pl.plgrid.unicore.portal.core.i18n.ComponentsI18N;
 
 
 public class GridDirectoryViewer extends DataEndpointViewer {
@@ -17,7 +17,7 @@ public class GridDirectoryViewer extends DataEndpointViewer {
                 new U6DataEndpoint(epr.getAddress().getStringValue())
         );
         defaultWindowCaption = GlobalState
-                .getMessage(CommonComponentsI18N.ID, "gridDirectoryViewer.caption");
+                .getMessage(ComponentsI18N.ID, "gridDirectoryViewer.caption");
     }
 
     public void showWindow() {

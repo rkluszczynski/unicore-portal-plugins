@@ -4,7 +4,7 @@ package pl.plgrid.unicore.common.services;
 import org.chemomentum.common.impl.workflow.WorkflowSubmissionClient;
 import org.chemomentum.common.ws.IWorkflowFactory;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
-import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
+import pl.plgrid.unicore.portal.core.exceptions.UnavailableGridServiceException;
 import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 import java.util.Collections;

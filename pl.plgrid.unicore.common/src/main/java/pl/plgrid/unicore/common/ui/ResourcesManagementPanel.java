@@ -5,9 +5,9 @@ import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.ui.PortalApplication;
 import org.apache.log4j.Logger;
-import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.ui.model.ResourceSetComponent;
+import pl.plgrid.unicore.portal.core.i18n.ComponentsI18N;
 
 import java.util.Set;
 
@@ -89,6 +89,6 @@ public class ResourcesManagementPanel extends CustomComponent {
 
 
     private String getMessage(String messageKey) {
-        return GlobalState.getMessage(CommonComponentsI18N.ID, "resourcesPanel." + messageKey);
+        return GlobalState.getMessage(ComponentsI18N.ID, "resourcesPanel." + messageKey);
     }
 }

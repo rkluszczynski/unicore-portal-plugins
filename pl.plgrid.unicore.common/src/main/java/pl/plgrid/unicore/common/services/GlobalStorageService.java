@@ -6,15 +6,15 @@ import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import de.fzj.unicore.uas.StorageManagement;
 import de.fzj.unicore.uas.client.StorageClient;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
-import pl.plgrid.unicore.common.entities.StorageEntity;
-import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
+import pl.plgrid.unicore.portal.core.entities.StorageEntity;
+import pl.plgrid.unicore.portal.core.exceptions.UnavailableGridServiceException;
 import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static pl.plgrid.unicore.common.entities.StorageEntityType.GLOBAL_STORAGE;
+import static pl.plgrid.unicore.portal.core.entities.StorageEntityType.GLOBAL_STORAGE;
 
 public class GlobalStorageService extends AbstractStorageService {
 

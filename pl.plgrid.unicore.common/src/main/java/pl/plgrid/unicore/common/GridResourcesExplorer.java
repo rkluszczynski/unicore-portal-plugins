@@ -1,8 +1,8 @@
 package pl.plgrid.unicore.common;
 
-import pl.plgrid.unicore.common.entities.AtomicJobEntity;
-import pl.plgrid.unicore.common.entities.StorageEntity;
 import pl.plgrid.unicore.common.resources.AvailableResource;
+import pl.plgrid.unicore.portal.core.entities.AtomicJobEntity;
+import pl.plgrid.unicore.portal.core.entities.StorageEntity;
 
 import java.util.Collection;
 

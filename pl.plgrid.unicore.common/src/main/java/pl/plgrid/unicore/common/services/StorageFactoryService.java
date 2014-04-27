@@ -8,8 +8,8 @@ import de.fzj.unicore.uas.client.StorageClient;
 import de.fzj.unicore.uas.client.StorageFactoryClient;
 import eu.unicore.portal.core.Session;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
-import pl.plgrid.unicore.common.entities.StorageEntity;
-import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
+import pl.plgrid.unicore.portal.core.entities.StorageEntity;
+import pl.plgrid.unicore.portal.core.exceptions.UnavailableGridServiceException;
 import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 import javax.xml.namespace.QName;
@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import static pl.plgrid.unicore.common.entities.StorageEntityType.FACTORY_STORAGE;
+import static pl.plgrid.unicore.portal.core.entities.StorageEntityType.FACTORY_STORAGE;
 
 public class StorageFactoryService extends AbstractStorageService {
     private static final int STORAGE_LIFETIME_IN_SECONDS = 24 * 60 * 60;

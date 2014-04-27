@@ -10,21 +10,21 @@ import org.apache.log4j.Logger;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.GridResourcesExplorer;
 import pl.plgrid.unicore.common.GridServicesExplorer;
-import pl.plgrid.unicore.common.entities.AtomicJobEntity;
-import pl.plgrid.unicore.common.entities.StorageEntity;
-import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
 import pl.plgrid.unicore.common.resources.AvailableResource;
 import pl.plgrid.unicore.common.services.GlobalStorageService;
 import pl.plgrid.unicore.common.services.StorageFactoryService;
 import pl.plgrid.unicore.common.services.TargetSystemService;
 import pl.plgrid.unicore.common.utils.ResourcesHelper;
+import pl.plgrid.unicore.portal.core.entities.AtomicJobEntity;
+import pl.plgrid.unicore.portal.core.entities.StorageEntity;
+import pl.plgrid.unicore.portal.core.exceptions.UnavailableGridServiceException;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import static org.unigrids.x2006.x04.services.tss.TargetSystemPropertiesDocument.TargetSystemProperties;
-import static pl.plgrid.unicore.common.entities.StorageEntityType.SITE_STORAGE;
+import static pl.plgrid.unicore.portal.core.entities.StorageEntityType.SITE_STORAGE;
 
 public class GridResourcesExplorerImpl implements GridResourcesExplorer {
     private static final Logger logger = Logger.getLogger(GridResourcesExplorerImpl.class);

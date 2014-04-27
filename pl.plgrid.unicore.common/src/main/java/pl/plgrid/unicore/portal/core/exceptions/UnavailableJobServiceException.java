@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.common.exceptions;
+package pl.plgrid.unicore.portal.core.exceptions;
 
 public class UnavailableJobServiceException extends UnavailableGridServiceException {
     public UnavailableJobServiceException(String msg) {

@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.common.exceptions;
+package pl.plgrid.unicore.portal.core.exceptions;
 
 public class UnavailableGridServiceException extends Exception {
 

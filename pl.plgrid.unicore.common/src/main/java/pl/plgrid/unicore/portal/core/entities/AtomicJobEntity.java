@@ -1,9 +1,9 @@
-package pl.plgrid.unicore.common.entities;
+package pl.plgrid.unicore.portal.core.entities;
 
 import de.fzj.unicore.uas.client.JobClient;
 import org.apache.log4j.Logger;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
-import pl.plgrid.unicore.common.exceptions.UnavailableJobServiceException;
+import pl.plgrid.unicore.portal.core.exceptions.UnavailableJobServiceException;
 import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 import static org.unigrids.x2006.x04.services.jms.JobPropertiesDocument.JobProperties;
@@ -41,6 +41,17 @@ public class AtomicJobEntity {
         return jobProperties;
     }
 
+    @Override
+    public String toString() {
+        String propertiesString = "";
+        if (logger.isTraceEnabled()) {
+            propertiesString = String.format(", jobProperties=%s", jobProperties);
+        }
+        return String.format("AtomicJobEntity{jobEpr=%s%s}",
+                jobEpr.getAddress().getStringValue(),
+                propertiesString);
+    }
+
 
     private void createClient() throws UnavailableJobServiceException {
         try {
@@ -51,16 +62,5 @@ public class AtomicJobEntity {
         } catch (Exception e) {
             throw new UnavailableJobServiceException("Unable to create job client: " + jobEpr, e);
         }
-    }
-
-    @Override
-    public String toString() {
-        String propertiesString = "";
-        if (logger.isTraceEnabled()) {
-            propertiesString = String.format(", jobProperties=%s", jobProperties);
-        }
-        return String.format("AtomicJobEntity{jobEpr=%s%s}",
-                jobEpr.getAddress().getStringValue(),
-                propertiesString);
     }
 }

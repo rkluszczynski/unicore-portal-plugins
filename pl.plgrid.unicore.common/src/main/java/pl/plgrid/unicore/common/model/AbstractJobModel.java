@@ -11,10 +11,10 @@ import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlObject;
 import org.ggf.schemas.jsdl.x2005.x11.jsdl.*;
 import pl.plgrid.unicore.common.GridServicesExplorer;
-import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
 import pl.plgrid.unicore.common.resources.StandardResources;
 import pl.plgrid.unicore.common.ui.model.GridInputFileComponent;
 import pl.plgrid.unicore.common.utils.FileDataHelper;
+import pl.plgrid.unicore.portal.core.exceptions.UnavailableGridServiceException;
 
 import java.util.List;
 import java.util.Map;

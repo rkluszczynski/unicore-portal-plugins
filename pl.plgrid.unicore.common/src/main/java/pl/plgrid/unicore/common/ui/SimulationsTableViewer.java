@@ -7,9 +7,9 @@ import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.threads.BackgroundWorker;
 import org.apache.log4j.Logger;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
-import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.ui.model.SimulationViewerData;
 import pl.plgrid.unicore.common.ui.workers.JobsTableViewerWorker;
+import pl.plgrid.unicore.portal.core.i18n.ComponentsI18N;
 import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 
@@ -76,7 +76,7 @@ public class SimulationsTableViewer extends CustomComponent {
     }
 
     private String getMessage(String messageKey) {
-        return GlobalState.getMessage(CommonComponentsI18N.ID, "simulationsTableViewer." + messageKey);
+        return GlobalState.getMessage(ComponentsI18N.ID, "simulationsTableViewer." + messageKey);
     }
 
     private SimulationViewerData getSelectedSimulationViewerData() {

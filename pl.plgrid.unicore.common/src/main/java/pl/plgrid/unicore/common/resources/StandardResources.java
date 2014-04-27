@@ -1,7 +1,7 @@
 package pl.plgrid.unicore.common.resources;
 
 import eu.unicore.portal.core.GlobalState;
-import pl.plgrid.unicore.common.i18n.SiteResourcesI18N;
+import pl.plgrid.unicore.portal.core.i18n.SiteResourcesI18N;
 
 /**
  * Enumeration of well known names of Grid resources, defined in standards (JSDL).

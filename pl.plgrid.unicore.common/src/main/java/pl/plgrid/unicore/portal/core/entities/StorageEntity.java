@@ -1,9 +1,9 @@
-package pl.plgrid.unicore.common.entities;
+package pl.plgrid.unicore.portal.core.entities;
 
 import de.fzj.unicore.uas.client.StorageClient;
 import org.apache.log4j.Logger;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
-import pl.plgrid.unicore.common.exceptions.UnavailableStorageServiceException;
+import pl.plgrid.unicore.portal.core.exceptions.UnavailableStorageServiceException;
 import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 import static org.unigrids.x2006.x04.services.sms.StoragePropertiesDocument.StorageProperties;
@@ -17,6 +17,7 @@ public class StorageEntity {
 
     private StorageClient storageClient;
     private StorageProperties storageProperties;
+
 
     public StorageEntity(EndpointReferenceType storageEpr, StorageEntityType storageEntityType) {
         this.storageEpr = storageEpr;

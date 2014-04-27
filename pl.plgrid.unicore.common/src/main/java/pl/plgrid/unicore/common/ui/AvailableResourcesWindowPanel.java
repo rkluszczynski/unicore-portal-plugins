@@ -7,10 +7,10 @@ import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.threads.BackgroundWorker;
 import org.apache.log4j.Logger;
-import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.resources.AvailableResource;
 import pl.plgrid.unicore.common.ui.workers.AvailableResourcesPanelWorker;
+import pl.plgrid.unicore.portal.core.i18n.ComponentsI18N;
 
 import java.util.Collection;
 import java.util.Map;
@@ -161,6 +161,6 @@ public class AvailableResourcesWindowPanel extends CustomComponent {
     }
 
     private String getMessage(String messageKey) {
-        return GlobalState.getMessage(CommonComponentsI18N.ID, "resourcesPanel." + messageKey);
+        return GlobalState.getMessage(ComponentsI18N.ID, "resourcesPanel." + messageKey);
     }
 }

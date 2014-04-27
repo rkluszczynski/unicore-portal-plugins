@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.common.exceptions;
+package pl.plgrid.unicore.portal.core.exceptions;
 
 public class UnavailableStorageServiceException extends UnavailableGridServiceException {
     public UnavailableStorageServiceException(String msg) {

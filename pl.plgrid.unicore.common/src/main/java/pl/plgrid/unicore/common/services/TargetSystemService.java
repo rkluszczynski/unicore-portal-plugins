@@ -6,7 +6,7 @@ import de.fzj.unicore.uas.client.TSFClient;
 import de.fzj.unicore.uas.client.TSSClient;
 import org.unigrids.x2006.x04.services.tsf.CreateTSRDocument;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
-import pl.plgrid.unicore.common.exceptions.UnavailableGridServiceException;
+import pl.plgrid.unicore.portal.core.exceptions.UnavailableGridServiceException;
 import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 import javax.xml.namespace.QName;

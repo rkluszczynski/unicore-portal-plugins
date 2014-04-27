@@ -9,12 +9,12 @@ import eu.unicore.portal.core.threads.BackgroundWorker;
 import eu.unicore.portal.core.threads.IProgressMonitor;
 import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.GridResourcesExplorer;
-import pl.plgrid.unicore.common.i18n.CommonComponentsI18N;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.resources.AvailableBooleanResource;
 import pl.plgrid.unicore.common.resources.AvailableEnumResource;
 import pl.plgrid.unicore.common.resources.AvailableResource;
 import pl.plgrid.unicore.common.ui.AvailableResourcesWindowPanel;
+import pl.plgrid.unicore.portal.core.i18n.ComponentsI18N;
 
 import java.util.Collection;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class AvailableResourcesPanelWorker extends BackgroundWorker {
                                          Collection<AvailableResource> availableResources,
                                          Set<String> excludeResourceNames,
                                          BrokerJobModel brokerJobModel) {
-        super(GlobalState.getMessage(CommonComponentsI18N.ID, "resourcesPanel.worker.name"));
+        super(GlobalState.getMessage(ComponentsI18N.ID, "resourcesPanel.worker.name"));
 
         gridResourcesExplorer = Session
                 .getCurrent()
@@ -115,6 +115,6 @@ public class AvailableResourcesPanelWorker extends BackgroundWorker {
     }
 
     private String getMessage(String messageKey) {
-        return GlobalState.getMessage(CommonComponentsI18N.ID, "resourcesPanel." + messageKey);
+        return GlobalState.getMessage(ComponentsI18N.ID, "resourcesPanel." + messageKey);
     }
 }

@@ -2,6 +2,12 @@
 <plugin>
     <extensions>
         <ServiceExtension>
+            <id>pl.plgrid.unicore.portal.gridExplorer</id>
+            <interfaceClass>pl.plgrid.unicore.portal.core.GridExplorer</interfaceClass>
+            <implementingClass>pl.plgrid.unicore.portal.core.impl.GridExplorerImpl</implementingClass>
+        </ServiceExtension>
+
+        <ServiceExtension>
             <id>gridServicesExplorer</id>
             <interfaceClass>pl.plgrid.unicore.common.GridServicesExplorer</interfaceClass>
             <implementingClass>pl.plgrid.unicore.common.impl.GridServicesExplorerImpl</implementingClass>
@@ -15,13 +21,13 @@
 
 
         <MessageSourceExtension>
-            <id>uiCommonComponents</id>
-            <location>pl.plgrid.unicore.common.i18n.CommonComponentsMessages</location>
+            <id>pl.plgrid.unicore.portal.uiCommonComponents</id>
+            <location>pl.plgrid.unicore.portal.core.i18n.ComponentsI18N</location>
         </MessageSourceExtension>
 
         <MessageSourceExtension>
-            <id>unicoreSiteResources</id>
-            <location>pl.plgrid.unicore.common.i18n.SiteResourcesMessages</location>
+            <id>pl.plgrid.unicore.portal.unicoreSiteResources</id>
+            <location>pl.plgrid.unicore.portal.core.i18n.SiteResourcesMessages</location>
         </MessageSourceExtension>
     </extensions>
 </plugin>

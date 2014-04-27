@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.common.entities;
+package pl.plgrid.unicore.portal.core.entities;
 
 public enum StorageEntityType {
     GLOBAL_STORAGE,
