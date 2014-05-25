@@ -2,6 +2,7 @@ package pl.plgrid.unicore.portal.core.utils;
 
 import eu.unicore.portal.core.Session;
 import eu.unicore.util.httpclient.IClientConfiguration;
+import org.apache.log4j.Logger;
 
 import javax.security.auth.login.CredentialException;
 
@@ -10,7 +11,9 @@ import javax.security.auth.login.CredentialException;
  *
  * @author R.Kluszczynski
  */
+final
 public class SecurityHelper {
+    private static final Logger logger = Logger.getLogger(SecurityHelper.class);
 
     public static IClientConfiguration getClientConfig() {
         return getSessionClientConfig(Session.getCurrent());
@@ -22,9 +25,14 @@ public class SecurityHelper {
             clientConfiguration = session
                     .getUser()
                     .getCredentials();
+            logger.info("getExtraSecurityTokens(): " + clientConfiguration.getExtraSecurityTokens());
         } catch (CredentialException e) {
+            logger.warn("CredentialException: ", e);
             throw new IllegalStateException(e);
         }
         return clientConfiguration;
+    }
+
+    private SecurityHelper() {
     }
 }
