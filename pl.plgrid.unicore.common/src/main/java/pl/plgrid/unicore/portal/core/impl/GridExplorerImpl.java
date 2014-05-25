@@ -6,7 +6,6 @@ import pl.plgrid.unicore.common.resources.AvailableResource;
 import pl.plgrid.unicore.portal.core.GridExplorer;
 import pl.plgrid.unicore.portal.core.entities.AtomicJobEntity;
 import pl.plgrid.unicore.portal.core.entities.StorageEntity;
-import pl.plgrid.unicore.portal.core.states.UserGridState;
 import pl.plgrid.unicore.portal.core.states.UsersGridStatesCache;
 
 import java.util.Collection;
@@ -56,10 +55,9 @@ public class GridExplorerImpl implements GridExplorer {
 
     @Override
     public Collection<StorageEntity> getGlobalStorages() {
-        UserGridState userGridState = usersGridStatesCache.getUserGridState();
-        userGridState.getGlobalStorageServices();
-
-        return null;
+        return usersGridStatesCache
+                .getUserGridState()
+                .getGlobalStorageEntities();
     }
 
     @Override
@@ -69,6 +67,8 @@ public class GridExplorerImpl implements GridExplorer {
 
     @Override
     public Collection<StorageEntity> getFactoryStorages() {
-        return null;
+        return usersGridStatesCache
+                .getUserGridState()
+                .getStorageFactoryEntities();
     }
 }
