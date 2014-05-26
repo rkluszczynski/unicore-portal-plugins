@@ -24,12 +24,16 @@ public class GridExplorerImpl implements GridExplorer {
 
     @Override
     public Collection<AvailableResource> getResources() {
-        return null;
+        return usersGridStatesCache
+                .getUserGridState()
+                .getGridResources();
     }
 
     @Override
     public Collection<AtomicJobEntity> getJobs() {
-        return null;
+        return usersGridStatesCache
+                .getUserGridState()
+                .getGridAtomicJobsEntities();
     }
 
     @Override
@@ -62,7 +66,9 @@ public class GridExplorerImpl implements GridExplorer {
 
     @Override
     public Collection<StorageEntity> getSiteStorages() {
-        return null;
+        return usersGridStatesCache
+                .getUserGridState()
+                .getSiteStorageEntities();
     }
 
     @Override

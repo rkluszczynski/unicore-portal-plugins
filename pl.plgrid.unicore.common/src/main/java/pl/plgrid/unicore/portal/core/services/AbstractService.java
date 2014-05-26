@@ -24,8 +24,6 @@ abstract class AbstractService {
 //    );
 
 
-    abstract public <T> T createClient() throws UnavailableGridServiceException;
-
     protected <T> T getServiceClient(Class<T> clazz, QName port) throws UnavailableGridServiceException {
         List<EndpointReferenceType> accessibleServices = getAccessibleServices(port);
 
@@ -39,6 +37,7 @@ abstract class AbstractService {
         }
         throw new UnavailableGridServiceException("No services of class " + clazz.getCanonicalName());
     }
+
 
     protected <T> List<EndpointReferenceType> getAccessibleServices(QName port) throws UnavailableGridServiceException {
         List<EndpointReferenceType> accessibleServicesList = Lists

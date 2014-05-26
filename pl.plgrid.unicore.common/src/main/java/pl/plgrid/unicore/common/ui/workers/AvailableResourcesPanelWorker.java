@@ -8,12 +8,12 @@ import eu.unicore.portal.core.Session;
 import eu.unicore.portal.core.threads.BackgroundWorker;
 import eu.unicore.portal.core.threads.IProgressMonitor;
 import org.apache.log4j.Logger;
-import pl.plgrid.unicore.common.GridResourcesExplorer;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.resources.AvailableBooleanResource;
 import pl.plgrid.unicore.common.resources.AvailableEnumResource;
 import pl.plgrid.unicore.common.resources.AvailableResource;
 import pl.plgrid.unicore.common.ui.AvailableResourcesWindowPanel;
+import pl.plgrid.unicore.portal.core.GridExplorer;
 import pl.plgrid.unicore.portal.core.i18n.ComponentsI18N;
 
 import java.util.Collection;
@@ -23,7 +23,9 @@ import java.util.Set;
 public class AvailableResourcesPanelWorker extends BackgroundWorker {
     private static final Logger logger = Logger.getLogger(AvailableResourcesPanelWorker.class);
 
-    private GridResourcesExplorer gridResourcesExplorer;
+    //    private GridResourcesExplorer gridResourcesExplorer;
+    private GridExplorer gridExplorer;
+
     private AvailableResourcesWindowPanel windowPanel;
     private Collection<AvailableResource> availableResources;
     private final Set<String> excludeResourceNames;
@@ -35,10 +37,15 @@ public class AvailableResourcesPanelWorker extends BackgroundWorker {
                                          BrokerJobModel brokerJobModel) {
         super(GlobalState.getMessage(ComponentsI18N.ID, "resourcesPanel.worker.name"));
 
-        gridResourcesExplorer = Session
+//        gridResourcesExplorer = Session
+//                .getCurrent()
+//                .getServiceRegistry()
+//                .getService(GridResourcesExplorer.class);
+        gridExplorer = Session
                 .getCurrent()
                 .getServiceRegistry()
-                .getService(GridResourcesExplorer.class);
+                .getService(GridExplorer.class);
+
         this.windowPanel = windowPanel;
         this.availableResources = availableResources;
         this.brokerJobModel = brokerJobModel;
@@ -48,8 +55,10 @@ public class AvailableResourcesPanelWorker extends BackgroundWorker {
     @Override
     protected void work(IProgressMonitor iProgressMonitor) {
         availableResources.clear();
+//        Collection<AvailableResource> resources = gridResourcesExplorer.getResources();
+        Collection<AvailableResource> resources = gridExplorer.getResources();
         availableResources.addAll(
-                Collections2.filter(gridResourcesExplorer.getResources(), new Predicate<AvailableResource>() {
+                Collections2.filter(resources, new Predicate<AvailableResource>() {
                     @Override
                     public boolean apply(AvailableResource availableResource) {
                         return !excludeResourceNames.contains(availableResource.getName());

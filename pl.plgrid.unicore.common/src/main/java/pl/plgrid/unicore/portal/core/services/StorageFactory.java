@@ -44,9 +44,4 @@ public class StorageFactory extends AbstractStorage {
         }
         return storageEntities;
     }
-
-    @Override
-    public <T> T createClient() throws UnavailableGridServiceException {
-        return null;
-    }
 }

@@ -28,9 +28,4 @@ public class GlobalStorage extends AbstractStorage {
                 }
         );
     }
-
-    @Override
-    public <T> T createClient() throws UnavailableGridServiceException {
-        return null;
-    }
 }

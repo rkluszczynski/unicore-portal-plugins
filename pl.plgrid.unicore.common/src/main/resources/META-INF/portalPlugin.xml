@@ -22,7 +22,7 @@
 
         <MessageSourceExtension>
             <id>pl.plgrid.unicore.portal.uiCommonComponents</id>
-            <location>pl.plgrid.unicore.portal.core.i18n.ComponentsI18N</location>
+            <location>pl.plgrid.unicore.portal.core.i18n.ComponentsMessages</location>
         </MessageSourceExtension>
 
         <MessageSourceExtension>
