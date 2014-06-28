@@ -2,5 +2,5 @@ language: java
 jdk:
   - openjdk7
   - oraclejdk7
-before_script:
+before_install:
   - chmod +x gradlew

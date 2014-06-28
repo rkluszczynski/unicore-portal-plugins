@@ -1,3 +1,7 @@
+// Useful stuff for testing Vaadin components:
+// - https://github.com/johndevs/gradle-vaadin-plugin
+// - http://www.jasoft.fi/!/journal/Using-Gradle-with-Vaadin
+
 apply from: 'http://plugins.jasoft.fi/vaadin.plugin'
 
 vaadin {
