@@ -34,6 +34,11 @@ public class MainPortalView extends AbstractView {
         }
     }
 
+    @Override
+    protected void initView() {
+
+    }
+
     private void createMainViewComponents() {
         if (mainPage != null) {
             return;

@@ -24,7 +24,8 @@ public class ClassPathResource extends ClassResource {
     @Override
     public DownloadStream getStream() {
         final DownloadStream downloadStream = new DownloadStream(
-                ClassLoader.getSystemResourceAsStream(resourceName), getMIMEType(),
+                ClassLoader.getSystemResourceAsStream(resourceName),
+                getMIMEType(),
                 getFilename());
         downloadStream.setBufferSize(getBufferSize());
         downloadStream.setCacheTime(getCacheTime());
