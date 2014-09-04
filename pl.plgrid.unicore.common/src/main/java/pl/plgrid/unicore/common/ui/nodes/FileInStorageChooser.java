@@ -15,6 +15,6 @@ public class FileInStorageChooser extends GridStorageChooser {
 
     @Override
     public boolean isValidSelection(Object node) {
-        return (node != null && node instanceof FileNode);
+        return (node != null && (node instanceof FileNode));
     }
 }
