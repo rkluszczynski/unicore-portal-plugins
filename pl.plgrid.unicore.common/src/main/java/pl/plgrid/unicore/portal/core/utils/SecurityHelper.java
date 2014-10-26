@@ -25,20 +25,20 @@ public class SecurityHelper {
             clientConfiguration = session
                     .getUser()
                     .getCredentials();
-            logger.info("getExtraSecurityTokens(): " + clientConfiguration.getExtraSecurityTokens());
-
-            String userAccountAttributes = session
-                    .getUser()
-                    .toAccount()
-                    .getAttributes()
-                    .toString();
-            logger.info("userAccountAttributes: " + userAccountAttributes);
-
-            String userAccountExtendedAttributes = session
-                    .getUser()
-                    .toAccount()
-                    .getExtendedAttributes();
-            logger.info("userAccountExtendedAttributes: " + userAccountExtendedAttributes);
+//            logger.info("getExtraSecurityTokens(): " + clientConfiguration.getExtraSecurityTokens());
+//
+//            String userAccountAttributes = session
+//                    .getUser()
+//                    .toAccount()
+//                    .getAttributes()
+//                    .toString();
+//            logger.info("userAccountAttributes: " + userAccountAttributes);
+//
+//            String userAccountExtendedAttributes = session
+//                    .getUser()
+//                    .toAccount()
+//                    .getExtendedAttributes();
+//            logger.info("userAccountExtendedAttributes: " + userAccountExtendedAttributes);
 
         } catch (CredentialException e) {
             logger.warn("CredentialException: ", e);

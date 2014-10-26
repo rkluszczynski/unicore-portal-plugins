@@ -1,8 +1,8 @@
 apply from: rootProject.file('gradle/publish.gradle')
 
-def unicorePortalVersion = '1.1.0'
-def uasClientVersion = '1.7.0'
-def workflowClientVersion = '2.5.0-SNAPSHOT'
+def unicorePortalVersion = '1.1.1-SNAPSHOT'
+def uasClientVersion = '1.7.0'                  // '1.8.1'
+def workflowClientVersion = '2.5.0-SNAPSHOT'    // '2.7.1-SNAPSHOT'
 
 dependencies {
     compile "eu.unicore.portal:eu.unicore.portal.grid.core:${unicorePortalVersion}"

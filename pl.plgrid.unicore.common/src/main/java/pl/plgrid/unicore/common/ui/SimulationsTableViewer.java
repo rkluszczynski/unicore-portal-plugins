@@ -1,10 +1,17 @@
 package pl.plgrid.unicore.common.ui;
 
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.themes.Reindeer;
 import de.fzj.unicore.uas.client.JobClient;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.threads.BackgroundWorker;
+import eu.unicore.portal.ui.IconUtil;
+import eu.unicore.portal.ui.icons.IconRepository;
 import org.apache.log4j.Logger;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.ui.model.SimulationViewerData;
@@ -58,6 +65,7 @@ public class SimulationsTableViewer extends CustomComponent {
 
         Button destroySimulationButton = new Button(getMessage("jobs.destroy"));
         destroySimulationButton.setStyleName(Reindeer.BUTTON_SMALL);
+        destroySimulationButton.setIcon(IconUtil.getIconFromTheme(IconRepository.ICON_ID_DELETE));
         destroySimulationButton.addClickListener(new DestroySimulationButtonListener());
 
         HorizontalLayout horizontalLayout = new HorizontalLayout(

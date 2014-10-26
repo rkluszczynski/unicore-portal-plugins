@@ -24,5 +24,5 @@ apply from: rootProject.file('gradle/upload.gradle')
 //}
 
 task wrapper(type: Wrapper, description: 'Creates and deploys the Gradle wrapper to the current directory.') {
-    gradleVersion = '2.0'
+    gradleVersion = '2.1'
 }
