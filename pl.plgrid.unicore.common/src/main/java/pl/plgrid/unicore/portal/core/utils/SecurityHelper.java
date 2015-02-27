@@ -1,6 +1,8 @@
 package pl.plgrid.unicore.portal.core.utils;
 
 import eu.unicore.portal.core.Session;
+import eu.unicore.portal.core.User;
+import eu.unicore.portal.core.authn.UserMetadataAttribute;
 import eu.unicore.util.httpclient.IClientConfiguration;
 import org.apache.log4j.Logger;
 
@@ -27,6 +29,11 @@ public class SecurityHelper {
                     .getCredentials();
 //            logger.info("getExtraSecurityTokens(): " + clientConfiguration.getExtraSecurityTokens());
 //
+
+            User user = session.getUser();
+            UserMetadataAttribute userMeta = user.getAttribute(UserMetadataAttribute.class);
+            logger.info("DATA: " + userMeta.serialize());
+
 //            String userAccountAttributes = session
 //                    .getUser()
 //                    .toAccount()
