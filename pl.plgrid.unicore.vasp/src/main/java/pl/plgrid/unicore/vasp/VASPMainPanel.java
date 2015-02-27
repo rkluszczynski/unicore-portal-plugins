@@ -2,9 +2,11 @@ package pl.plgrid.unicore.vasp;
 
 import com.google.gwt.thirdparty.guava.common.collect.Sets;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import eu.unicore.portal.core.Session;
+import eu.unicore.portal.core.authn.UserMetadataAttribute;
 import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
@@ -13,23 +15,25 @@ import pl.plgrid.unicore.common.ui.SimulationsTableViewer;
 import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 import pl.plgrid.unicore.vasp.input.SubmissionPanel;
 
+import java.util.List;
 import java.util.Set;
 
 /**
  * @author rkluszczynski
  */
 class VASPMainPanel extends VerticalLayout {
-    private static final Logger logger = Logger.getLogger(VASPMainPanel.class);
-
-    private static final String APPLICATION_NAME = "VASP";
-    private static final String APPLICATION_VERSION = "5.2";
-
 
     public VASPMainPanel() {
         super();
-
         logger.info("Creating VASP view for user: " + Session.getCurrent().getUser().getUsername());
-        logger.info("memberOf: " + SecurityHelper.getUserAttributes().getUserAttribute("memberOf"));
+
+        UserMetadataAttribute attributes = SecurityHelper.getUserAttributes();
+        List<String> vaspAccessAttribute = attributes.getUserAttribute(ACCESS_ATTRIBUTE_KEY);
+        if (vaspAccessAttribute == null || vaspAccessAttribute.isEmpty()
+                || !vaspAccessAttribute.contains(ACCESS_ATTRIBUTE_VALUE)) {
+            Notification.show("VASP", "You do not have permissions to use VASP", Notification.Type.WARNING_MESSAGE);
+        }
+
         createMainViewComponents(
                 new BrokerJobModel(APPLICATION_NAME, APPLICATION_VERSION)
         );
@@ -74,4 +78,12 @@ class VASPMainPanel extends VerticalLayout {
         addStyleName(Styles.PADDING_All_10);
         setSizeFull();
     }
+
+    private static final String APPLICATION_NAME = "VASP";
+    private static final String APPLICATION_VERSION = "5.2";
+
+    private static final String ACCESS_ATTRIBUTE_KEY = "memberOf";
+    private static final String ACCESS_ATTRIBUTE_VALUE = "/vo.plgrid.pl/groups/plggvasp5";
+
+    private static final Logger logger = Logger.getLogger(VASPMainPanel.class);
 }
