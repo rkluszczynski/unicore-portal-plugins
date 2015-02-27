@@ -1,7 +1,6 @@
 package pl.plgrid.unicore.portal.core.utils;
 
 import eu.unicore.portal.core.Session;
-import eu.unicore.portal.core.User;
 import eu.unicore.portal.core.authn.UserMetadataAttribute;
 import eu.unicore.util.httpclient.IClientConfiguration;
 import org.apache.log4j.Logger;
@@ -15,38 +14,22 @@ import javax.security.auth.login.CredentialException;
  */
 final
 public class SecurityHelper {
-    private static final Logger logger = Logger.getLogger(SecurityHelper.class);
+    public static UserMetadataAttribute getUserAttributes() {
+        return Session.getCurrent()
+                .getUser()
+                .getAttribute(UserMetadataAttribute.class);
+    }
 
     public static IClientConfiguration getClientConfig() {
         return getSessionClientConfig(Session.getCurrent());
     }
 
-    public static IClientConfiguration getSessionClientConfig(Session session) {
+    private static IClientConfiguration getSessionClientConfig(Session session) {
         IClientConfiguration clientConfiguration;
         try {
             clientConfiguration = session
                     .getUser()
                     .getCredentials();
-//            logger.info("getExtraSecurityTokens(): " + clientConfiguration.getExtraSecurityTokens());
-//
-
-            User user = session.getUser();
-            UserMetadataAttribute userMeta = user.getAttribute(UserMetadataAttribute.class);
-            logger.info("DATA: " + userMeta.serialize());
-
-//            String userAccountAttributes = session
-//                    .getUser()
-//                    .toAccount()
-//                    .getAttributes()
-//                    .toString();
-//            logger.info("userAccountAttributes: " + userAccountAttributes);
-//
-//            String userAccountExtendedAttributes = session
-//                    .getUser()
-//                    .toAccount()
-//                    .getExtendedAttributes();
-//            logger.info("userAccountExtendedAttributes: " + userAccountExtendedAttributes);
-
         } catch (CredentialException e) {
             logger.warn("CredentialException: ", e);
             throw new IllegalStateException(e);
@@ -56,4 +39,6 @@ public class SecurityHelper {
 
     private SecurityHelper() {
     }
+
+    private static final Logger logger = Logger.getLogger(SecurityHelper.class);
 }

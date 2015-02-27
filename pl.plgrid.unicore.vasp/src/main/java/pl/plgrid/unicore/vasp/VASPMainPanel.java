@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.resources.StandardResources;
 import pl.plgrid.unicore.common.ui.SimulationsTableViewer;
+import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 import pl.plgrid.unicore.vasp.input.SubmissionPanel;
 
 import java.util.Set;
@@ -28,6 +29,7 @@ class VASPMainPanel extends VerticalLayout {
         super();
 
         logger.info("Creating VASP view for user: " + Session.getCurrent().getUser().getUsername());
+        logger.info("memberOf: " + SecurityHelper.getUserAttributes().getUserAttribute("memberOf"));
         createMainViewComponents(
                 new BrokerJobModel(APPLICATION_NAME, APPLICATION_VERSION)
         );
