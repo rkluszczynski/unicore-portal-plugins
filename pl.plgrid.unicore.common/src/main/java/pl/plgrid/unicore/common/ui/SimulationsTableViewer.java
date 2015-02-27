@@ -1,12 +1,8 @@
 package pl.plgrid.unicore.common.ui;
 
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.server.Resource;
+import com.vaadin.ui.*;
+import com.vaadin.ui.themes.BaseTheme;
 import de.fzj.unicore.uas.client.JobClient;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.threads.BackgroundWorker;
@@ -55,32 +51,50 @@ public class SimulationsTableViewer extends CustomComponent {
         table.setImmediate(true);
         table.setSizeFull();
 
-        Button refreshJobsListButton = new Button(getMessage("jobs.refreshList"));
-        refreshJobsListButton.setStyleName(Reindeer.BUTTON_SMALL);
-        refreshJobsListButton.addClickListener(new RefreshJobsListButtonListener());
-
-        Button showJobDirButton = new Button(getMessage("jobs.openDir"));
-        showJobDirButton.setStyleName(Reindeer.BUTTON_SMALL);
-        showJobDirButton.addClickListener(new ShowJobDirButtonListener());
-
-        Button destroySimulationButton = new Button(getMessage("jobs.destroy"));
-        destroySimulationButton.setStyleName(Reindeer.BUTTON_SMALL);
-        destroySimulationButton.setIcon(IconUtil.getIconFromTheme(IconRepository.ICON_ID_DELETE));
-        destroySimulationButton.addClickListener(new DestroySimulationButtonListener());
+        Button refreshJobsListButton = createButtonInstance(
+                getMessage("jobs.refreshList"),
+                IconUtil.getIconFromTheme(IconRepository.ICON_ID_REFRESH),
+                new RefreshJobsListButtonListener()
+        );
+        Button showJobDirButton = createButtonInstance(
+                getMessage("jobs.openDir"),
+                IconUtil.getIconFromTheme(IconRepository.ICON_ID_EXPLORE_FOLDER),
+                new ShowJobDirButtonListener()
+        );
+        Button destroySimulationButton = createButtonInstance(
+                getMessage("jobs.destroy"),
+                IconUtil.getIconFromTheme(IconRepository.ICON_ID_DELETE),
+                new DestroySimulationButtonListener()
+        );
 
         HorizontalLayout horizontalLayout = new HorizontalLayout(
-                refreshJobsListButton, showJobDirButton, destroySimulationButton
+                showJobDirButton, refreshJobsListButton, destroySimulationButton
         );
         horizontalLayout.setSpacing(true);
 
         GridLayout gridLayout = new GridLayout(1, 2);
         gridLayout.addComponent(horizontalLayout, 0, 0);
+        gridLayout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
         gridLayout.addComponent(table, 0, 1);
         gridLayout.setRowExpandRatio(1, 1.f);
+        gridLayout.setSpacing(true);
         gridLayout.setSizeFull();
 
         setCompositionRoot(gridLayout);
         setSizeFull();
+    }
+
+    private Button createButtonInstance(String message, Resource icon, Button.ClickListener tableViewerButtonListener) {
+        Button tableViewerButton = new Button(message);
+//        tableViewerButton.setStyleName(Reindeer.BUTTON_SMALL);
+        tableViewerButton.setEnabled(true);
+        tableViewerButton.setImmediate(true);
+        tableViewerButton.setStyleName(BaseTheme.BUTTON_LINK);
+        tableViewerButton.setIcon(icon);
+        tableViewerButton.setCaption("");
+        tableViewerButton.setDescription(message);
+        tableViewerButton.addClickListener(tableViewerButtonListener);
+        return tableViewerButton;
     }
 
     private String getMessage(String messageKey) {

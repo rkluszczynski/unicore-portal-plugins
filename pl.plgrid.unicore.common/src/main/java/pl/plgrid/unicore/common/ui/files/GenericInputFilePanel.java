@@ -7,10 +7,10 @@ import com.vaadin.server.Page;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+import eu.unicore.portal.grid.ui.browser.GridFileChooser;
 import eu.unicore.portal.ui.Styles;
 import org.unigrids.services.atomic.types.ProtocolType;
 import pl.plgrid.unicore.common.ui.model.GridInputFileComponent;
-import pl.plgrid.unicore.common.ui.nodes.FileInStorageChooser;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -77,7 +77,8 @@ public class GenericInputFilePanel extends VerticalLayout implements
         setSizeFull();
         addComponent(switchRowLayout);
         addComponent(browseGridFileRowPanel);
-        addComponent(addUploadPanel());
+        // TODO: testing upload panel
+//        addComponent(addUploadPanel());
         addComponent(fileContentTextArea);
         setExpandRatio(fileContentTextArea, 1f);
     }
@@ -136,7 +137,8 @@ public class GenericInputFilePanel extends VerticalLayout implements
     @Override
     public void buttonClick(ClickEvent event) {
         if (event.getButton() == gridFileChooserButton) {
-            FileInStorageChooser fileChooser = new FileInStorageChooser(CAPTION_CHOOSE_GRID_FILE,
+            GridFileChooser fileChooser = new GridFileChooser(CAPTION_CHOOSE_GRID_FILE,
+//            FileInStorageChooser fileChooser = new FileInStorageChooser(CAPTION_CHOOSE_GRID_FILE,
                     new InputFilePanelCallback(
                             gridFilePathTextField
                     )
