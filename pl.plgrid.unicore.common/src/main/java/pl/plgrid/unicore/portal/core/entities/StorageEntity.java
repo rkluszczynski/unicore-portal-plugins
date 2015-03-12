@@ -8,7 +8,6 @@ import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 
 import static org.unigrids.x2006.x04.services.sms.StoragePropertiesDocument.StorageProperties;
 
-
 public class StorageEntity {
     protected static final Logger logger = Logger.getLogger(StorageEntity.class);
 
@@ -42,7 +41,6 @@ public class StorageEntity {
     public StorageProperties getStorageProperties() {
         return storageProperties;
     }
-
 
     private void createClient() throws UnavailableStorageServiceException {
         try {
