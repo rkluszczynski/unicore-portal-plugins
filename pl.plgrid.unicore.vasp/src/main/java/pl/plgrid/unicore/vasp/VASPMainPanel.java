@@ -28,9 +28,9 @@ class VASPMainPanel extends VerticalLayout {
         logger.info("Creating VASP view for user: " + Session.getCurrent().getUser().getUsername());
 
         UserMetadataAttribute attributes = SecurityHelper.getUserAttributes();
-        List<String> vaspAccessAttribute = attributes.getUserAttribute(ACCESS_ATTRIBUTE_KEY);
-        if (vaspAccessAttribute == null || vaspAccessAttribute.isEmpty()
-                || !vaspAccessAttribute.contains(ACCESS_ATTRIBUTE_VALUE)) {
+        List<String> accessAttribute = attributes.getUserAttribute(ACCESS_ATTRIBUTE_KEY);
+        if (accessAttribute == null || accessAttribute.isEmpty()
+                || !accessAttribute.contains(ACCESS_ATTRIBUTE_VALUE)) {
             Notification.show("VASP", "You do not have permissions to use VASP", Notification.Type.WARNING_MESSAGE);
         }
 

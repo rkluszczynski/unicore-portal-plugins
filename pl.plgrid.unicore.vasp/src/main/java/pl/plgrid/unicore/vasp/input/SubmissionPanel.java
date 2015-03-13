@@ -110,12 +110,17 @@ public class SubmissionPanel extends CustomComponent {
         GenericInputFilePanel[] gifPanels =
                 new GenericInputFilePanel[tabSheetTitles.length];
 
+        TextField uploadFolderTextField = new TextField();
+        uploadFolderTextField.setSizeFull();
+        uploadFolderTextField.setVisible(true);
+        uploadFolderTextField.setEnabled(false);
+
         for (int i = 0; i < tabSheetTitles.length; ++i) {
             String textContent = (i == 0) ? ExampleInputData.getINCAR()
                     : (i == 1) ? ExampleInputData.getKPOINTS()
                     : (i == 2) ? ExampleInputData.getPOSCAR()
                     : new Date().toString(); // ExampleInputData.getPOTCAR();
-            gifPanels[i] = new GenericInputFilePanel(textContent);
+            gifPanels[i] = new GenericInputFilePanel(textContent, uploadFolderTextField);
         }
 
         TabSheet tabSheet = new TabSheet();

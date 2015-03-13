@@ -1,19 +1,21 @@
 package pl.plgrid.unicore.common.ui.files;
 
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.TextField;
 import eu.unicore.portal.grid.core.nodes.Node;
 import eu.unicore.portal.grid.ui.browser.GridStorageChooser;
 import org.apache.log4j.Logger;
-import pl.plgrid.unicore.common.utils.FileDataHelper;
 
 /**
  * @author rkluszczynski
  */
-public class InputFilePanelCallback implements GridStorageChooser.StorageChooserCallback {
+public class UploadFolderPanelCallback implements GridStorageChooser.StorageChooserCallback {
     private final TextField textField;
+    private final GridLayout layout;
 
-    public InputFilePanelCallback(TextField textField) {
+    public UploadFolderPanelCallback(TextField textField, GridLayout layout) {
         this.textField = textField;
+        this.layout = layout;
     }
 
     @Override
@@ -22,11 +24,9 @@ public class InputFilePanelCallback implements GridStorageChooser.StorageChooser
             logger.info(node.getEpr().getAddress().getStringValue());
             textField.setValue(node.getEpr().getAddress().getStringValue());
 
-            FileDataHelper.readGridFileHead(node.getEpr(), HEAD_MAX_BYTES_COUNT);
+            layout.setEnabled(true);
         }
     }
 
-    private static final long HEAD_MAX_BYTES_COUNT = 128L;
-
-    private static final Logger logger = Logger.getLogger(InputFilePanelCallback.class);
+    private static final Logger logger = Logger.getLogger(UploadFolderPanelCallback.class);
 }
