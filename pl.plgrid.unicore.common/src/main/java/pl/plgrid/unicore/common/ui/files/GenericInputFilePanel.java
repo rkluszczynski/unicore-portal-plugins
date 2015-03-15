@@ -1,6 +1,8 @@
 package pl.plgrid.unicore.common.ui.files;
 
 import com.google.common.base.Strings;
+import com.vaadin.data.Property;
+import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -19,7 +21,7 @@ import pl.plgrid.unicore.common.ui.model.GridInputFileComponent;
 public class GenericInputFilePanel extends VerticalLayout implements
         GridInputFileComponent,
         Button.ClickListener,
-        LayoutClickListener {
+        LayoutClickListener, Property.ValueChangeListener {
     private static final String LABEL_TOGGLE_TO_FILE_BROWSER = "<u><i>Toggle to File Browser</i></u>";
     private static final String LABEL_TOGGLE_TO_FILE_CONTENT = "<u><i>Toggle to File Content</i></u>";
     private static final String BUTTON_TEXT_BROWSE_GRID = "Browse Grid";
@@ -32,14 +34,18 @@ public class GenericInputFilePanel extends VerticalLayout implements
     private final GridLayout localFileUploadPanel;
     private final Label switchLabel;
     private final TextField gridFilePathTextField;
-    private final TextField uploadFolderTextField;
+    private final TextField uploadGridFolderTextField;
     private final TextArea fileContentTextArea;
     private final Label fakePlaceHolderLabel;
     private final Button gridFileChooserButton;
     private final Button uploadFolderChooserButton;
     private Upload localFileToGridUpload;
 
-    public GenericInputFilePanel(String content, TextField uploadFolderTextField) {
+    public GenericInputFilePanel(String content) {
+        this(content, null);
+    }
+
+    public GenericInputFilePanel(String content, ObjectProperty<String> uploadFolderTextFieldProperty) {
         HorizontalLayout switchRowLayout = new HorizontalLayout();
         switchRowLayout.setWidth(100f, Unit.PERCENTAGE);
         switchRowLayout.setHeight(SIZE_UNDEFINED, Unit.EM);
@@ -54,7 +60,15 @@ public class GenericInputFilePanel extends VerticalLayout implements
         gridFileChooserButton = new Button(BUTTON_TEXT_BROWSE_GRID);
         browseGridFileRowPanel = createBrowseGridFilePanel();
 
-        this.uploadFolderTextField = uploadFolderTextField;
+        uploadGridFolderTextField = new TextField();
+        if (uploadFolderTextFieldProperty != null) {
+            uploadGridFolderTextField.setPropertyDataSource(uploadFolderTextFieldProperty);
+        }
+        uploadGridFolderTextField.setImmediate(true);
+        uploadGridFolderTextField.setSizeFull();
+        uploadGridFolderTextField.setVisible(true);
+        uploadGridFolderTextField.setEnabled(false);
+        uploadGridFolderTextField.addValueChangeListener(this);
         uploadFolderChooserButton = new Button("Select Grid Folder");
         uploadFolderPanel = createUploadFolderPanel();
 
@@ -116,7 +130,7 @@ public class GenericInputFilePanel extends VerticalLayout implements
         uploadFolderCaptionLabel.setSizeUndefined();
         uploadFolderRowPanel.addComponent(uploadFolderCaptionLabel, 0, 0);
         uploadFolderRowPanel.setColumnExpandRatio(0, 0.0f);
-        uploadFolderRowPanel.addComponent(uploadFolderTextField, 1, 0);
+        uploadFolderRowPanel.addComponent(uploadGridFolderTextField, 1, 0);
         uploadFolderRowPanel.setColumnExpandRatio(1, 1.0f);
         uploadFolderRowPanel.addComponent(uploadFolderChooserButton, 2, 0);
         uploadFolderRowPanel.setColumnExpandRatio(2, 0.0f);
@@ -170,7 +184,7 @@ public class GenericInputFilePanel extends VerticalLayout implements
         } else if (event.getButton() == uploadFolderChooserButton) {
             GridFolderChooser folderChooser = new GridFolderChooser("Choose folder for uploads",
                     new UploadFolderPanelCallback(
-                            uploadFolderTextField, localFileUploadPanel
+                            uploadGridFolderTextField, localFileUploadPanel
                     )
             );
             folderChooser.addStyleName(Styles.OVERLAY_1);
@@ -186,7 +200,7 @@ public class GenericInputFilePanel extends VerticalLayout implements
             browseGridFileRowPanel.setVisible(!isBrowserOn);
             uploadFolderPanel.setVisible(!isBrowserOn);
             localFileUploadPanel.setVisible(!isBrowserOn);
-            localFileToGridUpload.setEnabled(!Strings.isNullOrEmpty(uploadFolderTextField.getValue()));
+            setLocalFileUploadVisibility();
             fileContentTextArea.setEnabled(isBrowserOn);
             fileContentTextArea.setVisible(isBrowserOn);
             fakePlaceHolderLabel.setVisible(!isBrowserOn);
@@ -220,5 +234,14 @@ public class GenericInputFilePanel extends VerticalLayout implements
                     getFileContent()
             );
         }
+    }
+
+    @Override
+    public void valueChange(Property.ValueChangeEvent event) {
+        setLocalFileUploadVisibility();
+    }
+
+    private void setLocalFileUploadVisibility() {
+        localFileToGridUpload.setEnabled(!Strings.isNullOrEmpty(uploadGridFolderTextField.getValue()));
     }
 }

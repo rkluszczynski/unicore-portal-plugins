@@ -1,5 +1,6 @@
 package pl.plgrid.unicore.vasp.input;
 
+import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
@@ -110,17 +111,13 @@ public class SubmissionPanel extends CustomComponent {
         GenericInputFilePanel[] gifPanels =
                 new GenericInputFilePanel[tabSheetTitles.length];
 
-        TextField uploadFolderTextField = new TextField();
-        uploadFolderTextField.setSizeFull();
-        uploadFolderTextField.setVisible(true);
-        uploadFolderTextField.setEnabled(false);
-
+        final ObjectProperty<String> uploadFolderTextFieldProperty = new ObjectProperty<String>("");
         for (int i = 0; i < tabSheetTitles.length; ++i) {
             String textContent = (i == 0) ? ExampleInputData.getINCAR()
                     : (i == 1) ? ExampleInputData.getKPOINTS()
                     : (i == 2) ? ExampleInputData.getPOSCAR()
                     : new Date().toString(); // ExampleInputData.getPOTCAR();
-            gifPanels[i] = new GenericInputFilePanel(textContent, uploadFolderTextField);
+            gifPanels[i] = new GenericInputFilePanel(textContent, uploadFolderTextFieldProperty);
         }
 
         TabSheet tabSheet = new TabSheet();
