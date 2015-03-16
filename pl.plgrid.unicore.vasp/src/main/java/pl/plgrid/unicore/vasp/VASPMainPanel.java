@@ -18,6 +18,8 @@ import pl.plgrid.unicore.vasp.input.SubmissionPanel;
 import java.util.List;
 import java.util.Set;
 
+import static pl.plgrid.unicore.vasp.input.SubmissionPanel.VASP_SIMULATION_DEFAULT_PREFIX;
+
 /**
  * @author rkluszczynski
  */
@@ -55,7 +57,7 @@ class VASPMainPanel extends VerticalLayout {
         );
 
         VerticalLayout simulationsTablePanel = new VerticalLayout(
-                new SimulationsTableViewer()
+                new SimulationsTableViewer(VASP_SIMULATION_DEFAULT_PREFIX)
         );
         simulationsTablePanel.setMargin(new MarginInfo(false, false, true, false));
         simulationsTablePanel.setSizeFull();

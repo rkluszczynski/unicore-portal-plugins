@@ -14,6 +14,9 @@ import eu.unicore.portal.ui.Styles;
 import org.unigrids.services.atomic.types.ProtocolType;
 import pl.plgrid.unicore.common.ui.model.GridInputFileComponent;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 /**
  * @author rkluszczynski
  */
@@ -75,13 +78,20 @@ public class GenericInputFilePanel extends VerticalLayout implements
         localFileUploadPanel = createLocalFileUploadPanel();
 
         fileContentTextArea = new TextArea();
-        fileContentTextArea.setValue(content);
         fileContentTextArea.setSizeFull();
 
         fakePlaceHolderLabel = new Label("");
         fakePlaceHolderLabel.setEnabled(false);
         fakePlaceHolderLabel.setVisible(false);
         fakePlaceHolderLabel.setSizeUndefined();
+
+        try {
+            new URL(content);
+            gridFilePathTextField.setValue(content);
+            toggleContentOrPathView();
+        } catch (MalformedURLException e) {
+            fileContentTextArea.setValue(content);
+        }
 
         setSpacing(true);
         setSizeFull();
@@ -101,7 +111,8 @@ public class GenericInputFilePanel extends VerticalLayout implements
         Label statusLabel = new Label("", ContentMode.HTML);
         statusLabel.setSizeUndefined();
 
-        GridFileUploadReceiver receiver = new GridFileUploadReceiver(statusLabel);
+        GridFileUploadReceiver receiver = new GridFileUploadReceiver(
+                uploadGridFolderTextField, gridFilePathTextField, statusLabel);
 
         localFileToGridUpload = new Upload(null, receiver);
         localFileToGridUpload.addStartedListener(receiver);
@@ -196,16 +207,20 @@ public class GenericInputFilePanel extends VerticalLayout implements
     @Override
     public void layoutClick(LayoutClickEvent event) {
         if (event.getClickedComponent() == switchLabel) {
-            boolean isBrowserOn = browseGridFileRowPanel.isVisible();
-            browseGridFileRowPanel.setVisible(!isBrowserOn);
-            uploadFolderPanel.setVisible(!isBrowserOn);
-            localFileUploadPanel.setVisible(!isBrowserOn);
-            setLocalFileUploadVisibility();
-            fileContentTextArea.setEnabled(isBrowserOn);
-            fileContentTextArea.setVisible(isBrowserOn);
-            fakePlaceHolderLabel.setVisible(!isBrowserOn);
-            switchLabel.setValue(isBrowserOn ? LABEL_TOGGLE_TO_FILE_BROWSER : LABEL_TOGGLE_TO_FILE_CONTENT);
+            toggleContentOrPathView();
         }
+    }
+
+    private void toggleContentOrPathView() {
+        boolean isBrowserOn = browseGridFileRowPanel.isVisible();
+        browseGridFileRowPanel.setVisible(!isBrowserOn);
+        uploadFolderPanel.setVisible(!isBrowserOn);
+        localFileUploadPanel.setVisible(!isBrowserOn);
+        setLocalFileUploadVisibility();
+        fileContentTextArea.setEnabled(isBrowserOn);
+        fileContentTextArea.setVisible(isBrowserOn);
+        fakePlaceHolderLabel.setVisible(!isBrowserOn);
+        switchLabel.setValue(isBrowserOn ? LABEL_TOGGLE_TO_FILE_BROWSER : LABEL_TOGGLE_TO_FILE_CONTENT);
     }
 
     private boolean isGridLocation() {

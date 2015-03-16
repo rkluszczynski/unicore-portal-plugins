@@ -20,16 +20,18 @@ public class SimulationsTableViewer extends CustomComponent {
     private static final Logger logger = Logger.getLogger(SimulationsTableViewer.class);
 
     private final Table table = new Table();
+    private final String simulationsNamePrefix;
 
-    public SimulationsTableViewer() {
+    public SimulationsTableViewer(String simulationsNamePrefix) {
         super();
-        initializeComponents();
+        this.simulationsNamePrefix = simulationsNamePrefix;
 
+        initializeComponents();
         reloadJobsList();
     }
 
     public final void reloadJobsList() {
-        BackgroundWorker w = new JobsTableViewerWorker(table);
+        BackgroundWorker w = new JobsTableViewerWorker(table, simulationsNamePrefix);
         w.schedule();
     }
 

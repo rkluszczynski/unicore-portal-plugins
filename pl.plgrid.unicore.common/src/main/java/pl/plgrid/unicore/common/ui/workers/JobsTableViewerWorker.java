@@ -33,11 +33,13 @@ public class JobsTableViewerWorker extends BackgroundWorker {
     private final TargetSystemService targetSystemService;
 
     private final List<SimulationViewerData> dataList = Lists.newArrayList();
+    private final String simulationsNamePrefix;
     private final Table table;
 
-    public JobsTableViewerWorker(Table table) {
+    public JobsTableViewerWorker(Table table, String simulationsNamePrefix) {
         super(GlobalState.getMessage(ComponentsI18N.ID, "simulationsTableViewer.jobs.getList"));
         this.table = table;
+        this.simulationsNamePrefix = simulationsNamePrefix;
 
         GridServicesExplorer gridExplorer
                 = Session.getCurrent().getServiceRegistry().getService(GridServicesExplorer.class);
@@ -108,12 +110,23 @@ public class JobsTableViewerWorker extends BackgroundWorker {
 
                 // FIXME: use it in future
 //                jobsStatusMap = client.getJobsStatus(clientJobsStringList);
-                dataList.add(
-                        convertJobPropertiesToAtomicJobViewerData(
-                                endpointReferenceType,
-                                jobProperties
-                        )
+
+                SimulationViewerData simData = convertJobPropertiesToAtomicJobViewerData(
+                        endpointReferenceType,
+                        jobProperties
                 );
+                logger.info("TESTING: " + simData.getSimulationName());
+                if (simulationsNamePrefix == null) {
+                    dataList.add(simData);
+                } else if (simData.getSimulationName().toLowerCase().startsWith(simulationsNamePrefix.toLowerCase())) {
+                    ((AtomicJobViewerData) simData)
+                            .setSimulationName(
+                                    simData.getSimulationName().substring(
+                                            simulationsNamePrefix.length()
+                                    )
+                            );
+                    dataList.add(simData);
+                }
             }
         }
     }
