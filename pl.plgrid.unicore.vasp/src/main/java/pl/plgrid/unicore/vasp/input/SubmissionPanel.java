@@ -12,16 +12,14 @@ import pl.plgrid.unicore.common.ui.files.GenericInputFilePanel;
 import pl.plgrid.unicore.portal.core.utils.ClassPathResource;
 import pl.plgrid.unicore.vasp.i18n.VASPViewI18N;
 
-import java.text.SimpleDateFormat;
 import java.util.Set;
 
 /**
  * @author Rafal
  */
 public class SubmissionPanel extends CustomComponent {
-    public static final String VASP_SIMULATION_DEFAULT_PREFIX = "vasp-simulation__";
+    public static final String VASP_SIMULATION_DEFAULT_PREFIX = "vasp-uportal-submit__";
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_hh:mm");
     private TextField simulationNameTextField;
 
     // TODO: try to design api to do it without passing brokerJobModel (?)
@@ -60,7 +58,7 @@ public class SubmissionPanel extends CustomComponent {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 String simulationName = VASP_SIMULATION_DEFAULT_PREFIX + simulationNameTextField.getValue();
-                if (Strings.isNullOrEmpty(simulationName)) {
+                if (Strings.isNullOrEmpty(simulationNameTextField.getValue())) {
                     simulationName += "Simulation submitted by UNICORE Portal";
                 }
                 if (resourcesOnTopPanel != null) {
@@ -84,13 +82,14 @@ public class SubmissionPanel extends CustomComponent {
         FormLayout simulationNameFormLayout = new FormLayout();
         simulationNameFormLayout.setSpacing(true);
         simulationNameFormLayout.setMargin(true);
+        simulationNameFormLayout.setSizeUndefined();
         simulationNameFormLayout.addComponent(simulationNameTextField);
         gridLayout.addComponent(simulationNameFormLayout, 0, gridLayoutRowNumber);
-        gridLayout.setComponentAlignment(simulationNameFormLayout, Alignment.MIDDLE_LEFT);
+        gridLayout.setComponentAlignment(simulationNameFormLayout, Alignment.MIDDLE_RIGHT);
 
         ++gridLayoutRowNumber;
         gridLayout.addComponent(fixedResourcesPanel, 0, gridLayoutRowNumber);
-        gridLayout.setComponentAlignment(fixedResourcesPanel, Alignment.TOP_CENTER);
+        gridLayout.setComponentAlignment(fixedResourcesPanel, Alignment.TOP_RIGHT);
         gridLayout.setRowExpandRatio(gridLayoutRowNumber, 0.6f);
 
 //        ++gridLayoutRowNumber;
@@ -140,27 +139,31 @@ public class SubmissionPanel extends CustomComponent {
     }
 
     private String getInputFileContent(int i) {
-        String prefix = "vasp.input";
         String content = "";
         if (i == 0) {
-            content = null; //GlobalState.getMessage(VASPViewI18N.ID, String.format("%s.incar", prefix));
+            content = getInputDataPropertyValue("incar");
             return content == null ? ExampleInputData.getINCAR() : content;
         } else if (i == 1) {
-            content = null; //GlobalState.getMessage(VASPViewI18N.ID, String.format("%s.kpoints", prefix));
+            content = getInputDataPropertyValue("kpoints");
             return content == null ? ExampleInputData.getKPOINTS() : content;
         } else if (i == 2) {
-            content = null; //GlobalState.getMessage(VASPViewI18N.ID, String.format("%s.poscar", prefix));
+            content = getInputDataPropertyValue("poscar");
             return content == null ? ExampleInputData.getPOSCAR() : content;
         } else if (i == 3) {
-            content = null; //GlobalState.getMessage(VASPViewI18N.ID, String.format("%s.potcar", prefix));
-            return content == null ?
-                    "https://unicore.studmat.umk.pl:8080/PLG-NCU-TEST/services/StorageManagement?res=default_storage#.vasp-default-input/POTCAR"
-                    : content;
+            content = getInputDataPropertyValue("potcar");
+            return content == null ? "" : content;
         }
         return content;
     }
 
     private String getMessage(String messageKey) {
         return GlobalState.getMessage(VASPViewI18N.ID, "vasp.caption." + messageKey);
+    }
+
+    private String getInputDataPropertyValue(String key) {
+        String message = GlobalState.getMessage(VASPViewI18N.ID, String.format("vasp.input.%s", key));
+        if (message.startsWith("!") && message.endsWith("!"))
+            return null;
+        return message;
     }
 }
