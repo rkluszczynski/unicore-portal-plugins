@@ -5,6 +5,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
+import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.core.Session;
 import eu.unicore.portal.core.authn.UserMetadataAttribute;
 import eu.unicore.portal.ui.Styles;
@@ -14,6 +15,7 @@ import pl.plgrid.unicore.common.resources.StandardResources;
 import pl.plgrid.unicore.common.ui.SimulationsTableViewer;
 import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
 import pl.plgrid.unicore.vasp.input.SubmissionPanel;
+import pl.plgrid.unicore.vasp.input.VASPProperties;
 
 import java.util.List;
 import java.util.Set;
@@ -63,8 +65,9 @@ class VASPMainPanel extends VerticalLayout {
         simulationsTablePanel.setSizeFull();
 
         VerticalLayout submissionPanel = new VerticalLayout(
-                new SubmissionPanel(brokerJobModel, excludeResourceNames)
-        );
+                new SubmissionPanel(brokerJobModel, excludeResourceNames,
+                        new VASPProperties(GlobalState.getCurrent().getPortalConfiguration().getProperties())
+                ));
         submissionPanel.setMargin(new MarginInfo(true, false, false, false));
         submissionPanel.setSizeFull();
 

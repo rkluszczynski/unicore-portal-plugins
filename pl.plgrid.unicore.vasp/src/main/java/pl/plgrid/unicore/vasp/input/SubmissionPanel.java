@@ -7,6 +7,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.ui.Styles;
+import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.ui.files.GenericInputFilePanel;
 import pl.plgrid.unicore.portal.core.utils.ClassPathResource;
@@ -20,11 +21,14 @@ import java.util.Set;
 public class SubmissionPanel extends CustomComponent {
     public static final String VASP_SIMULATION_DEFAULT_PREFIX = "vasp-uportal-submit__";
 
+    private final VASPProperties config;
     private TextField simulationNameTextField;
 
     // TODO: try to design api to do it without passing brokerJobModel (?)
 
-    public SubmissionPanel(BrokerJobModel brokerJobModel, Set<String> excludeResourceNames) {
+    public SubmissionPanel(BrokerJobModel brokerJobModel, Set<String> excludeResourceNames, VASPProperties config) {
+        this.config = config;
+
         HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
         splitPanel.addStyleName(Reindeer.SPLITPANEL_SMALL);
         splitPanel.setSplitPosition(60, Unit.PERCENTAGE);
@@ -141,17 +145,17 @@ public class SubmissionPanel extends CustomComponent {
     private String getInputFileContent(int i) {
         String content = "";
         if (i == 0) {
-            content = getInputDataPropertyValue("incar");
-            return content == null ? ExampleInputData.getINCAR() : content;
+            content = config.getValue("incar");
+            return Strings.isNullOrEmpty(content) ? ExampleInputData.getINCAR() : content;
         } else if (i == 1) {
-            content = getInputDataPropertyValue("kpoints");
-            return content == null ? ExampleInputData.getKPOINTS() : content;
+            content = config.getValue("kpoints");
+            return Strings.isNullOrEmpty(content) ? ExampleInputData.getKPOINTS() : content;
         } else if (i == 2) {
-            content = getInputDataPropertyValue("poscar");
-            return content == null ? ExampleInputData.getPOSCAR() : content;
+            content = config.getValue("poscar");
+            return Strings.isNullOrEmpty(content) ? ExampleInputData.getPOSCAR() : content;
         } else if (i == 3) {
-            content = getInputDataPropertyValue("potcar");
-            return content == null ? "" : content;
+            content = config.getValue("potcar");
+            return Strings.isNullOrEmpty(content) ? "" : content;
         }
         return content;
     }
@@ -160,10 +164,5 @@ public class SubmissionPanel extends CustomComponent {
         return GlobalState.getMessage(VASPViewI18N.ID, "vasp.caption." + messageKey);
     }
 
-    private String getInputDataPropertyValue(String key) {
-        String message = GlobalState.getMessage(VASPViewI18N.ID, String.format("vasp.input.%s", key));
-        if (message.startsWith("!") && message.endsWith("!"))
-            return null;
-        return message;
-    }
+    private static final Logger logger = Logger.getLogger(SubmissionPanel.class);
 }
