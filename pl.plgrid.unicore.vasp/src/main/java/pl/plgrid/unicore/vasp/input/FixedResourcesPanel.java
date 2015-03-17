@@ -23,7 +23,7 @@ public class FixedResourcesPanel extends CustomComponent implements ResourceSetC
 
     private final ComboBox queueComboBox;
     private ObjectProperty<String> projectProperty = new ObjectProperty<String>("");
-    private ObjectProperty<Integer> memoryProperty = new ObjectProperty<Integer>(512);
+    private ObjectProperty<Integer> memoryProperty = new ObjectProperty<Integer>(768);
     private ObjectProperty<Integer> nodesProperty = new ObjectProperty<Integer>(1);
     private ObjectProperty<Integer> cpusProperty = new ObjectProperty<Integer>(4);
 

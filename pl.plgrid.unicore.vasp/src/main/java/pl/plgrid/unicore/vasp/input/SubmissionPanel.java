@@ -13,6 +13,8 @@ import pl.plgrid.unicore.common.ui.files.GenericInputFilePanel;
 import pl.plgrid.unicore.portal.core.utils.ClassPathResource;
 import pl.plgrid.unicore.vasp.i18n.VASPViewI18N;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -75,6 +77,7 @@ public class SubmissionPanel extends CustomComponent {
                 );
 
                 brokerJobModel.submit(simulationName);
+                generateSimulationName();
             }
         });
         gridLayout.addComponent(submitWorkAssignmentButton, 0, gridLayoutRowNumber);
@@ -82,6 +85,7 @@ public class SubmissionPanel extends CustomComponent {
 
         ++gridLayoutRowNumber;
         simulationNameTextField = new TextField(getMessage("simulationNameCaption"));
+        generateSimulationName();
         simulationNameTextField.addStyleName(Styles.MARGIN_TOP_BOTTOM_15);
         FormLayout simulationNameFormLayout = new FormLayout();
         simulationNameFormLayout.setSpacing(true);
@@ -162,6 +166,11 @@ public class SubmissionPanel extends CustomComponent {
 
     private String getMessage(String messageKey) {
         return GlobalState.getMessage(VASPViewI18N.ID, "vasp.caption." + messageKey);
+    }
+
+    private void generateSimulationName() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddhhmm");
+        simulationNameTextField.setValue("simulation-" + dateFormat.format(new Date()));
     }
 
     private static final Logger logger = Logger.getLogger(SubmissionPanel.class);
