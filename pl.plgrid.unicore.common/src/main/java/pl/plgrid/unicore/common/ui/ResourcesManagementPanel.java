@@ -1,12 +1,18 @@
 package pl.plgrid.unicore.common.ui;
 
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.ui.PortalApplication;
 import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
 import pl.plgrid.unicore.common.ui.model.ResourceSetComponent;
+import pl.plgrid.unicore.common.ui.panel.StringTokensPanel;
 import pl.plgrid.unicore.portal.core.i18n.ComponentsI18N;
 
 import java.util.Set;

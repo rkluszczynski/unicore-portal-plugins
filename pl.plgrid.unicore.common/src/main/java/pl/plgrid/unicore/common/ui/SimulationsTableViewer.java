@@ -11,6 +11,7 @@ import eu.unicore.portal.ui.icons.IconRepository;
 import org.apache.log4j.Logger;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.common.ui.model.SimulationViewerData;
+import pl.plgrid.unicore.common.ui.panel.SimulationLogPanel;
 import pl.plgrid.unicore.common.ui.workers.JobsTableViewerWorker;
 import pl.plgrid.unicore.portal.core.i18n.ComponentsI18N;
 import pl.plgrid.unicore.portal.core.utils.SecurityHelper;
@@ -63,6 +64,11 @@ public class SimulationsTableViewer extends CustomComponent {
                 IconUtil.getIconFromTheme(IconRepository.ICON_ID_EXPLORE_FOLDER),
                 new ShowJobDirButtonListener()
         );
+        Button showJobLogButton = createButtonInstance(
+                getMessage("jobs.showLog"),
+                IconUtil.getIconFromTheme(IconRepository.ICON_ID_VIEW),
+                new ShowSimulationLogButtonListener()
+        );
         Button destroySimulationButton = createButtonInstance(
                 getMessage("jobs.destroy"),
                 IconUtil.getIconFromTheme(IconRepository.ICON_ID_DELETE),
@@ -70,7 +76,7 @@ public class SimulationsTableViewer extends CustomComponent {
         );
 
         HorizontalLayout horizontalLayout = new HorizontalLayout(
-                showJobDirButton, refreshJobsListButton, destroySimulationButton
+                showJobDirButton, refreshJobsListButton, showJobLogButton, destroySimulationButton
         );
         horizontalLayout.setSpacing(true);
 
@@ -124,6 +130,28 @@ public class SimulationsTableViewer extends CustomComponent {
                     reloadJobsList();
                 } catch (Exception e) {
                     String message = String.format("Unable to destroy job: %s",
+                            (simulationEpr == null) ? "<Epr not retrieved>" : simulationEpr.getAddress().getStringValue());
+                    logger.warn(message, e);
+                    Notification.show(message, Notification.Type.WARNING_MESSAGE);
+                }
+            }
+        }
+    }
+
+    private class ShowSimulationLogButtonListener implements Button.ClickListener {
+        @Override
+        public void buttonClick(Button.ClickEvent event) {
+            SimulationViewerData simulationViewerData = getSelectedSimulationViewerData();
+            if (simulationViewerData != null) {
+                EndpointReferenceType simulationEpr = simulationViewerData
+                        .getSimulationEpr();
+                try {
+                    String jobLog = new JobClient(simulationEpr, SecurityHelper.getClientConfig())
+                            .getJobLog();
+                    SimulationLogPanel logPanel = new SimulationLogPanel(jobLog);
+                    logPanel.showWindow();
+                } catch (Exception e) {
+                    String message = String.format("Unable to get job log: %s",
                             (simulationEpr == null) ? "<Epr not retrieved>" : simulationEpr.getAddress().getStringValue());
                     logger.warn(message, e);
                     Notification.show(message, Notification.Type.WARNING_MESSAGE);

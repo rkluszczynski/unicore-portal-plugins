@@ -1,4 +1,4 @@
-package pl.plgrid.unicore.common.ui;
+package pl.plgrid.unicore.common.ui.panel;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
