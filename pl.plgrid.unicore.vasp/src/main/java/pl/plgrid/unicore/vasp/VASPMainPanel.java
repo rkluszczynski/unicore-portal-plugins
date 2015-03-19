@@ -58,15 +58,15 @@ class VASPMainPanel extends VerticalLayout {
                 StandardResources.osType.name()
         );
 
-        VerticalLayout simulationsTablePanel = new VerticalLayout(
-                new SimulationsTableViewer(VASP_SIMULATION_DEFAULT_PREFIX)
-        );
+        SimulationsTableViewer simulationsViewer = new SimulationsTableViewer(VASP_SIMULATION_DEFAULT_PREFIX);
+        VerticalLayout simulationsTablePanel = new VerticalLayout(simulationsViewer);
         simulationsTablePanel.setMargin(new MarginInfo(false, false, true, false));
         simulationsTablePanel.setSizeFull();
 
         VerticalLayout submissionPanel = new VerticalLayout(
                 new SubmissionPanel(brokerJobModel, excludeResourceNames,
-                        new VASPProperties(GlobalState.getCurrent().getPortalConfiguration().getProperties())
+                        new VASPProperties(GlobalState.getCurrent().getPortalConfiguration().getProperties()),
+                        simulationsViewer
                 ));
         submissionPanel.setMargin(new MarginInfo(true, false, false, false));
         submissionPanel.setSizeFull();

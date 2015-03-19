@@ -9,6 +9,7 @@ import eu.unicore.portal.core.GlobalState;
 import eu.unicore.portal.ui.Styles;
 import org.apache.log4j.Logger;
 import pl.plgrid.unicore.common.model.BrokerJobModel;
+import pl.plgrid.unicore.common.ui.SimulationsTableViewer;
 import pl.plgrid.unicore.common.ui.files.GenericInputFilePanel;
 import pl.plgrid.unicore.portal.core.utils.ClassPathResource;
 import pl.plgrid.unicore.vasp.i18n.VASPViewI18N;
@@ -28,7 +29,7 @@ public class SubmissionPanel extends CustomComponent {
 
     // TODO: try to design api to do it without passing brokerJobModel (?)
 
-    public SubmissionPanel(BrokerJobModel brokerJobModel, Set<String> excludeResourceNames, VASPProperties config) {
+    public SubmissionPanel(BrokerJobModel brokerJobModel, Set<String> excludeResourceNames, VASPProperties config, SimulationsTableViewer simulationsViewer) {
         this.config = config;
 
         HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
@@ -44,39 +45,45 @@ public class SubmissionPanel extends CustomComponent {
         tabSheetPanel.setSizeFull();
         splitPanel.setFirstComponent(tabSheetPanel);
 
-        AbstractLayout rightPanel = createUserManagementPanel(brokerJobModel, excludeResourceNames);
+        AbstractLayout rightPanel = createUserManagementPanel(brokerJobModel, excludeResourceNames, simulationsViewer);
         splitPanel.setSecondComponent(rightPanel);
 
         setCompositionRoot(splitPanel);
         setSizeFull();
     }
 
-    private AbstractLayout createUserManagementPanel(final BrokerJobModel brokerJobModel, Set<String> excludeResourceNames) {
+    private AbstractLayout createUserManagementPanel(final BrokerJobModel brokerJobModel, Set<String> excludeResourceNames, final SimulationsTableViewer simulationsViewer) {
         GridLayout gridLayout = new GridLayout(1, 4);
         final ResourcesOnTopPanel resourcesOnTopPanel = new ResourcesOnTopPanel();
         final FixedResourcesPanel fixedResourcesPanel = new FixedResourcesPanel();
 //        final ResourcesOnTopPanel resourcesOnTopPanel = null;
 
         int gridLayoutRowNumber = 0;
-        Button submitWorkAssignmentButton = new Button(getMessage("submitButton"));
+        final Button submitWorkAssignmentButton = new Button(getMessage("submitButton"));
         submitWorkAssignmentButton.setStyleName(Styles.MARGIN_TOP_BOTTOM_15);
         submitWorkAssignmentButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                String simulationName = VASP_SIMULATION_DEFAULT_PREFIX + simulationNameTextField.getValue();
-                if (Strings.isNullOrEmpty(simulationNameTextField.getValue())) {
-                    simulationName += "Simulation submitted by UNICORE Portal";
-                }
-                if (resourcesOnTopPanel != null) {
+                submitWorkAssignmentButton.setEnabled(false);
+                try {
+                    String simulationName = VASP_SIMULATION_DEFAULT_PREFIX + simulationNameTextField.getValue();
+                    if (Strings.isNullOrEmpty(simulationNameTextField.getValue())) {
+                        simulationName += "Simulation submitted by UNICORE Portal";
+                    }
+                    if (resourcesOnTopPanel != null) {
+                        brokerJobModel.getResourceSet().putAll(
+                                resourcesOnTopPanel.getResources()
+                        );
+                    }
                     brokerJobModel.getResourceSet().putAll(
-                            resourcesOnTopPanel.getResources()
+                            fixedResourcesPanel.getResources()
                     );
-                }
-                brokerJobModel.getResourceSet().putAll(
-                        fixedResourcesPanel.getResources()
-                );
 
-                brokerJobModel.submit(simulationName);
+                    brokerJobModel.submit(simulationName);
+                } finally {
+                    submitWorkAssignmentButton.setEnabled(true);
+                    simulationsViewer.reloadJobsList();
+                }
                 generateSimulationName();
             }
         });
