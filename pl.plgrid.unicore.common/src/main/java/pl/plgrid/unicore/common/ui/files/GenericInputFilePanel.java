@@ -160,7 +160,7 @@ public class GenericInputFilePanel extends VerticalLayout implements
         gridFileRowPanel.addComponent(gridFileCaptionLabel, 0, 0);
         gridFileRowPanel.setColumnExpandRatio(0, 0.0f);
         gridFilePathTextField.setSizeFull();
-        gridFilePathTextField.setReadOnly(true);
+        gridFilePathTextField.setEnabled(true);
         gridFileRowPanel.addComponent(gridFilePathTextField, 1, 0);
         gridFileRowPanel.setColumnExpandRatio(1, 1.0f);
         gridFileRowPanel.addComponent(gridFileChooserButton, 2, 0);

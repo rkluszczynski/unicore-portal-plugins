@@ -70,6 +70,10 @@ public class GridFileUploadReceiver implements
                             .writeAllData(in);
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
+                    new Notification("Could not upload file! <br/>Check connection or destination folder permissions!",
+                            e.getMessage(),
+                            Notification.Type.ERROR_MESSAGE)
+                            .show(Page.getCurrent());
                 }
             }
         }.schedule();
