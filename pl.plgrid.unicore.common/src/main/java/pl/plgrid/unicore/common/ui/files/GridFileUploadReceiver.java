@@ -68,10 +68,13 @@ public class GridFileUploadReceiver implements
                     new StorageClient(smsEpr, SecurityHelper.getClientConfig())
                             .getImport(fileRelativePath, ProtocolType.BFT, ProtocolType.RBYTEIO)
                             .writeAllData(in);
+                    setLabelValueWithColor("file uploaded", "green");
+                    addressTextField.setValue(String.format("%s/%s", targetTextField.getValue(), lastFilename));
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
-                    new Notification("Could not upload file! <br/>Check connection or destination folder permissions!",
-                            e.getMessage(),
+                    setLabelValueWithColor("upload failed", "darkred");
+                    new Notification("Could not upload file!",
+                            "Check connection or destination folder permissions!",
                             Notification.Type.ERROR_MESSAGE)
                             .show(Page.getCurrent());
                 }
@@ -104,13 +107,10 @@ public class GridFileUploadReceiver implements
 
     @Override
     public void uploadSucceeded(Upload.SucceededEvent event) {
-        setLabelValueWithColor("file uploaded", "green");
-        addressTextField.setValue(String.format("%s/%s", targetTextField.getValue(), lastFilename));
     }
 
     @Override
     public void uploadFailed(Upload.FailedEvent event) {
-        setLabelValueWithColor("upload failed", "darkred");
     }
 
     @Override
