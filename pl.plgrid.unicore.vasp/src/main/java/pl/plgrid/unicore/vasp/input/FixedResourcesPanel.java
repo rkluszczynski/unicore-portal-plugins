@@ -20,26 +20,37 @@ import java.util.Map;
  * Created by Rafal on 2015-03-16.
  */
 public class FixedResourcesPanel extends CustomComponent implements ResourceSetComponent {
-
     private final ComboBox queueComboBox;
+
+    private final String vaspResourcesCaptionProject;
+    private final String vaspResourcesCaptionQueue;
+    private final String vaspResourcesCaptionMemory;
+    private final String vaspResourcesCaptionNodes;
+    private final String vaspResourcesCaptionCpus;
+
     private ObjectProperty<String> projectProperty = new ObjectProperty<String>("");
     private ObjectProperty<Integer> memoryProperty = new ObjectProperty<Integer>(768);
     private ObjectProperty<Integer> nodesProperty = new ObjectProperty<Integer>(1);
     private ObjectProperty<Integer> cpusProperty = new ObjectProperty<Integer>(4);
 
-
     public FixedResourcesPanel() {
+        vaspResourcesCaptionProject = getMessage("project");
+        vaspResourcesCaptionQueue = getMessage("queue");
+        vaspResourcesCaptionMemory = getMessage("memory");
+        vaspResourcesCaptionNodes = getMessage("nodes");
+        vaspResourcesCaptionCpus = getMessage("cpus");
+
         GridLayout gridLayout = new GridLayout(1, 6);
         int gridLayoutRowNumber = 0;
 
-        TextField projectTextField = new TextField("Project: ", projectProperty);
+        TextField projectTextField = new TextField(vaspResourcesCaptionProject, projectProperty);
         projectTextField.setMaxLength(32);
         FormLayout projectFormLayout = createComponentFormLayout(projectTextField);
         gridLayout.addComponent(projectFormLayout, 0, gridLayoutRowNumber);
         gridLayout.setComponentAlignment(projectFormLayout, Alignment.MIDDLE_RIGHT);
 
         ++gridLayoutRowNumber;
-        queueComboBox = new ComboBox("Queue: ", Collections2.transform(
+        queueComboBox = new ComboBox(vaspResourcesCaptionQueue, Collections2.transform(
                 Arrays.asList(PLGridQueues.values()), new Function<PLGridQueues, String>() {
                     @Override
                     public String apply(PLGridQueues input) {
@@ -55,7 +66,7 @@ public class FixedResourcesPanel extends CustomComponent implements ResourceSetC
         gridLayout.setComponentAlignment(queueFormLayout, Alignment.MIDDLE_RIGHT);
 
         ++gridLayoutRowNumber;
-        TextField memoryTextField = new TextField("Memory [MB]: ", memoryProperty);
+        TextField memoryTextField = new TextField(vaspResourcesCaptionMemory, memoryProperty);
         memoryTextField.setMaxLength(6);
         memoryTextField.setConverter(Integer.class);
         memoryTextField.addValidator(new IntegerRangeValidator("Number should be positive", 1, 999999));
@@ -64,7 +75,7 @@ public class FixedResourcesPanel extends CustomComponent implements ResourceSetC
         gridLayout.setComponentAlignment(memoryFormLayout, Alignment.MIDDLE_RIGHT);
 
         ++gridLayoutRowNumber;
-        TextField nodesTextField = new TextField("Number of nodes: ", nodesProperty);
+        TextField nodesTextField = new TextField(vaspResourcesCaptionNodes, nodesProperty);
         nodesTextField.setMaxLength(3);
         nodesTextField.setConverter(Integer.class);
         nodesTextField.addValidator(new IntegerRangeValidator("Number should be positive", 1, 99));
@@ -73,7 +84,7 @@ public class FixedResourcesPanel extends CustomComponent implements ResourceSetC
         gridLayout.setComponentAlignment(nodesFormLayout, Alignment.MIDDLE_RIGHT);
 
         ++gridLayoutRowNumber;
-        TextField cpusTextField = new TextField("CPUs per node: ", cpusProperty);
+        TextField cpusTextField = new TextField(vaspResourcesCaptionCpus, cpusProperty);
         cpusTextField.setMaxLength(2);
         cpusTextField.setConverter(Integer.class);
         cpusTextField.addValidator(new IntegerRangeValidator("Number should be positive", 1, 64));
@@ -91,7 +102,6 @@ public class FixedResourcesPanel extends CustomComponent implements ResourceSetC
         setSizeFull();
     }
 
-
     private FormLayout createComponentFormLayout(AbstractComponent component) {
         component.setWidth(0.5f * component.getWidth(), component.getWidthUnits());
 
@@ -104,7 +114,7 @@ public class FixedResourcesPanel extends CustomComponent implements ResourceSetC
     }
 
     private String getMessage(String messageKey) {
-        return GlobalState.getMessage(VASPViewI18N.ID, "vasp.caption." + messageKey);
+        return GlobalState.getMessage(VASPViewI18N.ID, "vasp.resources.caption." + messageKey);
     }
 
     @Override

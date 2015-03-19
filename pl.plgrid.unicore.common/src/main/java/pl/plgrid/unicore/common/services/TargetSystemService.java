@@ -4,6 +4,7 @@ import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import de.fzj.unicore.uas.TargetSystemFactory;
 import de.fzj.unicore.uas.client.TSFClient;
 import de.fzj.unicore.uas.client.TSSClient;
+import eu.unicore.portal.core.Session;
 import org.unigrids.x2006.x04.services.tsf.CreateTSRDocument;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.plgrid.unicore.portal.core.exceptions.UnavailableGridServiceException;
@@ -37,12 +38,15 @@ public class TargetSystemService extends AbstractService {
                 }
 
                 if (tssClient == null) {
+                    String username = Session.getCurrent().getUser().getUsername();
+                    logger.info(String.format("Getting accessible target systems for user <%s>", username));
+
                     // TODO: handle somehow admin privileges
                     for (EndpointReferenceType tssEpr : tsfClient
                             .getAccessibleTargetSystems()) {
                         tssClients.add(new TSSClient(tssEpr, SecurityHelper.getClientConfig()));
-                        logger.info("Added user's TSS epr: " + tssEpr.getAddress().getStringValue());
-                        break;
+                        logger.info(String.format("Added user's TSS epr: %s for user <%s>", tssEpr.getAddress().getStringValue(), username));
+                        //break;
                     }
                 }
                 logger.info("Processed TSF epr: " + accessibleService.getAddress().getStringValue());

@@ -115,7 +115,8 @@ public class JobsTableViewerWorker extends BackgroundWorker {
                         endpointReferenceType,
                         jobProperties
                 );
-                logger.info("TESTING: " + simData.getSimulationName());
+                logger.info(String.format("TESTING for user <%s>: %s", Session.getCurrent().getUser().getUsername(),
+                        simData.getSimulationName()));
                 if (simulationsNamePrefix == null) {
                     dataList.add(simData);
                 } else if (simData.getSimulationName().toLowerCase().startsWith(simulationsNamePrefix.toLowerCase())) {

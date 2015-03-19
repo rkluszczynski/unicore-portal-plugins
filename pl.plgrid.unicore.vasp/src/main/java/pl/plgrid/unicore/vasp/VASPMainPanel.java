@@ -2,7 +2,6 @@ package pl.plgrid.unicore.vasp;
 
 import com.google.gwt.thirdparty.guava.common.collect.Sets;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import eu.unicore.portal.core.GlobalState;
@@ -35,7 +34,10 @@ class VASPMainPanel extends VerticalLayout {
         List<String> accessAttribute = attributes.getUserAttribute(ACCESS_ATTRIBUTE_KEY);
         if (accessAttribute == null || accessAttribute.isEmpty()
                 || !accessAttribute.contains(ACCESS_ATTRIBUTE_VALUE)) {
-            Notification.show("VASP", "You do not have permissions to use VASP", Notification.Type.WARNING_MESSAGE);
+            String description = "You do not have permissions to use VASP";
+            logger.info(String.format("Message based on unity attribute for user <%s>: %s",
+                    Session.getCurrent().getUser().getUsername(), description));
+            //Notification.show("VASP", description, Notification.Type.WARNING_MESSAGE);
         }
 
         createMainViewComponents(
