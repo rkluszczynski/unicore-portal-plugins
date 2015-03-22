@@ -1,6 +1,6 @@
 package pl.edu.icm.openoxides.controller;
 
-import eu.emi.security.authn.x509.X509Credential;
+import eu.emi.security.authn.x509.impl.KeystoreCredential;
 import eu.unicore.samly2.SAMLConstants;
 import eu.unicore.samly2.binding.HttpPostBindingSupport;
 import eu.unicore.samly2.binding.SAMLMessageType;
@@ -14,10 +14,11 @@ import xmlbeans.org.oasis.saml2.protocol.AuthnRequestDocument;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.KeyStoreException;
 
 @RestController
 public class SamlAuthnController {
@@ -72,17 +73,37 @@ public class SamlAuthnController {
         return "UUID";
     }
 
-    private AuthnRequest createRequest() throws DSigException, MalformedURLException, URISyntaxException {
+    private AuthnRequest createRequest() throws DSigException, IOException, URISyntaxException, KeyStoreException {
         URI samlServletUri = new URI("https://unicore.studmat.umk.pl:9091/authn");
-        NameID myId = new NameID(DISTINGUISH_NAME_ID, SAMLConstants.NFORMAT_DN);
+
+        KeystoreCredential credential = new KeystoreCredential(
+                "src/main/resources/oxides.jks",
+                "oxides".toCharArray(),
+                "oxides".toCharArray(),
+                "oxides",
+                "JKS"
+        );
+        NameID myId = new NameID(credential.getSubjectName(), SAMLConstants.NFORMAT_DN);
 
         AuthnRequest request = new AuthnRequest(myId.getXBean());
         request.setFormat(SAMLConstants.NFORMAT_DN);
         request.getXMLBean().setDestination(IDP_URL);
         request.getXMLBean().setAssertionConsumerServiceURL(samlServletUri.toASCIIString());
 
-        X509Credential credential = null; //config.getPortalCredential();
-//        request.sign(credential.getKey(), credential.getCertificateChain());
+        request.sign(credential.getKey(), credential.getCertificateChain());
         return request;
+    }
+
+    public static void main(String[] args) throws IOException, KeyStoreException {
+        KeystoreCredential credential = new KeystoreCredential(
+                "testing-spring-boot/src/main/resources/oxides.jks",
+                "oxides".toCharArray(),
+                "oxides".toCharArray(),
+                "oxides",
+                "JKS"
+        );
+
+        System.out.println(credential.getCertificate().getSubjectX500Principal().toString());
+        System.out.println(credential.getSubjectName());
     }
 }
