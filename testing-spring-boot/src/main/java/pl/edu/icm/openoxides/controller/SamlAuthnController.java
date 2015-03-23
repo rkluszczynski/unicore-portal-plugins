@@ -1,5 +1,6 @@
 package pl.edu.icm.openoxides.controller;
 
+import de.fzj.unicore.wsrflite.xmlbeans.client.RegistryClient;
 import eu.emi.security.authn.x509.impl.KeystoreCredential;
 import eu.unicore.samly2.SAMLConstants;
 import eu.unicore.samly2.SAMLUtils;
@@ -9,12 +10,14 @@ import eu.unicore.samly2.elements.NameID;
 import eu.unicore.samly2.exceptions.SAMLValidationException;
 import eu.unicore.samly2.proto.AuthnRequest;
 import eu.unicore.security.dsig.DSigException;
+import eu.unicore.util.httpclient.ClientProperties;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.impl.util.Base64;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import xmlbeans.org.oasis.saml2.assertion.AssertionDocument;
 import xmlbeans.org.oasis.saml2.assertion.AssertionType;
 import xmlbeans.org.oasis.saml2.assertion.NameIDType;
@@ -24,6 +27,7 @@ import xmlbeans.org.oasis.saml2.protocol.ResponseType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
@@ -106,7 +110,7 @@ public class SamlAuthnController {
         URI samlServletUri = new URI(targetUrl);
 
         KeystoreCredential credential = new KeystoreCredential(
-                "src/main/resources/oxides.jks",
+                "testing-spring-boot/src/main/resources/oxides.jks",
                 "oxides".toCharArray(),
                 "oxides".toCharArray(),
                 "oxides",
@@ -146,13 +150,16 @@ public class SamlAuthnController {
                 .stream()
                 .map(document -> document.getAssertion().getSubject().getNameID())
                 .collect(Collectors.toList());
-        buffer.append(String.format("<b>AUTHENTICATED USERS [%d]</b>: <br/><ul>", authenticatedUsers.size()));
+        buffer.append(String.format("<b>AUTHENTICATED USER [%d]</b>: <br/><ul>", authenticatedUsers.size()));
         for (NameIDType user : authenticatedUsers) {
             buffer.append(String.format("<li>%s</li>", user.toString()));
         }
         buffer.append("</ul><br/>");
 //
 //        onSamlResponse(issuerUri, authenticatedUser, response, validator.getOtherAssertions());
+        for (AssertionDocument assertionDocument : assertionDocuments) {
+            OxidesHandler.onSamlResponse(assertionDocument);
+        }
     }
 
     private List<AssertionDocument> processAssertions(ResponseDocument responseDocument) throws IOException, XmlException, SAMLValidationException {
@@ -178,6 +185,7 @@ public class SamlAuthnController {
 
                 if (assertion.sizeOfStatementArray() > 0 || assertion.sizeOfAttributeStatementArray() > 0 || assertion.sizeOfAuthzDecisionStatementArray() > 0) {
 //                    this.tryValidateAsGenericAssertion(asValidator, assertionDoc);
+                    assertionDocumentList.add(assertionDocument);
                 }
 
                 if (issuer == null) {
@@ -227,7 +235,7 @@ public class SamlAuthnController {
         }
     }
 
-    public static void main(String[] args) throws IOException, KeyStoreException {
+    public static void main(String[] args) throws Exception {
         KeystoreCredential credential = new KeystoreCredential(
                 "testing-spring-boot/src/main/resources/oxides.jks",
                 "oxides".toCharArray(),
@@ -239,11 +247,17 @@ public class SamlAuthnController {
         System.out.println(credential.getCertificate().getSubjectX500Principal().toString());
         System.out.println(credential.getSubjectName());
 
-        EndpointReferenceType registryEpr = EndpointReferenceType.Factory
-                .newInstance();
+        String registryUrl = "https://hyx.grid.icm.edu.pl:8080/ICM-HYDRA/services/Registry?res=default_registry";
+        EndpointReferenceType registryEpr = EndpointReferenceType.Factory.newInstance();
         registryEpr.addNewAddress().setStringValue(registryUrl);
-        try {
-            registryClient = new RegistryClient(registryEpr, SecurityHelper
-                    .getClientConfig());
+
+        RegistryClient registryClient = new RegistryClient(registryEpr,
+                new ClientProperties("testing-spring-boot/src/main/resources/application.properties")
+        );
+        QName qName = new QName("http://unigrids.org/2006/04/services/tsf", "TargetSystemFactory");
+        for (EndpointReferenceType epr : registryClient.listAccessibleServices(qName)) {
+            System.out.println(" -> " + epr.getAddress().getStringValue());
+        }
+        System.out.println("DONE");
     }
 }

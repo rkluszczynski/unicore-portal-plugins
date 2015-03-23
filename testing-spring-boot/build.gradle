@@ -22,13 +22,20 @@ dependencies {
             'eu.unicore.security:SAMLtypes:1.2.1',
             'pl.edu.icm.saml:samly2:2.1.2',
 
-            'eu.unicore.services:use-wsrftypes:3.1.1'
+            'eu.unicore.services:use-wsrftypes:3.1.1',
+            'eu.unicore.services:use-wsrfclient:3.1.1',
+            'eu.unicore:uas-client:1.8.1'
 
     testCompile 'org.spockframework:spock-spring:1.0-groovy-2.4',
             'org.springframework:spring-test',
             'org.springframework.boot:spring-boot-starter-test',
             'org.apache.httpcomponents:httpclient'
 }
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mainClassName = 'pl.edu.icm.openoxides.UndertowApplication'
 
 //jar {
 //    baseName = 'gs-spring-boot'
