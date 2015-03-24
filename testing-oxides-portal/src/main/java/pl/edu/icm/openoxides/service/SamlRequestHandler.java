@@ -18,6 +18,7 @@ import java.net.URI;
 @Component
 public class SamlRequestHandler {
     public final String idpUrl = "https://unity.grid.icm.edu.pl/testbed-portal/saml2unicoreIdp-web";
+    //    public final String targetUrl = "https://alfred.mat.umk.pl:8443/authn/saml";
     public final String targetUrl = "https://localhost:8443/authn/saml";
 
     public void performAuthenticationRequest(HttpServletResponse response) {
