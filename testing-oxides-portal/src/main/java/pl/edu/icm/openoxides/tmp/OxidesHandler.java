@@ -1,4 +1,4 @@
-package pl.edu.icm.openoxides.controller;
+package pl.edu.icm.openoxides.tmp;
 
 import de.fzj.unicore.uas.client.TSFClient;
 import de.fzj.unicore.wsrflite.xmlbeans.client.RegistryClient;
@@ -27,7 +27,7 @@ public class OxidesHandler {
             return;
         }
 
-        ClientProperties jksProperties = new ClientProperties("testing-spring-boot/src/main/resources/application.properties");
+        ClientProperties jksProperties = new ClientProperties("src/main/resources/application.properties");
 
         DefaultClientConfiguration clientConfiguration = jksProperties.clone();
         //new DefaultClientConfiguration();

@@ -8,7 +8,7 @@ import pl.edu.icm.openoxides.service.HelloWorldService;
 import java.util.concurrent.Callable;
 
 @RestController
-public class OpenOxidesController {
+public class HelloWorldController {
     @Autowired
     private HelloWorldService helloWorldService;
 
@@ -23,7 +23,7 @@ public class OpenOxidesController {
             @Override
             public String call() throws Exception {
                 return "async: "
-                        + OpenOxidesController.this.helloWorldService.getHelloMessage();
+                        + HelloWorldController.this.helloWorldService.getHelloMessage();
             }
         };
     }

@@ -15,10 +15,12 @@ apply plugin: 'spring-boot'
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter',
             'org.springframework.boot:spring-boot-starter-undertow',
+
+            'com.fasterxml.jackson.core:jackson-databind',
             'org.springframework:spring-webmvc',
+
 //            'org.springframework.security.extensions:spring-security-saml2-core:1.0.0.RELEASE',
 //
-//            'eu.unicore.portal:eu.unicore.portal.authn:1.3.0-SNAPSHOT',
             'eu.unicore.security:SAMLtypes:1.2.1',
             'pl.edu.icm.saml:samly2:2.1.2',
 
@@ -35,7 +37,7 @@ dependencies {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-mainClassName = 'pl.edu.icm.openoxides.UndertowApplication'
+mainClassName = 'pl.edu.icm.openoxides.OpenOxidesWebServer'
 
 //jar {
 //    baseName = 'gs-spring-boot'

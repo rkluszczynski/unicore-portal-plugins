@@ -1,4 +1,4 @@
-package pl.edu.icm.openoxides.controller;
+package pl.edu.icm.openoxides.tmp;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -17,11 +17,11 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
 import spock.lang.Specification
 
-@ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = UndertowApplication.class)
+@ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = OpenOxidesWebServer.class)
 @WebAppConfiguration
 @IntegrationTest('server.port:0')
 @DirtiesContext
-class UndertowApplicationTest extends Specification {
+class OpenOxidesWebServerTest extends Specification {
     @Value('${local.server.port}')
     private int port;
 
