@@ -1,7 +1,6 @@
 package pl.edu.icm.openoxides.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,7 +30,7 @@ public class SamlAuthnController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public String processAuthenticationResponse(HttpServletRequest request, @RequestBody String body) {
-        return samlResponseHandler.processAuthenticationResponse(request, body);
+    public String processAuthenticationResponse(HttpServletRequest request) {
+        return samlResponseHandler.processAuthenticationResponse(request);
     }
 }

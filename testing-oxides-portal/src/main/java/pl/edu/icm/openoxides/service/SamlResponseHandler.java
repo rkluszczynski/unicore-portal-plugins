@@ -4,7 +4,6 @@ import eu.unicore.samly2.exceptions.SAMLValidationException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.impl.util.Base64;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
 import pl.edu.icm.openoxides.tmp.SamlAuthnTestController;
 import xmlbeans.org.oasis.saml2.protocol.ResponseDocument;
 
@@ -14,12 +13,10 @@ import java.nio.charset.Charset;
 @Component
 public class SamlResponseHandler {
 
-    public String processAuthenticationResponse(HttpServletRequest request, @RequestBody String body) {
+    public String processAuthenticationResponse(HttpServletRequest request) {
         String samlResponse = request.getParameter("SAMLResponse");
 
         StringBuffer buffer = new StringBuffer();
-        buffer.append("POST was it! <br />");
-        buffer.append(String.format("<b>BODY</b>: <br />%s<br />", body));
         try {
             ResponseDocument response = decodeResponse(samlResponse);
             new SamlAuthnTestController().processResponse(response, buffer);
