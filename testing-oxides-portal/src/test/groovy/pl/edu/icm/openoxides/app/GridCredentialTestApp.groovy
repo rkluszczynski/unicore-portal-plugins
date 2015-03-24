@@ -1,18 +1,18 @@
-package pl.edu.icm.openoxides.tmp;
+package pl.edu.icm.openoxides.app
 
-import de.fzj.unicore.wsrflite.xmlbeans.client.RegistryClient;
-import eu.emi.security.authn.x509.impl.KeystoreCredential;
-import eu.unicore.util.httpclient.ClientProperties;
-import org.w3.x2005.x08.addressing.EndpointReferenceType;
+import de.fzj.unicore.wsrflite.xmlbeans.client.RegistryClient
+import eu.emi.security.authn.x509.impl.KeystoreCredential
+import eu.unicore.util.httpclient.ClientProperties
+import org.w3.x2005.x08.addressing.EndpointReferenceType
 
-import javax.xml.namespace.QName;
+import javax.xml.namespace.QName
 
 /**
  * Created by Rafal on 2015-03-24.
  */
-public class GridCredentialTestApp {
+class GridCredentialTestApp {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         KeystoreCredential credential = new KeystoreCredential(
                 "src/main/resources/oxides.jks",
                 "oxides".toCharArray(),
@@ -20,7 +20,6 @@ public class GridCredentialTestApp {
                 "oxides",
                 "JKS"
         );
-
         System.out.println(credential.getCertificate().getSubjectX500Principal().toString());
         System.out.println(credential.getSubjectName());
 
@@ -28,9 +27,9 @@ public class GridCredentialTestApp {
         EndpointReferenceType registryEpr = EndpointReferenceType.Factory.newInstance();
         registryEpr.addNewAddress().setStringValue(registryUrl);
 
-        RegistryClient registryClient = new RegistryClient(registryEpr,
-                new ClientProperties("src/main/resources/application.properties")
-        );
+        ClientProperties clientProperties = new ClientProperties("src/main/resources/application.properties")
+        RegistryClient registryClient = new RegistryClient(registryEpr, clientProperties);
+
         QName qName = new QName("http://unigrids.org/2006/04/services/tsf", "TargetSystemFactory");
         for (EndpointReferenceType epr : registryClient.listAccessibleServices(qName)) {
             System.out.println(" -> " + epr.getAddress().getStringValue());

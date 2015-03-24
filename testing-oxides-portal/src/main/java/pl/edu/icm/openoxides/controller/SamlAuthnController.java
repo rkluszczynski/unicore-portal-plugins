@@ -24,7 +24,7 @@ public class SamlAuthnController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public void performAuthentication(HttpServletResponse response) {
+    public void performAuthenticationRequest(HttpServletResponse response) {
         samlRequestHandler.performAuthenticationRequest(response);
     }
 

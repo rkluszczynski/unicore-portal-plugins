@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urn:Response IssueInstant="2015-03-24T11:09:32.268Z"
+              ID="SAMLY2lib_msg_45b7443b98bb2ca834baabaf7a1eb3ce362aa835facc630d" Version="2.0"
+              InResponseTo="SAMLY2lib_msg_c28e89544f69503eb094cf19557a5568cefc05fef8ba95d0"
+              xmlns:urn="urn:oasis:names:tc:SAML:2.0:protocol">
+    <urn1:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
+                 xmlns:urn1="urn:oasis:names:tc:SAML:2.0:assertion">https://unity.grid.icm.edu.pl:443/
+    </urn1:Issuer>
+    <urn:Status>
+        <urn:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/>
+    </urn:Status>
+    <urn:Assertion ID="SAMLY2lib_assert_45b7443b98bb2ca834baabaf7a1eb3ce362aa835facc630d"
+                   IssueInstant="2015-03-24T11:09:32.268Z" Version="2.0"
+                   xmlns:urn="urn:oasis:names:tc:SAML:2.0:assertion">
+        <urn:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://unity.grid.icm.edu.pl:443/
+        </urn:Issuer>
+        <dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+            <dsig:SignedInfo>
+                <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                <dsig:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+                <dsig:Reference URI="#SAMLY2lib_assert_45b7443b98bb2ca834baabaf7a1eb3ce362aa835facc630d">
+                    <dsig:Transforms>
+                        <dsig:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+                        <dsig:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                    </dsig:Transforms>
+                    <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                    <dsig:DigestValue>VICefjKSvc0y64aPXTQtF1Xx+UU=</dsig:DigestValue>
+                </dsig:Reference>
+            </dsig:SignedInfo>
+            <dsig:SignatureValue>CUqCgSERsy1PdRqrJKnsWhMNUERmshMfVSYTX3SW1pT6Z/tEUEb6KufdE5GWpsMM627RlRXsDG4C
+                CJFFJrkwn3MrSwPUZzBsyWSd2uC8cTatIag13BdDGShKPHjsiXvkCQ8IzeijCLUeJYpQw3DogbVV
+                fs8kbHEvtwtIHhK4Ln+emioDot54L32l1Z1Oi5JAg+rtikOmMn1ziSpmRBb0rwyim7Zor4waLNTv
+                AsVaWhUIkNf84iCAtYGzeAiD4/7grvpeEoia3torni6pSPubQEdTMcaFt9VFrPLQ/spxaAn+JQvv
+                X+G6SPdAA4Brg7Znw6ingSeaFW1m6N0f6OERsxgvSCCLMY5fCN0xd0kz8t/biXokOafNSU9qWXQ6
+                kxgjmFwy7RgzSw8G9frUm0mwGyh/q35zDXWko6QzygslnLz7tRcaVAKEchzeb/MaYBoUTb9mmSkr
+                Or8RqEd2tSkOyrM7u71VDb3keldV/Ux/yGJCYOde3c5PA39PGFdCWz2ZYhC3pwcCwiWiXxKO3djF
+                rtHn3o2JsA3FNPFCaj1+hTxRMdayYtao9qAiqwsReCxMAloXUoWSuYCSTjqpd7wCe7DHZu+0zGlE
+                FBWzSHNZUQnYVlI/l1WDUdcVOVCZbLfteukKqOce5EQ6I09XxT4SIYPNo0MEpqRaYx8gow2BZCI=
+            </dsig:SignatureValue>
+            <dsig:KeyInfo>
+                <dsig:X509Data>
+                    <dsig:X509Certificate>MIIFdzCCBF+gAwIBAgIQdf0JbKyUMPQj0WeaEYyyJDANBgkqhkiG9w0BAQUFADA2MQswCQYDVQQG
+                        EwJOTDEPMA0GA1UEChMGVEVSRU5BMRYwFAYDVQQDEw1URVJFTkEgU1NMIENBMB4XDTE0MTAwMTAw
+                        MDAwMFoXDTE2MTIzMTIzNTk1OVowQzEhMB8GA1UECxMYRG9tYWluIENvbnRyb2wgVmFsaWRhdGVk
+                        MR4wHAYDVQQDExV1bml0eS5ncmlkLmljbS5lZHUucGwwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAw
+                        ggIKAoICAQDnfmaTY403BkGPyk6nBbCPwuuxOCL2Nvm9ibSYY2I6qGktQVRD/M37L1jMjKYx667x
+                        0fZwp/NGHRNP7c49WRhvmtwerJXcsIxJlVUlQ9KTC2tHtxlIN6GhriCRiCp3VsqRlBdAomyZ4Ut9
+                        gWUK/lJK6BygtZE6BqjEoSAskEJpwiWPJkAAnPs5LGfo2RXO57I1/AXkW4OFX53qJHj5GUe6zUrQ
+                        DzUMc39eYsEZcteR4lz78MpJ2weBX1E+v85k73r6kWCSBDn3D613nS56GXVErZNYKBMsCiYL3/B3
+                        2+fVTy5sgwQ3yhNAsAtM3YcpYCZJ/AiPboCAj9FzAsZi3aPZlvTwd4SyqxBp0EX/HwNLctYVQR55
+                        gT6ZtAM737TDvRBbT6440dfnUj8TygZNkGaDbbTV8Qc0TyxcVFg/mWNcE82stRTOuqImjGw4Lhom
+                        bQqMNPfD05+5ecORXNwSksym9Lj0j3CNOqSrWXE5IzBkYmtjM/XTlora9cHVcrOG54RdjGb0iEA2
+                        skFDX85MG5sg0HMvZBcxBOgtPH3IwOeTWTaU+lRZsO91rq/3kFYFR4+jYxUssenl9HMrWNE83wpb
+                        6/3/F/lbXnqKQZZAKG6SI1b3dib5SJkiCgovZfv+yhwkebjUUtWiG4ZCcUZjFOcHzL2kROxfNTk8
+                        IKwQTGrBQwIDAQABo4IBcjCCAW4wHwYDVR0jBBgwFoAUDL2TaAzz3qujSWsrN1dH6pDjue0wHQYD
+                        VR0OBBYEFOIjIqm23QweT2/d+EKSDIPVIirCMA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAA
+                        MB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAiBgNVHSAEGzAZMA0GCysGAQQBsjEBAgId
+                        MAgGBmeBDAECATA6BgNVHR8EMzAxMC+gLaArhilodHRwOi8vY3JsLnRjcy50ZXJlbmEub3JnL1RF
+                        UkVOQVNTTENBLmNybDBtBggrBgEFBQcBAQRhMF8wNQYIKwYBBQUHMAKGKWh0dHA6Ly9jcnQudGNz
+                        LnRlcmVuYS5vcmcvVEVSRU5BU1NMQ0EuY3J0MCYGCCsGAQUFBzABhhpodHRwOi8vb2NzcC50Y3Mu
+                        dGVyZW5hLm9yZzAgBgNVHREEGTAXghV1bml0eS5ncmlkLmljbS5lZHUucGwwDQYJKoZIhvcNAQEF
+                        BQADggEBAJByinMheAL5PxVa6xOlCEp6JRDUD+iDkHiAcc2MuRoLBbkETeVJwyyRYcqHBAo2P8Bn
+                        9d0zL2epVDixZh8DMDwrpN2wiaeg4sEo14zVZW2cudxvZqSb0ifOk9npC2PUAYql7DTz1FXBoD++
+                        8DYlYRVmlDNnjIL5a8QmcSMQVovNWuVmYz/kVAuRqBxdvHIiWHPVtF88EkyTUTV3dxTrS+fdvRqC
+                        nUapLH33d02KTTssQTWtQ/ynYPwrgYFwaOzzGByzik6pHPa5K8bXK5g4zZlu8F/1kLe07MSagd7F
+                        1n/Od90lAxVKUFQk2MqNwQGyW6JL+O+ix4CNHMhrAwSqVN8=
+                    </dsig:X509Certificate>
+                </dsig:X509Data>
+            </dsig:KeyInfo>
+        </dsig:Signature>
+        <urn:Subject>
+            <urn:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName">CN=plgkluszczynski,CN=Rafal
+                Kluszczynski,O=ICM,O=Uzytkownik,O=PL-Grid,C=PL
+            </urn:NameID>
+            <urn:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+                <urn:SubjectConfirmationData
+                        InResponseTo="SAMLY2lib_msg_c28e89544f69503eb094cf19557a5568cefc05fef8ba95d0"
+                        NotOnOrAfter="2015-03-24T11:19:26.181Z" Recipient="https://localhost:8443/authn/saml"/>
+            </urn:SubjectConfirmation>
+        </urn:Subject>
+        <urn:Conditions>
+            <urn:AudienceRestriction>
+                <urn:Audience>CN=unicore.studmat.umk.pl,OU=ICM,O=UW,C=PL</urn:Audience>
+            </urn:AudienceRestriction>
+        </urn:Conditions>
+        <urn:AuthnStatement AuthnInstant="2015-03-24T11:09:26.181Z">
+            <urn:AuthnContext>
+                <urn:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</urn:AuthnContextClassRef>
+            </urn:AuthnContext>
+        </urn:AuthnStatement>
+    </urn:Assertion>
+    <urn:Assertion ID="SAMLY2lib_assert_4ab13b0b377412116a32e9cea3b6b86b750117ea2e3a407c"
+                   IssueInstant="2015-03-24T11:09:32.343Z" Version="2.0"
+                   xmlns:urn="urn:oasis:names:tc:SAML:2.0:assertion">
+        <urn:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://unity.grid.icm.edu.pl:443/
+        </urn:Issuer>
+        <dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+            <dsig:SignedInfo>
+                <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                <dsig:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+                <dsig:Reference URI="#SAMLY2lib_assert_4ab13b0b377412116a32e9cea3b6b86b750117ea2e3a407c">
+                    <dsig:Transforms>
+                        <dsig:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+                        <dsig:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                    </dsig:Transforms>
+                    <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                    <dsig:DigestValue>jdKOnSA+pAqXjQgZTjNrgM6Egds=</dsig:DigestValue>
+                </dsig:Reference>
+            </dsig:SignedInfo>
+            <dsig:SignatureValue>lti9kHFVdIu7EOpVcjIzjPJvsX5q+pCv+7tmGnXHeCstyXt3dvcmHPL8eru7OuRlB7Z52TzRuPOH
+                1pkZ7DkZvNLtchB3dziYW5b563xN+PrZpEJa33YWxAx5T5DN+soM3gR+Ts+1wqvpcaMviDKFl/D1
+                T9NdzLZ6BU161He00hHDxzmDufK4BCMau8RoFhSlucdueeV8AGGaZr4e2yfHTCeXyV+1NxJADv3A
+                VJEIe1wU34gwNGvv1bui9IVduaNlSCRDndxwArL/awSZb4ecShNa3/3KEN0psbLJmmovRGkqr4Ns
+                c9ZdfOgHhGhQ8wQg74NQGWsllHv6CfqhPUVbF1arfHxNcZDs9McZVz4rY/44KDBNJVw6WW6fPGTt
+                FvqA6vdl8CmpHRhJGutPFPMSpFKBzND0h3Rly+9mt8zuVKNWZAhLfEXN6RujhGkHd/aoMElN52S9
+                w+gatpeMNMlklGZWlKduX1hsx8lvZzzEHytff5IOXRYtbqtRk+6UMwrxPrdHUFj5VNYFTm2+DUZN
+                auz6h/DYG3VLH27DEbygB2IfZLyyiV7QTONeBSnyfEfVqdYnxtDkgWu00K1M0ngYcOFkUu/qSWTK
+                OWM1zDPCDTsP4CPjO86kJeTtngk0TSu9tDL1asBjXoS7hnh79Bcsgh2dtYl1QvIpJxdhkQs5ZXs=
+            </dsig:SignatureValue>
+            <dsig:KeyInfo>
+                <dsig:X509Data>
+                    <dsig:X509Certificate>MIIFdzCCBF+gAwIBAgIQdf0JbKyUMPQj0WeaEYyyJDANBgkqhkiG9w0BAQUFADA2MQswCQYDVQQG
+                        EwJOTDEPMA0GA1UEChMGVEVSRU5BMRYwFAYDVQQDEw1URVJFTkEgU1NMIENBMB4XDTE0MTAwMTAw
+                        MDAwMFoXDTE2MTIzMTIzNTk1OVowQzEhMB8GA1UECxMYRG9tYWluIENvbnRyb2wgVmFsaWRhdGVk
+                        MR4wHAYDVQQDExV1bml0eS5ncmlkLmljbS5lZHUucGwwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAw
+                        ggIKAoICAQDnfmaTY403BkGPyk6nBbCPwuuxOCL2Nvm9ibSYY2I6qGktQVRD/M37L1jMjKYx667x
+                        0fZwp/NGHRNP7c49WRhvmtwerJXcsIxJlVUlQ9KTC2tHtxlIN6GhriCRiCp3VsqRlBdAomyZ4Ut9
+                        gWUK/lJK6BygtZE6BqjEoSAskEJpwiWPJkAAnPs5LGfo2RXO57I1/AXkW4OFX53qJHj5GUe6zUrQ
+                        DzUMc39eYsEZcteR4lz78MpJ2weBX1E+v85k73r6kWCSBDn3D613nS56GXVErZNYKBMsCiYL3/B3
+                        2+fVTy5sgwQ3yhNAsAtM3YcpYCZJ/AiPboCAj9FzAsZi3aPZlvTwd4SyqxBp0EX/HwNLctYVQR55
+                        gT6ZtAM737TDvRBbT6440dfnUj8TygZNkGaDbbTV8Qc0TyxcVFg/mWNcE82stRTOuqImjGw4Lhom
+                        bQqMNPfD05+5ecORXNwSksym9Lj0j3CNOqSrWXE5IzBkYmtjM/XTlora9cHVcrOG54RdjGb0iEA2
+                        skFDX85MG5sg0HMvZBcxBOgtPH3IwOeTWTaU+lRZsO91rq/3kFYFR4+jYxUssenl9HMrWNE83wpb
+                        6/3/F/lbXnqKQZZAKG6SI1b3dib5SJkiCgovZfv+yhwkebjUUtWiG4ZCcUZjFOcHzL2kROxfNTk8
+                        IKwQTGrBQwIDAQABo4IBcjCCAW4wHwYDVR0jBBgwFoAUDL2TaAzz3qujSWsrN1dH6pDjue0wHQYD
+                        VR0OBBYEFOIjIqm23QweT2/d+EKSDIPVIirCMA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAA
+                        MB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAiBgNVHSAEGzAZMA0GCysGAQQBsjEBAgId
+                        MAgGBmeBDAECATA6BgNVHR8EMzAxMC+gLaArhilodHRwOi8vY3JsLnRjcy50ZXJlbmEub3JnL1RF
+                        UkVOQVNTTENBLmNybDBtBggrBgEFBQcBAQRhMF8wNQYIKwYBBQUHMAKGKWh0dHA6Ly9jcnQudGNz
+                        LnRlcmVuYS5vcmcvVEVSRU5BU1NMQ0EuY3J0MCYGCCsGAQUFBzABhhpodHRwOi8vb2NzcC50Y3Mu
+                        dGVyZW5hLm9yZzAgBgNVHREEGTAXghV1bml0eS5ncmlkLmljbS5lZHUucGwwDQYJKoZIhvcNAQEF
+                        BQADggEBAJByinMheAL5PxVa6xOlCEp6JRDUD+iDkHiAcc2MuRoLBbkETeVJwyyRYcqHBAo2P8Bn
+                        9d0zL2epVDixZh8DMDwrpN2wiaeg4sEo14zVZW2cudxvZqSb0ifOk9npC2PUAYql7DTz1FXBoD++
+                        8DYlYRVmlDNnjIL5a8QmcSMQVovNWuVmYz/kVAuRqBxdvHIiWHPVtF88EkyTUTV3dxTrS+fdvRqC
+                        nUapLH33d02KTTssQTWtQ/ynYPwrgYFwaOzzGByzik6pHPa5K8bXK5g4zZlu8F/1kLe07MSagd7F
+                        1n/Od90lAxVKUFQk2MqNwQGyW6JL+O+ix4CNHMhrAwSqVN8=
+                    </dsig:X509Certificate>
+                </dsig:X509Data>
+            </dsig:KeyInfo>
+        </dsig:Signature>
+        <urn:Subject>
+            <urn:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName">CN=plgkluszczynski,CN=Rafal
+                Kluszczynski,O=ICM,O=Uzytkownik,O=PL-Grid,C=PL
+            </urn:NameID>
+            <urn:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:sender-vouches">
+                <urn:SubjectConfirmationData NotOnOrAfter="2015-03-24T11:19:26.181Z"/>
+            </urn:SubjectConfirmation>
+        </urn:Subject>
+        <urn:AttributeStatement>
+            <urn:Attribute Name="cn">
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Rafał Kluszczyński
+                </urn:AttributeValue>
+            </urn:Attribute>
+            <urn:Attribute Name="email">
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">klusi@mat.umk.pl
+                </urn:AttributeValue>
+            </urn:Attribute>
+            <urn:Attribute Name="memberOf">
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">/vo.plgrid.pl/unicore-portal
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">/vo.plgrid.pl/testbed
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">/vo.plgrid.pl/unicore/ICM
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">/
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">/vo.plgrid.pl/groups
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    /vo.plgrid.pl/testbed/NCU/users
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">/vo.plgrid.pl/testbed/ICM
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    /vo.plgrid.pl/testbed/ICM/users
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    /vo.plgrid.pl/unicore/ICM/users
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">/vo.plgrid.pl/groups/plggvasp5
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">/vo.plgrid.pl/testbed-portal
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">/vo.plgrid.pl/testbed/NCU
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">/vo.plgrid.pl/unicore
+                </urn:AttributeValue>
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">/vo.plgrid.pl
+                </urn:AttributeValue>
+            </urn:Attribute>
+        </urn:AttributeStatement>
+    </urn:Assertion>
+    <urn:Assertion ID="SAMLY2lib_assert_4df8c15fbeb8d3b72b8482d3153e4a34e78e676c317222a1"
+                   IssueInstant="2015-03-24T11:09:32.420Z" Version="2.0"
+                   xmlns:urn="urn:oasis:names:tc:SAML:2.0:assertion">
+        <urn:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://unity.grid.icm.edu.pl:443/
+        </urn:Issuer>
+        <dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+            <dsig:SignedInfo>
+                <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                <dsig:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+                <dsig:Reference URI="#SAMLY2lib_assert_4df8c15fbeb8d3b72b8482d3153e4a34e78e676c317222a1">
+                    <dsig:Transforms>
+                        <dsig:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+                        <dsig:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                    </dsig:Transforms>
+                    <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                    <dsig:DigestValue>reZWMM2pSDTuwVRAJmpHSgii79c=</dsig:DigestValue>
+                </dsig:Reference>
+            </dsig:SignedInfo>
+            <dsig:SignatureValue>R0cEpDBjvCUUALKWhJoQSlkoM8V+wUBr9lpbWF7xwz4L80xd4hX1qbSmPkuhJNL6SbNYQkw41Jsm
+                Oo4fTnOxPm/Ei135LzXc+iJVyOcGg3K3pTD99pCuso1LwL4VLIdiPobhiSC1Cu/GZvIwfCt/Zobn
+                gRMT2oNifQkjdgKjb8fzlZFSpTWsvX6/UUClGJr67p6irAzX8+kxrNcqUMrwFurxTXfsyqxrGhnA
+                iPIhYO4fEUEkL16bNAen/1R2AlG3DV3Rh6nsmTElH4hiNq1gV5vJ5Ww07hQDgkHn9I1lOhbVMvGF
+                4+7N4HcOLqiNubSJGY/4sBPO61adXC+ckEjcIxGEzU2FBu7HY6ULgHwhMVwgTvFlxcYtx4j+8Z9j
+                nTKx6Lmj2iLD7ZbWxCM8EoNVxegRSxczOB1+9URu4QRKHZlQIJz3oV0xas8xcRYW/H3bh/Aa4YTj
+                OUgpIh7TUPJOF1xyMtQ40hDc4jKWT1698IRahxR8f3mKzx3dl+Xn5zsb2U0yd+gmWy1PpR+QSUNx
+                fcs0c3tPiUNF3RwfnHsY5Nk1gcaOQ608z/Dh5kd4lljjsDgmz7Pmf3ApR4yoqIs9l/vttvZqlKri
+                V5bR3J2oUxBMmMWl3IxjgzfhvF1gCQDxvFere6/RblOk/3B7y98hSiPUyI6iAkrHVJdBpsgDWXA=
+            </dsig:SignatureValue>
+            <dsig:KeyInfo>
+                <dsig:X509Data>
+                    <dsig:X509Certificate>MIIFdzCCBF+gAwIBAgIQdf0JbKyUMPQj0WeaEYyyJDANBgkqhkiG9w0BAQUFADA2MQswCQYDVQQG
+                        EwJOTDEPMA0GA1UEChMGVEVSRU5BMRYwFAYDVQQDEw1URVJFTkEgU1NMIENBMB4XDTE0MTAwMTAw
+                        MDAwMFoXDTE2MTIzMTIzNTk1OVowQzEhMB8GA1UECxMYRG9tYWluIENvbnRyb2wgVmFsaWRhdGVk
+                        MR4wHAYDVQQDExV1bml0eS5ncmlkLmljbS5lZHUucGwwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAw
+                        ggIKAoICAQDnfmaTY403BkGPyk6nBbCPwuuxOCL2Nvm9ibSYY2I6qGktQVRD/M37L1jMjKYx667x
+                        0fZwp/NGHRNP7c49WRhvmtwerJXcsIxJlVUlQ9KTC2tHtxlIN6GhriCRiCp3VsqRlBdAomyZ4Ut9
+                        gWUK/lJK6BygtZE6BqjEoSAskEJpwiWPJkAAnPs5LGfo2RXO57I1/AXkW4OFX53qJHj5GUe6zUrQ
+                        DzUMc39eYsEZcteR4lz78MpJ2weBX1E+v85k73r6kWCSBDn3D613nS56GXVErZNYKBMsCiYL3/B3
+                        2+fVTy5sgwQ3yhNAsAtM3YcpYCZJ/AiPboCAj9FzAsZi3aPZlvTwd4SyqxBp0EX/HwNLctYVQR55
+                        gT6ZtAM737TDvRBbT6440dfnUj8TygZNkGaDbbTV8Qc0TyxcVFg/mWNcE82stRTOuqImjGw4Lhom
+                        bQqMNPfD05+5ecORXNwSksym9Lj0j3CNOqSrWXE5IzBkYmtjM/XTlora9cHVcrOG54RdjGb0iEA2
+                        skFDX85MG5sg0HMvZBcxBOgtPH3IwOeTWTaU+lRZsO91rq/3kFYFR4+jYxUssenl9HMrWNE83wpb
+                        6/3/F/lbXnqKQZZAKG6SI1b3dib5SJkiCgovZfv+yhwkebjUUtWiG4ZCcUZjFOcHzL2kROxfNTk8
+                        IKwQTGrBQwIDAQABo4IBcjCCAW4wHwYDVR0jBBgwFoAUDL2TaAzz3qujSWsrN1dH6pDjue0wHQYD
+                        VR0OBBYEFOIjIqm23QweT2/d+EKSDIPVIirCMA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAA
+                        MB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAiBgNVHSAEGzAZMA0GCysGAQQBsjEBAgId
+                        MAgGBmeBDAECATA6BgNVHR8EMzAxMC+gLaArhilodHRwOi8vY3JsLnRjcy50ZXJlbmEub3JnL1RF
+                        UkVOQVNTTENBLmNybDBtBggrBgEFBQcBAQRhMF8wNQYIKwYBBQUHMAKGKWh0dHA6Ly9jcnQudGNz
+                        LnRlcmVuYS5vcmcvVEVSRU5BU1NMQ0EuY3J0MCYGCCsGAQUFBzABhhpodHRwOi8vb2NzcC50Y3Mu
+                        dGVyZW5hLm9yZzAgBgNVHREEGTAXghV1bml0eS5ncmlkLmljbS5lZHUucGwwDQYJKoZIhvcNAQEF
+                        BQADggEBAJByinMheAL5PxVa6xOlCEp6JRDUD+iDkHiAcc2MuRoLBbkETeVJwyyRYcqHBAo2P8Bn
+                        9d0zL2epVDixZh8DMDwrpN2wiaeg4sEo14zVZW2cudxvZqSb0ifOk9npC2PUAYql7DTz1FXBoD++
+                        8DYlYRVmlDNnjIL5a8QmcSMQVovNWuVmYz/kVAuRqBxdvHIiWHPVtF88EkyTUTV3dxTrS+fdvRqC
+                        nUapLH33d02KTTssQTWtQ/ynYPwrgYFwaOzzGByzik6pHPa5K8bXK5g4zZlu8F/1kLe07MSagd7F
+                        1n/Od90lAxVKUFQk2MqNwQGyW6JL+O+ix4CNHMhrAwSqVN8=
+                    </dsig:X509Certificate>
+                </dsig:X509Data>
+            </dsig:KeyInfo>
+        </dsig:Signature>
+        <urn:Subject>
+            <urn:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName">
+                CN=unicore.studmat.umk.pl,OU=ICM,O=UW,C=PL
+            </urn:NameID>
+        </urn:Subject>
+        <urn:Conditions NotBefore="2015-03-24T11:09:32.267Z" NotOnOrAfter="2015-04-07T11:09:32.267Z"/>
+        <urn:AttributeStatement>
+            <urn:Attribute Name="TrustDelegationOfUser" NameFormat="urn:unicore:trust-delegation:dn">
+                <urn:AttributeValue xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">CN=plgkluszczynski,CN=Rafal
+                    Kluszczynski,O=ICM,O=Uzytkownik,O=PL-Grid,C=PL
+                </urn:AttributeValue>
+            </urn:Attribute>
+        </urn:AttributeStatement>
+    </urn:Assertion>
+</urn:Response>
