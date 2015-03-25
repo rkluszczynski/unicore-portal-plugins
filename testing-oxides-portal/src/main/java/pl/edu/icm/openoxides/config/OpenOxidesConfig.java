@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 public class OpenOxidesConfig {
@@ -18,5 +19,14 @@ public class OpenOxidesConfig {
         );
         builder.failOnUnknownProperties(false);
         return builder;
+    }
+
+    @Bean
+    public ThreadPoolTaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
+        threadPoolTaskExecutor.setCorePoolSize(5);
+        threadPoolTaskExecutor.setMaxPoolSize(15);
+//        threadPoolTaskExecutor.setQueueCapacity();
+        return threadPoolTaskExecutor;
     }
 }
