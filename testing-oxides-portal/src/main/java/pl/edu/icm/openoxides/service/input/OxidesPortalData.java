@@ -1,5 +1,7 @@
 package pl.edu.icm.openoxides.service.input;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -19,4 +21,7 @@ public class OxidesPortalData {
     public String getCreatedAt() {
         return createdAt;
     }
+
+    @JsonIgnore
+    public static final String OXIDES_DATA_SESSION_ATTRIBUTE_KEY = "openOxidesPortalData";
 }

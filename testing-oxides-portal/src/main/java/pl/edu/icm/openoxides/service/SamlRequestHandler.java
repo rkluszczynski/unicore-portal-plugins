@@ -6,6 +6,8 @@ import eu.unicore.samly2.binding.HttpPostBindingSupport;
 import eu.unicore.samly2.binding.SAMLMessageType;
 import eu.unicore.samly2.elements.NameID;
 import eu.unicore.samly2.proto.AuthnRequest;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,8 +22,8 @@ import java.net.URI;
 @Component
 public class SamlRequestHandler {
     static final String idpUrl = "https://unity.grid.icm.edu.pl/testbed-portal/saml2unicoreIdp-web";
-    //    public final String targetUrl = "https://alfred.mat.umk.pl:8443/authn/saml";
-    static final String targetUrl = "https://localhost:8443/authn/saml";
+    static final String targetUrl = "https://alfred.mat.umk.pl:8443/authn/saml";
+    //    static final String targetUrl = "https://localhost:8443/authn/saml";
     static final String requestId = "testingOpenOxides";
 
     private final GridIdentityProvider identityProvider;
@@ -47,7 +49,7 @@ public class SamlRequestHandler {
             writer.write(form);
             writer.flush();
         } catch (Exception e) {
-            e.printStackTrace(System.err);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -73,4 +75,6 @@ public class SamlRequestHandler {
         request.sign(credential.getKey(), credential.getCertificateChain());
         return request;
     }
+
+    private Log log = LogFactory.getLog(SamlRequestHandler.class);
 }

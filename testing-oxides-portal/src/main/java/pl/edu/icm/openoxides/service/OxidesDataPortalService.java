@@ -11,13 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.edu.icm.openoxides.config.GridIdentityProvider;
 import pl.edu.icm.openoxides.saml.ResponseDocumentWrapper;
-import xmlbeans.org.oasis.saml2.assertion.AssertionDocument;
-import xmlbeans.org.oasis.saml2.assertion.NameIDType;
+import pl.edu.icm.openoxides.service.input.OxidesPortalData;
 import xmlbeans.org.oasis.saml2.protocol.ResponseDocument;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 @Component
 public class OxidesDataPortalService {
@@ -30,27 +28,29 @@ public class OxidesDataPortalService {
         this.dataUploadService = dataUploadService;
     }
 
-    public void processResponse(ResponseDocument response, StringBuffer buffer) throws Exception {
-        SSOAuthnResponseValidator validator = validateSamlResponse(response);
-        printAssertions(buffer, "AUTHN", validator.getAuthNAssertions());
-        printAssertions(buffer, "ATTR", validator.getAttributeAssertions());
-        printAssertions(buffer, "OTHER", validator.getOtherAssertions());
+    public String processResponse(ResponseDocument response, OxidesPortalData oxidesData, StringBuffer buffer) throws Exception {
+//        SSOAuthnResponseValidator validator =
+        validateSamlResponse(response);
+//        printAssertions(buffer, "AUTHN", validator.getAuthNAssertions());
+//        printAssertions(buffer, "ATTR", validator.getAttributeAssertions());
+//        printAssertions(buffer, "OTHER", validator.getOtherAssertions());
 
         ResponseDocumentWrapper documentWrapper = new ResponseDocumentWrapper(response);
-        dataUploadService.onSamlResponse(documentWrapper);
+        String oxidesJsonUri = dataUploadService.onSamlResponse(documentWrapper, oxidesData);
 
-        String issuerUri = response.getResponse().getIssuer().getStringValue();
-        buffer.append("<b>ISSUER URI</b>: " + issuerUri + "<br/>");
+//        String issuerUri = response.getResponse().getIssuer().getStringValue();
+//        buffer.append("<b>ISSUER URI</b>: " + issuerUri + "<br/>");
+        return oxidesJsonUri;
     }
 
-    private void printAssertions(StringBuffer buffer, String caption, List<AssertionDocument> assertions) {
-        buffer.append(String.format("<b>ASSERTIONS %s [%d]</b>: <br/><ul>", caption, assertions.size()));
-        for (AssertionDocument assertion : assertions) {
-            NameIDType nameID = assertion.getAssertion().getSubject().getNameID();
-            buffer.append(String.format("<li>%s</li>", nameID.toString()));
-        }
-        buffer.append("</ul><br/>");
-    }
+//    private void printAssertions(StringBuffer buffer, String caption, List<AssertionDocument> assertions) {
+//        buffer.append(String.format("<b>ASSERTIONS %s [%d]</b>: <br/><ul>", caption, assertions.size()));
+//        for (AssertionDocument assertion : assertions) {
+//            NameIDType nameID = assertion.getAssertion().getSubject().getNameID();
+//            buffer.append(String.format("<li>%s</li>", nameID.toString()));
+//        }
+//        buffer.append("</ul><br/>");
+//    }
 
     private SSOAuthnResponseValidator validateSamlResponse(ResponseDocument response) throws URISyntaxException, SAMLValidationException {
         SamlTrustChecker trustChecker = new TruststoreBasedSamlTrustChecker(

@@ -1,14 +1,21 @@
 package pl.edu.icm.openoxides.service;
 
 import eu.unicore.samly2.exceptions.SAMLValidationException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.impl.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.edu.icm.openoxides.service.input.OxidesPortalData;
 import xmlbeans.org.oasis.saml2.protocol.ResponseDocument;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
+
+import static pl.edu.icm.openoxides.service.OxidesDataUploadService.OXIDES_JSON_SESSION_ATTRIBUTE_KEY;
+import static pl.edu.icm.openoxides.service.input.OxidesPortalData.OXIDES_DATA_SESSION_ATTRIBUTE_KEY;
 
 @Component
 public class SamlResponseHandler {
@@ -21,14 +28,21 @@ public class SamlResponseHandler {
 
     public String processAuthenticationResponse(HttpServletRequest request) {
         String samlResponse = request.getParameter("SAMLResponse");
+        HttpSession session = request.getSession();
+        OxidesPortalData oxidesData = (OxidesPortalData) session.getAttribute(OXIDES_DATA_SESSION_ATTRIBUTE_KEY);
+        if (oxidesData == null) {
+            oxidesData = new OxidesPortalData("OpenOxidesGrid");
+        }
 
         StringBuffer buffer = new StringBuffer();
         try {
             ResponseDocument response = decodeResponse(samlResponse);
-            dataPortalService.processResponse(response, buffer);
+            String oxidesJsonUri = dataPortalService.processResponse(response, oxidesData, buffer);
+
+            session.setAttribute(OXIDES_JSON_SESSION_ATTRIBUTE_KEY, oxidesJsonUri);
+            buffer.append(oxidesJsonUri);
         } catch (Exception e) {
-            buffer.append(String.format("<b>ERROR</b>: <br />%s<br />", e.getMessage()));
-            e.printStackTrace(System.err);
+            log.error(e.getMessage(), e);
         }
         return buffer.toString();
     }
@@ -44,4 +58,6 @@ public class SamlResponseHandler {
             throw new SAMLValidationException(e.getMessage());
         }
     }
+
+    private Log log = LogFactory.getLog(SamlResponseHandler.class);
 }
