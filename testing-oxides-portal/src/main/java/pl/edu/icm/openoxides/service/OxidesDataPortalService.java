@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.edu.icm.openoxides.config.GridIdentityProvider;
 import pl.edu.icm.openoxides.saml.ResponseDocumentWrapper;
+import pl.edu.icm.openoxides.saml.SamlRequestHandler;
 import pl.edu.icm.openoxides.service.input.OxidesPortalData;
 import xmlbeans.org.oasis.saml2.protocol.ResponseDocument;
 

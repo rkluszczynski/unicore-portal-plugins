@@ -1,4 +1,4 @@
-package pl.edu.icm.openoxides.service;
+package pl.edu.icm.openoxides.saml;
 
 import eu.emi.security.authn.x509.X509Credential;
 import eu.unicore.samly2.SAMLConstants;
@@ -21,10 +21,10 @@ import java.net.URI;
 
 @Component
 public class SamlRequestHandler {
-    static final String idpUrl = "https://unity.grid.icm.edu.pl/testbed-portal/saml2unicoreIdp-web";
-    static final String targetUrl = "https://alfred.mat.umk.pl:8443/authn/saml";
+    public static final String idpUrl = "https://unity.grid.icm.edu.pl/testbed-portal/saml2unicoreIdp-web";
+    public static final String targetUrl = "https://alfred.mat.umk.pl:8443/authn/saml";
     //    static final String targetUrl = "https://localhost:8443/authn/saml";
-    static final String requestId = "testingOpenOxides";
+    public static final String requestId = "testingOpenOxides";
 
     private final GridIdentityProvider identityProvider;
 

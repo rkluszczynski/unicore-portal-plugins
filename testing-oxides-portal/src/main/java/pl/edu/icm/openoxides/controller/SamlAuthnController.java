@@ -5,15 +5,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import pl.edu.icm.openoxides.service.SamlRequestHandler;
-import pl.edu.icm.openoxides.service.SamlResponseHandler;
+import pl.edu.icm.openoxides.saml.SamlRequestHandler;
+import pl.edu.icm.openoxides.saml.SamlResponseHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/authn/saml")
+@RequestMapping(SamlAuthnController.REQUEST_MAPPING_PATH)
 public class SamlAuthnController {
+    public static final String REQUEST_MAPPING_PATH = "/authn/saml";
+
     private final SamlRequestHandler samlRequestHandler;
     private final SamlResponseHandler samlResponseHandler;
 

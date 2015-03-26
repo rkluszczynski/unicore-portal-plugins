@@ -1,4 +1,4 @@
-package pl.edu.icm.openoxides.service;
+package pl.edu.icm.openoxides.saml;
 
 import eu.unicore.samly2.exceptions.SAMLValidationException;
 import org.apache.commons.logging.Log;
@@ -7,6 +7,7 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.impl.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.edu.icm.openoxides.service.OxidesDataPortalService;
 import pl.edu.icm.openoxides.service.input.OxidesPortalData;
 import xmlbeans.org.oasis.saml2.protocol.ResponseDocument;
 

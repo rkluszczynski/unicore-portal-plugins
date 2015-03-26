@@ -2,33 +2,32 @@ package pl.edu.icm.openoxides.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fzj.unicore.uas.client.StorageClient;
-import de.fzj.unicore.uas.client.TSFClient;
-import de.fzj.unicore.uas.client.TSSClient;
-import de.fzj.unicore.wsrflite.xmlbeans.client.RegistryClient;
 import eu.unicore.security.etd.TrustDelegation;
-import eu.unicore.util.httpclient.DefaultClientConfiguration;
-import eu.unicore.util.httpclient.ETDClientSettings;
 import eu.unicore.util.httpclient.IClientConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.unigrids.services.atomic.types.ProtocolType;
-import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.edu.icm.openoxides.config.GridIdentityProvider;
+import pl.edu.icm.openoxides.saml.AuthenticationSession;
 import pl.edu.icm.openoxides.saml.ResponseDocumentWrapper;
 import pl.edu.icm.openoxides.service.input.OxidesPortalData;
+import pl.edu.icm.openoxides.service.input.UnicoreStorage;
+import pl.edu.icm.openoxides.unicore.TSSStorageHandler;
 
-import javax.xml.namespace.QName;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class OxidesDataUploadService {
+    private final TSSStorageHandler tssStorageHandler;
     private final GridIdentityProvider identityProvider;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public OxidesDataUploadService(GridIdentityProvider identityProvider, ObjectMapper objectMapper) {
+    public OxidesDataUploadService(TSSStorageHandler tssStorageHandler, GridIdentityProvider identityProvider, ObjectMapper objectMapper) {
+        this.tssStorageHandler = tssStorageHandler;
         this.identityProvider = identityProvider;
         this.objectMapper = objectMapper;
     }
@@ -43,48 +42,27 @@ public class OxidesDataUploadService {
             return "ERROR: " + e.getMessage();
         }
 
-        DefaultClientConfiguration clientConfiguration = new DefaultClientConfiguration(
-                identityProvider.getGridValidator(),
-                identityProvider.getGridCredential()
-        );
-        ETDClientSettings etdSettings = clientConfiguration.getETDSettings();
-        etdSettings.setTrustDelegationTokens(Arrays.asList(trustDelegation));
-        etdSettings.setRequestedUser(trustDelegation.getCustodianDN());
-        etdSettings.setExtendTrustDelegation(true);
+        AuthenticationSession authenticationSession = new AuthenticationSession();
+        authenticationSession.setTrustDelegations(Arrays.asList(trustDelegation));
 
-        StorageClient storageClient = extractUserHomeStorage(clientConfiguration);
+        StorageClient storageClient = extractUserHomeStorage(
+                tssStorageHandler.retrieveUserStorageList(authenticationSession),
+                tssStorageHandler.createUserConfiguration(authenticationSession)
+        );
         String oxidesJsonDataPath = storeDataToGridHomeStorage(storageClient, oxidesData);
         return oxidesJsonDataPath;
     }
 
-    private StorageClient extractUserHomeStorage(IClientConfiguration clientConfiguration) throws Exception {
-        String registryUrl = "https://hyx.grid.icm.edu.pl:8080/ICM-HYDRA/services/Registry?res=default_registry";
-        EndpointReferenceType registryEpr = EndpointReferenceType.Factory.newInstance();
-        registryEpr.addNewAddress().setStringValue(registryUrl);
-
-        RegistryClient registryClient = new RegistryClient(registryEpr, clientConfiguration);
-        QName qName = new QName("http://unigrids.org/2006/04/services/tsf", "TargetSystemFactory");
-        for (EndpointReferenceType tsfEpr : registryClient.listAccessibleServices(qName)) {
-//            System.err.println(" => " + tsfEpr.getAddress().getStringValue());
-            TSFClient tsfClient = new TSFClient(tsfEpr, clientConfiguration);
-            for (EndpointReferenceType tssEpr : tsfClient.getAccessibleTargetSystems()) {
-//                System.err.println("  -> " + tssEpr.getAddress().getStringValue());
-                TSSClient tssClient = new TSSClient(tssEpr, clientConfiguration);
-                String targetSystemName = tssClient.getTargetSystemName();
-                for (EndpointReferenceType tssStorageEpr : tssClient.getStorages()) {
-                    StorageClient storageClient = new StorageClient(tssStorageEpr, clientConfiguration);
-                    String storageName = storageClient.getStorageName();
-
+    private StorageClient extractUserHomeStorage(List<UnicoreStorage> unicoreStorageList, IClientConfiguration userConfiguration) throws Exception {
+        for (UnicoreStorage unicoreStorage : unicoreStorageList) {
+            StorageClient storageClient = new StorageClient(unicoreStorage.getEpr(), userConfiguration);
+            String storageName = storageClient.getStorageName();
 //                    System.err.println("    *> " + tssStorageEpr.getAddress().getStringValue());
 //                    System.err.println("     > " + storageName + " @ " + targetSystemName);
-
-                    if ("home".equalsIgnoreCase(storageName)) {
-                        return storageClient;
-                    }
-                }
+            if ("home".equalsIgnoreCase(storageName)) {
+                return storageClient;
             }
         }
-//        System.out.println("DONE");
         return null;
     }
 
