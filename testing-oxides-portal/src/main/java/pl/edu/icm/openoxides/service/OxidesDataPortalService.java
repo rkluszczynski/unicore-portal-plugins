@@ -10,6 +10,7 @@ import eu.unicore.samly2.validators.SSOAuthnResponseValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.edu.icm.openoxides.config.GridIdentityProvider;
+import pl.edu.icm.openoxides.saml.AuthenticationSession;
 import pl.edu.icm.openoxides.saml.ResponseDocumentWrapper;
 import pl.edu.icm.openoxides.saml.SamlRequestHandler;
 import pl.edu.icm.openoxides.service.input.OxidesPortalData;
@@ -29,7 +30,7 @@ public class OxidesDataPortalService {
         this.dataUploadService = dataUploadService;
     }
 
-    public String processResponse(ResponseDocument response, OxidesPortalData oxidesData, StringBuffer buffer) throws Exception {
+    public String processResponse(ResponseDocument response, OxidesPortalData oxidesData, AuthenticationSession authenticationSession, StringBuffer buffer) throws Exception {
 //        SSOAuthnResponseValidator validator =
         validateSamlResponse(response);
 //        printAssertions(buffer, "AUTHN", validator.getAuthNAssertions());
@@ -37,7 +38,7 @@ public class OxidesDataPortalService {
 //        printAssertions(buffer, "OTHER", validator.getOtherAssertions());
 
         ResponseDocumentWrapper documentWrapper = new ResponseDocumentWrapper(response);
-        String oxidesJsonUri = dataUploadService.onSamlResponse(documentWrapper, oxidesData);
+        String oxidesJsonUri = dataUploadService.onSamlResponse(documentWrapper, oxidesData, authenticationSession);
 
 //        String issuerUri = response.getResponse().getIssuer().getStringValue();
 //        buffer.append("<b>ISSUER URI</b>: " + issuerUri + "<br/>");

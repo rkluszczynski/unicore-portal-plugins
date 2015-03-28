@@ -10,6 +10,7 @@ import eu.unicore.util.httpclient.ETDClientSettings;
 import eu.unicore.util.httpclient.IClientConfiguration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 import pl.edu.icm.openoxides.config.GridIdentityProvider;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class TSSStorageHandler {
     private final GridIdentityProvider identityProvider;
 
+    @Autowired
     public TSSStorageHandler(GridIdentityProvider identityProvider) {
         this.identityProvider = identityProvider;
     }

@@ -12,9 +12,11 @@ import pl.edu.icm.openoxides.service.input.OxidesPortalData;
 import xmlbeans.org.oasis.saml2.protocol.ResponseDocument;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 
+import static pl.edu.icm.openoxides.saml.AuthenticationSession.AUTHENTICATION_SESSION_KEY;
 import static pl.edu.icm.openoxides.service.OxidesDataUploadService.OXIDES_JSON_SESSION_ATTRIBUTE_KEY;
 import static pl.edu.icm.openoxides.service.input.OxidesPortalData.OXIDES_DATA_SESSION_ATTRIBUTE_KEY;
 
@@ -27,7 +29,7 @@ public class SamlResponseHandler {
         this.dataPortalService = oxidesDataPortalService;
     }
 
-    public String processAuthenticationResponse(HttpServletRequest request) {
+    public String processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response1) {
         String samlResponse = request.getParameter("SAMLResponse");
         HttpSession session = request.getSession();
         OxidesPortalData oxidesData = (OxidesPortalData) session.getAttribute(OXIDES_DATA_SESSION_ATTRIBUTE_KEY);
@@ -37,15 +39,31 @@ public class SamlResponseHandler {
 
         StringBuffer buffer = new StringBuffer();
         try {
+            AuthenticationSession authenticationSession = (AuthenticationSession) request
+                    .getSession()
+                    .getAttribute(AUTHENTICATION_SESSION_KEY);
+            log.warn(authenticationSession);
+
             ResponseDocument response = decodeResponse(samlResponse);
-            String oxidesJsonUri = dataPortalService.processResponse(response, oxidesData, buffer);
+            String oxidesJsonUri = dataPortalService.processResponse(response, oxidesData, authenticationSession, buffer);
 
             session.setAttribute(OXIDES_JSON_SESSION_ATTRIBUTE_KEY, oxidesJsonUri);
+
             buffer.append(oxidesJsonUri);
+
+
+            if (authenticationSession != null) {
+                response1.sendRedirect(authenticationSession.getReturnUrl());
+                return "";
+            }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
         return buffer.toString();
+    }
+
+    private void sendRedirection(HttpServletRequest request, HttpServletResponse response1) {
+
     }
 
     private ResponseDocument decodeResponse(String response) throws SAMLValidationException {

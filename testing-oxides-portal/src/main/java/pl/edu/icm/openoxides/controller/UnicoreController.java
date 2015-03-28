@@ -4,48 +4,60 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.icm.openoxides.saml.AuthenticationSession;
 import pl.edu.icm.openoxides.saml.SamlRequestHandler;
-import pl.edu.icm.openoxides.service.input.UnicoreStorage;
 import pl.edu.icm.openoxides.unicore.TSSStorageHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 import static pl.edu.icm.openoxides.saml.AuthenticationSession.AUTHENTICATION_SESSION_KEY;
 
 @RestController
-@RequestMapping("/unicore")
 public class UnicoreController {
     private final TSSStorageHandler tssStorageHandler;
+    private AuthenticationSession authenticationSession;
 
     @Autowired
-    public UnicoreController(TSSStorageHandler tssStorageHandler) {
+    public UnicoreController(TSSStorageHandler tssStorageHandler, AuthenticationSession authenticationSession) {
         this.tssStorageHandler = tssStorageHandler;
+        this.authenticationSession = authenticationSession;
     }
 
-    @RequestMapping("/storages")
-    @ResponseBody
-    public List<UnicoreStorage> showUserStorageList(HttpServletRequest request, HttpServletResponse response) {
-        AuthenticationSession authenticationSession = (AuthenticationSession) request
-                .getSession()
-                .getAttribute(AUTHENTICATION_SESSION_KEY);
-        if (shouldRedirectToAuthentication(authenticationSession)) {
-            sendRedirection(request, response);
-            return null;
+    @RequestMapping("/unicore/storages")
+//    @ResponseBody
+    public void showUserStorageList(HttpServletRequest request, HttpServletResponse response) {
+        log.info("SESSION.1: " + request.getSession().getId());
+        log.info("         : " + authenticationSession.getUuid());
+        try {
+//            response.sendRedirect(SamlAuthnController.REQUEST_MAPPING_PATH);
+            response.sendRedirect("/redirected");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return tssStorageHandler.retrieveUserStorageList(authenticationSession);
+//        return Collections.emptyList();
+
+//        AuthenticationSession authenticationSession = (AuthenticationSession) request
+//                .getSession()
+//                .getAttribute(AUTHENTICATION_SESSION_KEY);
+//        log.info("SESSION.2: " + request.getSession().getId());
+//        if (shouldRedirectToAuthentication(authenticationSession)) {
+//            log.info("SESSION.3: " + request.getSession().getId());
+//            sendRedirection(request, response);
+//            log.info("SESSION.4: " + request.getSession().getId());
+//            return Collections.emptyList();
+//        }
+//        return tssStorageHandler.retrieveUserStorageList(authenticationSession);
     }
 
     private void sendRedirection(HttpServletRequest request, HttpServletResponse response) {
         AuthenticationSession authenticationSession = new AuthenticationSession();
         authenticationSession.setIdpUrl(SamlRequestHandler.idpUrl);
 //        authenticationSession.setReturnUrl(request.getServletPath());
-        authenticationSession.setReturnUrl(request.getContextPath());
+//        authenticationSession.setReturnUrl(request.getContextPath());
+        authenticationSession.setReturnUrl("/unicore/storages");
 
         request.getSession().setAttribute(AUTHENTICATION_SESSION_KEY, authenticationSession);
 
@@ -60,5 +72,5 @@ public class UnicoreController {
         return session == null;
     }
 
-    private Log log = LogFactory.getLog(SamlRequestHandler.class);
+    private Log log = LogFactory.getLog(UnicoreController.class);
 }

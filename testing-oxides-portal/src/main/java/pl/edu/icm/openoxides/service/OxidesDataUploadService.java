@@ -32,7 +32,7 @@ public class OxidesDataUploadService {
         this.objectMapper = objectMapper;
     }
 
-    public String onSamlResponse(ResponseDocumentWrapper documentWrapper, OxidesPortalData oxidesData) throws Exception {
+    public String onSamlResponse(ResponseDocumentWrapper documentWrapper, OxidesPortalData oxidesData, AuthenticationSession authnSession) throws Exception {
         TrustDelegation trustDelegation;
         try {
             trustDelegation = new TrustDelegation(documentWrapper.getEtdAssertions().get(0));
@@ -41,7 +41,9 @@ public class OxidesDataUploadService {
 //            e.printStackTrace(System.err);
             return "ERROR: " + e.getMessage();
         }
-
+        if (authnSession != null) {
+            authnSession.setTrustDelegations(Arrays.asList(trustDelegation));
+        }
         AuthenticationSession authenticationSession = new AuthenticationSession();
         authenticationSession.setTrustDelegations(Arrays.asList(trustDelegation));
 

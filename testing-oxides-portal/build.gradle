@@ -21,6 +21,7 @@ dependencies {
 
             'com.fasterxml.jackson.core:jackson-databind',
             'org.hibernate:hibernate-validator',
+            'org.apache.commons:commons-lang3:3.3.2',
 
 //            'org.springframework.security.extensions:spring-security-saml2-core:1.0.0.RELEASE',
 //
