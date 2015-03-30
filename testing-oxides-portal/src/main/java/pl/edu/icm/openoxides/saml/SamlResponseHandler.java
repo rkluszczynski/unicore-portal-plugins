@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 
-import static pl.edu.icm.openoxides.saml.AuthenticationSession.AUTHENTICATION_SESSION_KEY;
 import static pl.edu.icm.openoxides.service.OxidesDataUploadService.OXIDES_JSON_SESSION_ATTRIBUTE_KEY;
 import static pl.edu.icm.openoxides.service.input.OxidesPortalData.OXIDES_DATA_SESSION_ATTRIBUTE_KEY;
 
@@ -29,7 +28,7 @@ public class SamlResponseHandler {
         this.dataPortalService = oxidesDataPortalService;
     }
 
-    public String processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response1) {
+    public String processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response1, AuthenticationSession authenticationSession) {
         String samlResponse = request.getParameter("SAMLResponse");
         HttpSession session = request.getSession();
         OxidesPortalData oxidesData = (OxidesPortalData) session.getAttribute(OXIDES_DATA_SESSION_ATTRIBUTE_KEY);
@@ -39,9 +38,6 @@ public class SamlResponseHandler {
 
         StringBuffer buffer = new StringBuffer();
         try {
-            AuthenticationSession authenticationSession = (AuthenticationSession) request
-                    .getSession()
-                    .getAttribute(AUTHENTICATION_SESSION_KEY);
             log.warn(authenticationSession);
 
             ResponseDocument response = decodeResponse(samlResponse);

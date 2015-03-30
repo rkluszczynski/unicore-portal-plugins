@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import pl.edu.icm.openoxides.config.GridIdentityProvider;
 import xmlbeans.org.oasis.saml2.protocol.AuthnRequestDocument;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.net.URI;
@@ -33,7 +32,7 @@ public class SamlRequestHandler {
         this.identityProvider = identityProvider;
     }
 
-    public void performAuthenticationRequest(HttpServletRequest request, HttpServletResponse response) {
+    public void performAuthenticationRequest(HttpServletResponse response, AuthenticationSession authenticationSession) {
         try {
             AuthnRequest authnRequest = createRequest(idpUrl, targetUrl, identityProvider.getGridCredential());
             AuthnRequestDocument authnRequestDocument = AuthnRequestDocument.Factory.parse(
