@@ -1,5 +1,6 @@
 package pl.edu.icm.openoxides.controller;
 
+import eu.unicore.security.etd.TrustDelegation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.edu.icm.openoxides.saml.AuthenticationSession;
 import pl.edu.icm.openoxides.saml.SamlRequestHandler;
 import pl.edu.icm.openoxides.saml.SamlResponseHandler;
+import pl.edu.icm.openoxides.service.input.UnicoreStorage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @RestController
 //@RequestMapping(SamlAuthnController.REQUEST_MAPPING_PATH)
@@ -43,15 +48,27 @@ public class SamlAuthnController {
         samlResponseHandler.processAuthenticationResponse(request, response, authenticationSession);
     }
 
-    @RequestMapping("/grid/storages")
-    public void showGridUserStorageList(HttpServletResponse response, HttpSession session) throws IOException {
-        log.info("GRID.1: " + session.getId());
-        if (authenticationSession.getTrustDelegations() == null) {
-            authenticationSession.setIdpUrl(SamlRequestHandler.idpUrl);
-            authenticationSession.setReturnUrl("/grid/storages");
-            response.sendRedirect(SamlAuthnController.REQUEST_MAPPING_PATH);
-            return;
+    @RequestMapping("/grid/storage")
+    public List<UnicoreStorage> extractUserStorageList(HttpServletResponse response, HttpSession session) throws IOException {
+        if (shouldRedirectToAuthentication(authenticationSession)) {
+            log.info("SESSION.3: " + session.getId());
+            sendRedirection(response);
+            log.info("SESSION.4: " + session.getId());
+            return Collections.emptyList();
         }
+        return Arrays.asList(new UnicoreStorage("u7storage"));
+    }
+
+    private void sendRedirection(HttpServletResponse response) throws IOException {
+        authenticationSession.setIdpUrl(SamlRequestHandler.idpUrl);
+        authenticationSession.setReturnUrl("/grid/storage");
+
+        response.sendRedirect(SamlAuthnController.REQUEST_MAPPING_PATH);
+    }
+
+    private boolean shouldRedirectToAuthentication(AuthenticationSession authenticationSession) {
+        List<TrustDelegation> delegationList = authenticationSession.getTrustDelegations();
+        return delegationList == null || delegationList.size() == 0;
     }
 
     private Log log = LogFactory.getLog(SamlAuthnController.class);

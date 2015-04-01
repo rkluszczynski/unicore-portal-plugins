@@ -5,14 +5,13 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import pl.edu.icm.openoxides.saml.AuthenticationSession;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@RestController
+//@RestController
 public class RedirectController {
     private AuthenticationSession authenticationSession;
     private SessionData sessionData;

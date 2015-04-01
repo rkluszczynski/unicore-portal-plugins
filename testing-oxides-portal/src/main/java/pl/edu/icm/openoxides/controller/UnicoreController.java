@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import pl.edu.icm.openoxides.saml.AuthenticationSession;
 import pl.edu.icm.openoxides.saml.SamlRequestHandler;
 import pl.edu.icm.openoxides.unicore.TSSStorageHandler;
@@ -15,7 +14,7 @@ import java.io.IOException;
 
 import static pl.edu.icm.openoxides.saml.AuthenticationSession.AUTHENTICATION_SESSION_KEY;
 
-@RestController
+//@RestController
 public class UnicoreController {
     private final TSSStorageHandler tssStorageHandler;
     private AuthenticationSession authenticationSession;
