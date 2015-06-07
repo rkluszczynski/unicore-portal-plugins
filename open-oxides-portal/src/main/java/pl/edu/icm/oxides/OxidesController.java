@@ -2,10 +2,12 @@ package pl.edu.icm.oxides;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import pl.edu.icm.oxides.saml.AuthenticationSession;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +16,12 @@ import java.io.IOException;
 
 @RestController
 public class OxidesController {
+    private AuthenticationSession authenticationSession;
+
+    @Autowired
+    public OxidesController(AuthenticationSession authenticationSession) {
+        this.authenticationSession = authenticationSession;
+    }
 
     @RequestMapping(value = "/redirect")
     @ResponseBody
