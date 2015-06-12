@@ -17,7 +17,7 @@ public class GridIdProvider {
     private final X509CertChainValidatorExt idpValidator;
 
     public GridIdProvider() throws IOException {
-        String applicationPropertiesPath = "src/main/resources/application.properties";
+        String applicationPropertiesPath = "src/main/resources/grid.properties";
 
         ClientProperties clientProperties = new ClientProperties(applicationPropertiesPath);
         gridCredential = clientProperties.getAuthnAndTrustConfiguration().getCredential();

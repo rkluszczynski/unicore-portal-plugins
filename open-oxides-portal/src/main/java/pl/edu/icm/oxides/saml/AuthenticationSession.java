@@ -1,6 +1,7 @@
 package pl.edu.icm.oxides.saml;
 
 import eu.unicore.security.etd.TrustDelegation;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "session")
+@Lazy
 public class AuthenticationSession {
     public static String AUTHENTICATION_SESSION_KEY = "oxidesAuthenticationSessionKey";
 
@@ -17,7 +19,7 @@ public class AuthenticationSession {
     private String returnUrl;
     private List<TrustDelegation> trustDelegations;
 
-    private String uuid = UUID.randomUUID().toString();
+    private final String uuid = UUID.randomUUID().toString();
 
     public String getIdpUrl() {
         return idpUrl;
@@ -45,10 +47,6 @@ public class AuthenticationSession {
 
     public String getUuid() {
         return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     @Override

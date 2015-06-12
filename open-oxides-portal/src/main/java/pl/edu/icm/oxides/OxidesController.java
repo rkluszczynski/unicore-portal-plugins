@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.edu.icm.oxides.saml.AuthenticationSession;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @RestController
+@SessionAttributes("authenticationSession")
 public class OxidesController {
     private AuthenticationSession authenticationSession;
 
@@ -25,8 +27,10 @@ public class OxidesController {
 
     @RequestMapping(value = "/redirect")
     @ResponseBody
-    public String testRedirect(HttpServletResponse response, HttpSession session) throws IOException {
-        log.info("TEST 1: " + session.getId());
+    public String testRedirect(HttpServletResponse response,
+                               HttpSession session) throws IOException {
+        log.info("TEST-0: " + session.getId());
+        log.info("TEST-0: " + authenticationSession);
         response.sendRedirect("/redirected");
         return "TEST1";
     }
@@ -35,6 +39,7 @@ public class OxidesController {
     @ResponseBody
     public String testGetRedirected(HttpSession session) {
         log.info("TEST-G: " + session.getId());
+        log.info("TEST-G: " + authenticationSession);
         return "TEST-G";
     }
 
@@ -42,6 +47,7 @@ public class OxidesController {
     @ResponseBody
     public String testPostRedirected(HttpServletRequest request) {
         log.info("TEST-P: " + request.getSession().getId());
+        log.info("TEST-P: " + authenticationSession);
         return "TEST-P";
     }
 
