@@ -2,11 +2,16 @@ package pl.edu.icm.oxides;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
+@EnableConfigurationProperties
 public class OxidesWebServer {
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(OxidesWebServer.class, args);
+        SpringApplication application = new SpringApplication(OxidesWebServer.class);
+        application.setShowBanner(false);
+        application.run(args);
+//        SpringApplication.run(OxidesWebServer.class, args);
     }
 }

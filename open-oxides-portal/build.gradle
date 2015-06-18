@@ -3,12 +3,14 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.4.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.4.RELEASE',
+                'io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE'
     }
 }
 
 apply plugin: 'groovy'
 apply plugin: 'spring-boot'
+apply plugin: 'io.spring.dependency-management'
 
 dependencies {
 
@@ -17,6 +19,7 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-web',
 //            'org.springframework.boot:spring-boot-starter-security',
 
+//            'de.infinit:spring-boot-autoconfigure-wro4j:0.0.6',
 //            'org.springframework.session:spring-session:1.0.1.RELEASE',
 //            'org.springframework.security:spring-security-web:4.0.1.RELEASE',
 
@@ -33,10 +36,14 @@ dependencies {
 //            'eu.unicore.services:use-wsrfclient:3.1.1',
             'eu.unicore:uas-client:1.9.1'
 
-    testCompile 'org.spockframework:spock-spring:1.0-groovy-2.4',
-            'org.springframework:spring-test',
-            'org.springframework.boot:spring-boot-starter-test',
+    testCompile 'org.springframework.boot:spring-boot-starter-test',
+            'org.spockframework:spock-spring:1.0-groovy-2.4',
             'org.apache.httpcomponents:httpclient'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'http://dl.bintray.com/sbuettner/maven' }
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
