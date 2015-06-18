@@ -28,7 +28,7 @@ public class SamlResponseHandler {
         this.dataPortalService = oxidesDataPortalService;
     }
 
-    public String processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response1, AuthenticationSession authenticationSession) {
+    public String processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response, AuthenticationSession authenticationSession) {
         String samlResponse = request.getParameter("SAMLResponse");
         HttpSession session = request.getSession();
         OxidesPortalData oxidesData = (OxidesPortalData) session.getAttribute(OXIDES_DATA_SESSION_ATTRIBUTE_KEY);
@@ -40,8 +40,8 @@ public class SamlResponseHandler {
         try {
             log.warn(authenticationSession);
 
-            ResponseDocument response = decodeResponse(samlResponse);
-            String oxidesJsonUri = dataPortalService.processResponse(response, oxidesData, authenticationSession, buffer);
+            ResponseDocument responseDocument = decodeResponse(samlResponse);
+            String oxidesJsonUri = dataPortalService.processResponse(responseDocument, oxidesData, authenticationSession, buffer);
 
             session.setAttribute(OXIDES_JSON_SESSION_ATTRIBUTE_KEY, oxidesJsonUri);
 
@@ -49,7 +49,7 @@ public class SamlResponseHandler {
 
 
             if (authenticationSession != null) {
-                response1.sendRedirect(authenticationSession.getReturnUrl());
+                response.sendRedirect(authenticationSession.getReturnUrl());
                 return "";
             }
         } catch (Exception e) {

@@ -8,9 +8,11 @@ import eu.unicore.samly2.elements.NameID;
 import eu.unicore.samly2.proto.AuthnRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.xmlbeans.impl.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.edu.icm.openoxides.config.GridIdentityProvider;
 import xmlbeans.org.oasis.saml2.protocol.AuthnRequestDocument;
 
@@ -49,6 +51,25 @@ public class SamlRequestHandler {
             writer.flush();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+        }
+    }
+
+    public String performAuthenticationRequest2(HttpServletResponse response, RedirectAttributes redirectAttributes) {
+        try {
+            AuthnRequest authnRequest = createRequest(idpUrl, targetUrl, identityProvider.getGridCredential());
+            AuthnRequestDocument authnRequestDocument = AuthnRequestDocument.Factory.parse(
+                    authnRequest.getXMLBeanDoc().xmlText());
+
+            redirectAttributes.addAttribute("RelayState", "");
+
+            String encodedRequest = new String(Base64.encode(authnRequestDocument.xmlText().getBytes()));
+            redirectAttributes.addAttribute(SAMLMessageType.SAMLRequest.toString(), encodedRequest);
+
+//            response.sendRedirect(idpUrl);
+            return idpUrl;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return "/error";
         }
     }
 
