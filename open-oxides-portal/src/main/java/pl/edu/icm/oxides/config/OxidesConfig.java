@@ -1,6 +1,8 @@
 package pl.edu.icm.oxides.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -26,6 +28,13 @@ public class OxidesConfig {
 //        builder.failOnUnknownProperties(false);
 //        return builder;
 //    }
+
+    @Bean
+    public CacheManager cacheManager() {
+        ConcurrentMapCacheManager manager = new ConcurrentMapCacheManager("sites", "storages", "jobs");
+        manager.setAllowNullValues(false);
+        return manager;
+    }
 
     @Bean
     public ThreadPoolTaskExecutor taskExecutor() {

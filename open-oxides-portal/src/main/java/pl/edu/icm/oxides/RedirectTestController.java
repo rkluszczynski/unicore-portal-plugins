@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import pl.edu.icm.oxides.saml.AuthenticationSession;
+import pl.edu.icm.oxides.authn.OxidesAuthenticationSession;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,10 +17,10 @@ import java.io.IOException;
 @Controller
 @SessionAttributes("authenticationSession")
 public class RedirectTestController {
-    private AuthenticationSession authenticationSession;
+    private OxidesAuthenticationSession authenticationSession;
 
     @Autowired
-    public RedirectTestController(AuthenticationSession authenticationSession) {
+    public RedirectTestController(OxidesAuthenticationSession authenticationSession) {
         this.authenticationSession = authenticationSession;
     }
 

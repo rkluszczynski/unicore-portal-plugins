@@ -1,4 +1,4 @@
-package pl.edu.icm.oxides.saml;
+package pl.edu.icm.oxides.authn;
 
 import eu.unicore.samly2.SAMLBindings;
 import eu.unicore.samly2.exceptions.SAMLValidationException;
@@ -38,7 +38,7 @@ public class OxidesSamlResponseHandler {
         this.idProvider = idProvider;
     }
 
-    public void processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response, AuthenticationSession authenticationSession) {
+    public void processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response, OxidesAuthenticationSession authenticationSession) {
         String samlResponse = request.getParameter("SAMLResponse");
         HttpSession session = request.getSession();
 

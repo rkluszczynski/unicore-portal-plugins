@@ -1,4 +1,4 @@
-package pl.edu.icm.oxides.saml;
+package pl.edu.icm.oxides.authn;
 
 import eu.emi.security.authn.x509.X509Credential;
 import eu.unicore.samly2.SAMLConstants;
@@ -31,7 +31,7 @@ public class OxidesSamlRequestHandler {
         this.idProvider = idProvider;
     }
 
-    public void performAuthenticationRequest(HttpServletResponse response, AuthenticationSession authnSession) {
+    public void performAuthenticationRequest(HttpServletResponse response, OxidesAuthenticationSession authnSession) {
         String idpUrl = gridConfig.getIdpUrl();
         String targetUrl = gridConfig.getTargetUrl();
         try {

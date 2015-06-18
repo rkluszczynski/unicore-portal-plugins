@@ -1,4 +1,4 @@
-package pl.edu.icm.oxides.saml;
+package pl.edu.icm.oxides.authn;
 
 import eu.unicore.security.etd.TrustDelegation;
 import org.springframework.context.annotation.Lazy;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "session")
 @Lazy
-public class AuthenticationSession {
+public class OxidesAuthenticationSession {
     private String idpUrl;
     private String returnUrl;
     private List<TrustDelegation> trustDelegations;

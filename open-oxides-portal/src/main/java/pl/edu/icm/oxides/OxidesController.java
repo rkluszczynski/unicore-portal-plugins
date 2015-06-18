@@ -8,15 +8,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import pl.edu.icm.oxides.saml.AuthenticationSession;
-import pl.edu.icm.oxides.saml.OxidesSamlRequestHandler;
-import pl.edu.icm.oxides.saml.OxidesSamlResponseHandler;
+import pl.edu.icm.oxides.authn.OxidesAuthenticationSession;
+import pl.edu.icm.oxides.authn.OxidesSamlRequestHandler;
+import pl.edu.icm.oxides.authn.OxidesSamlResponseHandler;
 import pl.edu.icm.oxides.unicore.UnicoreGridHandler;
+import pl.edu.icm.oxides.unicore.job.UnicoreJobEntity;
+import pl.edu.icm.oxides.unicore.site.UnicoreSiteEntity;
+import pl.edu.icm.oxides.unicore.storage.UnicoreStorageEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @SessionAttributes("authenticationSession")
@@ -25,11 +29,11 @@ public class OxidesController {
     private final OxidesSamlRequestHandler samlRequestHandler;
     private final OxidesSamlResponseHandler samlResponseHandler;
     private final UnicoreGridHandler unicoreGridHandler;
-    private AuthenticationSession authenticationSession;
+    private OxidesAuthenticationSession authenticationSession;
 
     @Autowired
     public OxidesController(OxidesSamlRequestHandler samlRequestHandler, OxidesSamlResponseHandler samlResponseHandler,
-                            UnicoreGridHandler unicoreGridHandler, AuthenticationSession authenticationSession) {
+                            UnicoreGridHandler unicoreGridHandler, OxidesAuthenticationSession authenticationSession) {
         this.samlRequestHandler = samlRequestHandler;
         this.samlResponseHandler = samlResponseHandler;
         this.unicoreGridHandler = unicoreGridHandler;
@@ -38,65 +42,65 @@ public class OxidesController {
 
     @RequestMapping(value = "/")
     public void mainView(HttpSession session, HttpServletResponse response) throws IOException {
-        authenticationSession.setReturnUrl("/oxides/final");
+        if (authenticationSession.getReturnUrl() == null)
+            authenticationSession.setReturnUrl("/oxides/final");
 
-        log.info("TEST-0: " + session.getId());
-        log.info("TEST-0: " + authenticationSession);
+        logSessionData("TEST-0", session, authenticationSession);
         response.sendRedirect("/oxides/authn");
-    }
-
-    @RequestMapping(value = "/authn", method = RequestMethod.GET)
-    public void performAuthenticationRequest(HttpSession session, HttpServletResponse response) {
-        log.info("SAML-G: " + session.getId());
-        log.info("SAML-G: " + authenticationSession);
-        samlRequestHandler.performAuthenticationRequest(response, authenticationSession);
-    }
-
-    @RequestMapping(value = "/authn", method = RequestMethod.POST)
-    public void processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response) {
-        log.info("SAML-P: " + request.getSession().getId());
-        log.info("SAML-P: " + authenticationSession);
-        samlResponseHandler.processAuthenticationResponse(request, response, authenticationSession);
     }
 
     @RequestMapping(value = "/final")
     @ResponseBody
     public String finalPage(HttpSession session, HttpServletResponse response) throws IOException {
-        log.info("TEST-F: " + session.getId());
-        log.info("TEST-F: " + authenticationSession);
+        logSessionData("TEST-F", session, authenticationSession);
         return authenticationSession.toString() + "<p><a href=\"/oxides/linked\">link</a></p>";
     }
 
     @RequestMapping(value = "/linked")
     @ResponseBody
     public String linkedPage(HttpSession session, HttpServletResponse response) throws IOException {
-        log.info("LINKED: " + session.getId());
-        log.info("LINKED: " + authenticationSession);
+        logSessionData("LINKED", session, authenticationSession);
         return authenticationSession.toString();
     }
 
     @RequestMapping(value = "/unicore-sites")
     @ResponseBody
-    public String listSites(HttpSession session) throws IOException {
-        log.info("SITES: " + session.getId());
-        log.info("SITES: " + authenticationSession);
-        return unicoreGridHandler.listUserSites(authenticationSession);
+    public List<UnicoreSiteEntity> listSites(HttpSession session, HttpServletResponse response) {
+        logSessionData("SITES", session, authenticationSession);
+        List<UnicoreSiteEntity> userSites = unicoreGridHandler.listUserSites(authenticationSession, response);
+        logSessionData("SITES", session, authenticationSession);
+        return userSites;
     }
 
     @RequestMapping(value = "/unicore-storages")
     @ResponseBody
-    public String listStorages(HttpSession session) throws IOException {
-        log.info("STORAGES: " + session.getId());
-        log.info("STORAGES: " + authenticationSession);
-        return unicoreGridHandler.listUserStorages(authenticationSession);
+    public List<UnicoreStorageEntity> listStorages(HttpSession session, HttpServletResponse response) {
+        logSessionData("STORAGES", session, authenticationSession);
+        return unicoreGridHandler.listUserStorages(authenticationSession, response);
     }
 
     @RequestMapping(value = "/unicore-jobs")
     @ResponseBody
-    public String listJobs(HttpSession session) throws IOException {
-        log.info("JOBS: " + session.getId());
-        log.info("JOBS: " + authenticationSession);
-        return unicoreGridHandler.listUserJobs(authenticationSession);
+    public List<UnicoreJobEntity> listJobs(HttpSession session, HttpServletResponse response) {
+        logSessionData("JOBS", session, authenticationSession);
+        return unicoreGridHandler.listUserJobs(authenticationSession, response);
+    }
+
+    @RequestMapping(value = "/authn", method = RequestMethod.GET)
+    public void performAuthenticationRequest(HttpSession session, HttpServletResponse response) {
+        logSessionData("SAML-G", session, authenticationSession);
+        samlRequestHandler.performAuthenticationRequest(response, authenticationSession);
+    }
+
+    @RequestMapping(value = "/authn", method = RequestMethod.POST)
+    public void processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response) {
+        logSessionData("SAML-P", request.getSession(), authenticationSession);
+        samlResponseHandler.processAuthenticationResponse(request, response, authenticationSession);
+    }
+
+    private void logSessionData(String logPrefix, HttpSession session, OxidesAuthenticationSession authnSession) {
+        log.info(String.format("%s: %s", logPrefix, session.getId()));
+        log.info(String.format("%s: %s", logPrefix, authnSession));
     }
 
     private Log log = LogFactory.getLog(OxidesController.class);

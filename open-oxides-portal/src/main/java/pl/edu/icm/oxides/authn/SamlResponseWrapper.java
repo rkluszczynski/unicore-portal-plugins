@@ -1,4 +1,4 @@
-package pl.edu.icm.oxides.saml;
+package pl.edu.icm.oxides.authn;
 
 import eu.unicore.samly2.SAMLUtils;
 import eu.unicore.samly2.exceptions.SAMLValidationException;

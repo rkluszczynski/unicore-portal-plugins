@@ -1,4 +1,4 @@
-package pl.edu.icm.oxides.saml;
+package pl.edu.icm.oxides.authn;
 
 import java.util.ArrayList;
 import java.util.Collections;
