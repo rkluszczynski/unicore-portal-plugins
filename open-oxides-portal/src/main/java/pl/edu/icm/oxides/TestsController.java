@@ -16,11 +16,11 @@ import java.io.IOException;
 
 @Controller
 @SessionAttributes("authenticationSession")
-public class RedirectTestController {
+public class TestsController {
     private OxidesAuthenticationSession authenticationSession;
 
     @Autowired
-    public RedirectTestController(OxidesAuthenticationSession authenticationSession) {
+    public TestsController(OxidesAuthenticationSession authenticationSession) {
         this.authenticationSession = authenticationSession;
     }
 
@@ -47,5 +47,5 @@ public class RedirectTestController {
         return "TEST-P";
     }
 
-    private Log log = LogFactory.getLog(RedirectTestController.class);
+    private Log log = LogFactory.getLog(TestsController.class);
 }

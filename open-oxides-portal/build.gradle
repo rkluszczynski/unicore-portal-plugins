@@ -19,6 +19,10 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-web',
 //            'org.springframework.boot:spring-boot-starter-security',
 
+            'org.springframework:spring-context:4.1.6.RELEASE',
+            'org.springframework:spring-context-support:4.1.6.RELEASE',
+            'net.sf.ehcache:ehcache:2.9.1',
+
 //            'de.infinit:spring-boot-autoconfigure-wro4j:0.0.6',
 //            'org.springframework.session:spring-session:1.0.1.RELEASE',
 //            'org.springframework.security:spring-security-web:4.0.1.RELEASE',

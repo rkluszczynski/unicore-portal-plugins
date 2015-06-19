@@ -3,7 +3,9 @@ package pl.edu.icm.oxides.unicore.site;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.w3.x2005.x08.addressing.EndpointReferenceType;
 
-public class UnicoreSiteEntity {
+import java.io.Serializable;
+
+public class UnicoreSiteEntity implements Serializable {
     private final String uri;
 
     public UnicoreSiteEntity(String uri) {
